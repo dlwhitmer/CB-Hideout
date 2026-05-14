@@ -1,4 +1,4 @@
-import { connectDB } from "@/db/connect";
+import db from "@/db/connect";
 
 export async function POST(request: Request) {
   const { scryfall_id, price, description } = await request.json();
@@ -17,7 +17,6 @@ export async function POST(request: Request) {
   const image_url = card.image_uris?.normal || card.image_uris?.large || "";
 
   // Insert into SQLite
-  const db = await connectDB();
   await db.run(
     `INSERT INTO products 
       (scryfall_id, name, set_code, collector_number, rarity, type_line, oracle_text, image_url, price, description)

@@ -1,7 +1,6 @@
-import { connectDB } from "@/db/connect";
+import db from "@/db/connect";
 
 export function GET() {
-  const db = connectDB();
 
   const pageSize = 20;
   const page = 1;

@@ -1,7 +1,6 @@
-import { connectDB } from "@/db/connect";
+import db from "@/db/connect";
 
 export default function ProductsPage() {
-  const db = connectDB();
 
   const products = db
     .prepare("SELECT id, scryfall_id, name, price, image_url FROM products")
