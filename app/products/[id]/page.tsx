@@ -1,63 +1,59 @@
 import { connectDB } from "@/db/connect";
 
-export default async function ProductDetailPage(props: any) {
-  const params = await props.params; // FIX
+export default function ProductDetailPage({ params }: any) {
+  const db = connectDB();
 
-  const db = await connectDB();
-
-  const product = await db.get(
-    "SELECT * FROM products WHERE scryfall_id = ?",
-    [params.id]
-  );
+  const product = db
+    .prepare("SELECT * FROM products WHERE scryfall_id = ?")
+    .get(params.id);
 
   if (!product) {
     return <div className="p-6 text-red-400">Product not found.</div>;
   }
 
- return (
-  <main className="m-auto min-h-screen bg-[url('/images/bg-3.webp')]">
-  <div className=" p-6 max-w-5xl mx-auto text-white">
-    <div className="flex flex-col md:flex-row gap-10">
+  return (
+    <main className="m-auto min-h-screen bg-[url('/images/bg-3.webp')]">
+      <div className="p-6 max-w-5xl mx-auto text-white">
+        <div className="flex flex-col md:flex-row gap-10">
 
-      {/* Left: Card Image */}
-      <div className="flex-shrink-0">
-        <img
-          src={product.image_url}
-          alt={product.name}
-          className="w-80 rounded shadow-lg"
-        />
-      </div>
+          {/* Left: Card Image */}
+          <div className="flex-shrink-0">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="w-80 rounded shadow-lg"
+            />
+          </div>
 
-      {/* Right: Card Info */}
-      <div className="flex flex-col gap-4 flex-1 pt-4">
+          {/* Right: Card Info */}
+          <div className="flex flex-col gap-4 flex-1 pt-4">
+            <h1 className="text-3xl font-bold">{product.name}</h1>
 
-        <h1 className="text-3xl font-bold">{product.name}</h1>
+            <div className="grid grid-cols-2 gap-y-2 text-white">
+              <p><span className="font-semibold">Set:</span> {product.set_code}</p>
+              <p><span className="font-semibold">Collector #:</span> {product.collector_number}</p>
+              <p><span className="font-semibold">Rarity:</span> {product.rarity}</p>
+              <p><span className="font-semibold">Type:</span> {product.type_line}</p>
+            </div>
 
-        <div className="grid grid-cols-2 gap-y-2 text-white">
-          <p><span className="font-semibold">Set:</span> {product.set_code}</p>
-          <p><span className="font-semibold">Collector #:</span> {product.collector_number}</p>
-          <p><span className="font-semibold">Rarity:</span> {product.rarity}</p>
-          <p><span className="font-semibold">Type:</span> {product.type_line}</p>
+            {/* Oracle Text */}
+            {product.oracle_text && (
+              <div className="bg-black/40 p-4 rounded leading-relaxed whitespace-pre-line">
+                {product.oracle_text}
+              </div>
+            )}
+
+            {/* Description */}
+            {product.description && (
+              <div className="bg-gray-500/40 p-4 rounded font-bold text-white leading-relaxed">
+                {product.description}
+              </div>
+            )}
+
+            <p className="text-green-400 text-2xl font-bold">${product.price}</p>
+          </div>
         </div>
-
-        {/* Oracle Text */}
-        {product.oracle_text && (
-          <div className="bg-black/40 p-4 rounded leading-relaxed whitespace-pre-line">
-            {product.oracle_text}
-          </div>
-        )}
-
-        {/* Description (your custom CSV description) */}
-        {product.description && (
-          <div className="bg-gray-500/40 p-4 rounded font-bold text-white leading-relaxed">
-            {product.description}
-          </div>
-        )}
-
-        <p className="text-green-400 text-2xl font-bold">${product.price}</p>
       </div>
-    </div>
-  </div>
-  </main>
-);
+    </main>
+  );
 }
