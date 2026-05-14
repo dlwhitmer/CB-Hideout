@@ -6,7 +6,7 @@ let db: any;
 
 export function connectDB() {
   if (!db) {
-    db = new Database("products.sqlite", { verbose: console.log });
+    db = new Database("cbhideout", { verbose: console.log });
   }
   return db;
 }
