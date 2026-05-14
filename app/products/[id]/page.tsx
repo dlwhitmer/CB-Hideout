@@ -1,9 +1,9 @@
-import { connectDB } from "@/db/connect";
+import db from "@/db/connect";
 export const dynamic = "force-dynamic";
 export default async function ProductDetailPage({ params }: any) {
   const p = await params; // FIX for Next.js 15/16
 
-  const db = connectDB();
+
 
   const product = db
     .prepare("SELECT * FROM products WHERE scryfall_id = ?")

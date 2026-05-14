@@ -1,10 +1,7 @@
+import path from "path";
 import Database from "better-sqlite3";
 
-let db: any;
+const dbPath = path.join(process.cwd(), "db", "cbhideout.db");
+const db = new Database(dbPath);
 
-export function connectDB() {
-  if (!db) {
-    db = new Database("cbhideout.db");
-  }
-  return db;
-}
+export default db;

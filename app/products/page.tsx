@@ -1,4 +1,4 @@
-import { connectDB } from "@/db/connect";
+import db from "@/db/connect";
 export const dynamic = "force-dynamic"; 
 
 export default async function ProductsPage({ searchParams }: any) {
@@ -7,8 +7,6 @@ export default async function ProductsPage({ searchParams }: any) {
 
   const pageSize = 20;
   const offset = (page - 1) * pageSize;
-
-  const db = connectDB();
 
   const products = db
     .prepare(
