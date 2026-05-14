@@ -1,4 +1,5 @@
 import { connectDB } from "@/db/connect";
+export const dynamic = "force-dynamic"; 
 
 export default async function ProductsPage({ searchParams }: any) {
   const sp = await searchParams; // FIX for Next.js 15/16
