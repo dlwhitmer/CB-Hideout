@@ -1,9 +1,12 @@
-import sqlite3 from "sqlite3";
+import Database from "better-sqlite3";
+
 import { open } from "sqlite";
 
-export async function connectDB() {
-  return open({
-    filename: "db/cbhideout.db",
-    driver: sqlite3.Database,
-  });
+let db: any;
+
+export function connectDB() {
+  if (!db) {
+    db = new Database("products.sqlite", { verbose: console.log });
+  }
+  return db;
 }

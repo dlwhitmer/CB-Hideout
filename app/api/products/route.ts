@@ -2,8 +2,9 @@ import { connectDB } from "@/db/connect";
 
 export async function GET() {
   const db = await connectDB();
-  const products = await db.all(
-  "SELECT id, scryfall_id, name, price, image_url FROM products"
+  const products = db
+  .prepare("SELECT id, scryfall_id, name, price, image_url FROM products ORDER BY id LIMIT ? OFFSET ?")
+  .all(pageSize, offset);
 );
   return Response.json(products);
 }
