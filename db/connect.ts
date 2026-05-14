@@ -4,7 +4,7 @@ let db: any;
 
 export function connectDB() {
   if (!db) {
-    db = new Database("db/cbhideout.db");
+    db = new Database("cbhideout.db");
   }
   return db;
 }
