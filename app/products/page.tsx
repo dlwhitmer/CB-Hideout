@@ -1,19 +1,19 @@
 import { connectDB } from "@/db/connect";
 
-export default async function ProductsPage(props: any) {
-  const searchParams = await props.searchParams; // required in Next.js 15/16
+export default function ProductsPage({ searchParams }: any) {
   const page = parseInt(searchParams?.page || "1");
   const pageSize = 20;
   const offset = (page - 1) * pageSize;
 
-  const db = await connectDB();
+  const db = connectDB();
 
-  const products = await db.all(
-    "SELECT id, scryfall_id, name, price, image_url FROM products ORDER BY id LIMIT ? OFFSET ?",
-    [pageSize, offset]
-  );
+  const products = db
+    .prepare(
+      "SELECT id, scryfall_id, name, price, image_url FROM products ORDER BY id LIMIT ? OFFSET ?"
+    )
+    .all(pageSize, offset);
 
-  const total = await db.get("SELECT COUNT(*) as count FROM products");
+  const total = db.prepare("SELECT COUNT(*) as count FROM products").get();
   const totalPages = Math.ceil(total.count / pageSize);
 
   return (
