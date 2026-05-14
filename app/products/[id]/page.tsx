@@ -1,11 +1,13 @@
 import { connectDB } from "@/db/connect";
 
-export default function ProductDetailPage({ params }: any) {
+export default async function ProductDetailPage({ params }: any) {
+  const p = await params; // FIX for Next.js 15/16
+
   const db = connectDB();
 
   const product = db
     .prepare("SELECT * FROM products WHERE scryfall_id = ?")
-    .get(params.id);
+    .get(p.id);
 
   if (!product) {
     return <div className="p-6 text-red-400">Product not found.</div>;
@@ -16,16 +18,10 @@ export default function ProductDetailPage({ params }: any) {
       <div className="p-6 max-w-5xl mx-auto text-white">
         <div className="flex flex-col md:flex-row gap-10">
 
-          {/* Left: Card Image */}
           <div className="flex-shrink-0">
-            <img
-              src={product.image_url}
-              alt={product.name}
-              className="w-80 rounded shadow-lg"
-            />
+            <img src={product.image_url} alt={product.name} className="w-80 rounded shadow-lg" />
           </div>
 
-          {/* Right: Card Info */}
           <div className="flex flex-col gap-4 flex-1 pt-4">
             <h1 className="text-3xl font-bold">{product.name}</h1>
 
@@ -36,14 +32,12 @@ export default function ProductDetailPage({ params }: any) {
               <p><span className="font-semibold">Type:</span> {product.type_line}</p>
             </div>
 
-            {/* Oracle Text */}
             {product.oracle_text && (
               <div className="bg-black/40 p-4 rounded leading-relaxed whitespace-pre-line">
                 {product.oracle_text}
               </div>
             )}
 
-            {/* Description */}
             {product.description && (
               <div className="bg-gray-500/40 p-4 rounded font-bold text-white leading-relaxed">
                 {product.description}
