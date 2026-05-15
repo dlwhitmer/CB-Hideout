@@ -4,10 +4,6 @@ export const dynamic = "force-dynamic";
 
 export default async function ProductDetailPage({ params }: DetailPageParams) {
   const p = await params; // p.id is now fully typed
-
-
-
-
   const result = await db.execute({
   sql: "SELECT * FROM products WHERE scryfall_id = ?",
   args: [p.id],

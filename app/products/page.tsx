@@ -2,6 +2,16 @@
 import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
 import { db } from "@/lib/db/connect";
+type RawProductRow = {
+  id: string | ArrayBuffer;
+  scryfall_id: string;
+  name: string;
+  price: string | number;
+  image_url: string | null;
+  set_code?: string | null;
+  collector_number?: string | null;
+  rarity?: string | null;
+};
 
 export const dynamic = "force-dynamic"; 
 export default async function ProductsPage({ searchParams }: PageProps) {
@@ -12,19 +22,39 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const offset = (page - 1) * pageSize;
 
  // Fetch paginated products
-const result = await db.execute({
+  const result = await db.execute({
+
+
   sql: "SELECT id, scryfall_id, name, price, image_url FROM products ORDER BY id LIMIT ? OFFSET ?",
   args: [pageSize, offset],
 });
 
-const products = result.rows;
+
+const products = (result.rows ?? []).map((row) => ({
+  id: row.id?.toString(),
+  scryfall_id: row.scryfall_id,
+  name: row.name,
+  price: Number(row.price),
+  image_url: row.image_url,
+  set_code: row.set_code ?? null,
+  collector_number: row.collector_number ?? null,
+  rarity: row.rarity ?? null,
+})) as Product[];
+
+
+
+
+
+
+
+// const products = result.rows;
 
 // Fetch total count
 const totalResult = await db.execute({
   sql: "SELECT COUNT(*) as count FROM products",
 });
 
-const total = totalResult.rows[0].count;
+const total = Number(totalResult.rows[0].count);
 const totalPages = Math.ceil(total / pageSize);
 
   return (
@@ -32,11 +62,11 @@ const totalPages = Math.ceil(total / pageSize);
       <h1 className="text-3xl font-bold mb-6 text-white">Products</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {products.map((p: Product) => (
-  <a
-    key={p.id}
-    href={`/products/${p.scryfall_id}`}
-    className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
+      {products.map((p) => (
+        <a
+          key={p.id}
+          href={`/products/${p.scryfall_id}`}
+          className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
         >
           <img
             src={p.image_url}
