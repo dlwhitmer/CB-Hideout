@@ -1,4 +1,4 @@
-import db from "@/db/connect";
+import { db } from "@/lib/db/connect";
 
 export function GET() {
 

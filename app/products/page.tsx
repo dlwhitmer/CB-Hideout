@@ -1,7 +1,8 @@
 
 import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
-import db from "@/db/connect";
+import { db } from "@/lib/db/connect";
+
 export const dynamic = "force-dynamic"; 
 export default async function ProductsPage({ searchParams }: PageProps) {
   const sp = await searchParams; // FIX for Next.js 15/16
@@ -10,14 +11,21 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const pageSize = 20;
   const offset = (page - 1) * pageSize;
 
-  const products = db
-    .prepare(
-      "SELECT id, scryfall_id, name, price, image_url FROM products ORDER BY id LIMIT ? OFFSET ?"
-    )
-    .all(pageSize, offset);
+ // Fetch paginated products
+const result = await db.execute({
+  sql: "SELECT id, scryfall_id, name, price, image_url FROM products ORDER BY id LIMIT ? OFFSET ?",
+  args: [pageSize, offset],
+});
 
-  const total = db.prepare("SELECT COUNT(*) as count FROM products").get();
-  const totalPages = Math.ceil(total.count / pageSize);
+const products = result.rows;
+
+// Fetch total count
+const totalResult = await db.execute({
+  sql: "SELECT COUNT(*) as count FROM products",
+});
+
+const total = totalResult.rows[0].count;
+const totalPages = Math.ceil(total / pageSize);
 
   return (
     <div className=" min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">

@@ -1,5 +1,5 @@
 import { DetailPageParams } from "@/types/route-params";
-import db from "@/db/connect";
+import { db } from "@/lib/db/connect";
 export const dynamic = "force-dynamic";
 
 export default async function ProductDetailPage({ params }: DetailPageParams) {
@@ -8,9 +8,12 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
 
 
 
-  const product = db
-    .prepare("SELECT * FROM products WHERE scryfall_id = ?")
-    .get(p.id);
+  const result = await db.execute({
+  sql: "SELECT * FROM products WHERE scryfall_id = ?",
+  args: [p.id],
+});
+
+const product = result.rows[0];
 
   if (!product) {
     return <div className="p-6 text-red-400">Product not found.</div>;

@@ -1,4 +1,4 @@
-import db from "@/db/connect";
+import { db } from "@/lib/db/connect";
 
 export async function POST(request: Request) {
   const { scryfall_id, price, description } = await request.json();

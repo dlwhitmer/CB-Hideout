@@ -1,16 +1,16 @@
 
 import DeleteButton from "./DeleteButton";
-import db from "@/db/connect";
+import { db } from "@/lib/db/connect";
 import { Product } from "@/types/product";
 
 export const dynamic = "force-dynamic";
 
-export default function ProductsPage() {
-  const products: Product[] = db
-    .prepare(
-      "SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url FROM products ORDER BY id DESC"
-    )
-    .all();
+export default async function ProductsPage() {
+ const result = await db.execute({
+  sql: "SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url FROM products",
+});
+
+  const products = result.rows;
 
   return (
     <div className="p-6">
