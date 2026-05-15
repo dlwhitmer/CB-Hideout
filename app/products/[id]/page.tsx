@@ -1,7 +1,10 @@
+import { DetailPageParams } from "@/types/route-params";
 import db from "@/db/connect";
 export const dynamic = "force-dynamic";
-export default async function ProductDetailPage({ params }: any) {
-  const p = await params; // FIX for Next.js 15/16
+
+export default async function ProductDetailPage({ params }: DetailPageParams) {
+  const p = await params; // p.id is now fully typed
+
 
 
 
@@ -14,7 +17,8 @@ export default async function ProductDetailPage({ params }: any) {
   }
 
   return (
-    <main className="m-auto min-h-screen bg-[url('/images/bg-3.webp')]">
+    <main className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%]
+ ">
       <div className="p-6 max-w-5xl mx-auto text-white">
         <div className="flex flex-col md:flex-row gap-10">
 
