@@ -1,40 +1,26 @@
-
 export const dynamic = "force-dynamic";
+
 import { db } from "@/lib/db";
 
-
 export async function GET() {
+  const result = await db.execute({
+    sql: `
+      SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url
+      FROM products
+      ORDER BY id
+    `,
+  });
 
-  const pageSize = 20;
-  const page = 1;
-  const offset = (page - 1) * pageSize;
-
- const result = await db.execute({
-  sql: `
-    SELECT id, scryfall_id, name, price, image_url
-    FROM products
-    ORDER BY id
-    LIMIT ? OFFSET ?
-  `,
-  args: [pageSize, offset],
-});
-
-const products = result.rows;
+  const products = result.rows.map((row: any) => ({
+    id: String(row.id),
+    scryfall_id: row.scryfall_id ?? "",
+    name: row.name ?? "",
+    set_code: row.set_code ?? "",
+    collector_number: row.collector_number ?? "",
+    rarity: row.rarity ?? "",
+    price: Number(row.price ?? 0),
+    image_url: row.image_url ?? "",
+  }));
 
   return Response.json(products);
-}
-
-export async function POST(request: Request) {
-  const body = await request.json();
-  const { name, price, description } = body;
-
-await db.execute({
-  sql: `
-    INSERT INTO products (name, price, description)
-    VALUES (?, ?, ?)
-  `,
-  args: [name, price, description],
-});
-
-  return Response.json({ success: true });
 }

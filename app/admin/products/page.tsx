@@ -1,30 +1,15 @@
-
-import DeleteButton from "./DeleteButton";
-import { db } from "@/lib/db";
-import { Product } from "@/types/product";
-
 export const dynamic = "force-dynamic";
 
-export default async function ProductsPage() {
-      const result = await db.execute({
-        sql: `
-          SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url
-          FROM products
-          ORDER BY id
-        `,
-      });
+import DeleteButton from "./DeleteButton";
+import { Product } from "@/types/product";
 
-      // Normalize Turso row values
-      const products = result.rows.map((row: any) => ({
-        id: String(row.id),                                 // React key safety
-        scryfall_id: row.scryfall_id ?? "",
-        name: row.name ?? "",
-        set_code: row.set_code ?? "",
-        collector_number: row.collector_number ?? "",
-        rarity: row.rarity ?? "",
-        price: Number(row.price ?? 0),
-        image_url: row.image_url ?? "",
-      }));
+export default async function ProductsPage() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
+    cache: "no-store",
+  });
+
+  const products: Product[] = await res.json();
+
 
 
   return (
