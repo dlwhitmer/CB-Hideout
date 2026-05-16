@@ -1,8 +1,11 @@
 export const dynamic = "force-dynamic";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 
 export async function GET() {
+  const db = getDb();
+
+
   const result = await db.execute({
     sql: `
       SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url

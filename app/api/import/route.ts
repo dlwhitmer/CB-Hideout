@@ -1,8 +1,10 @@
 export const dynamic = "force-dynamic";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 
 export async function POST(request: Request) {
+  const db = getDb();
+
   const { scryfall_id, price, description } = await request.json();
 
   const res = await fetch(`https://api.scryfall.com/cards/${scryfall_id}`);
