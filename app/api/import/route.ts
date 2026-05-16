@@ -7,16 +7,30 @@ export async function POST(request: Request) {
 
   const { scryfall_id, price, description } = await request.json();
 
+  // Fetch card data
   const res = await fetch(`https://api.scryfall.com/cards/${scryfall_id}`);
   const card = await res.json();
 
-  const name = card.name;
-  const set_code = card.set.toUpperCase();
-  const collector_number = card.collector_number;
-  const rarity = card.rarity;
-  const type_line = card.type_line;
-  const oracle_text = card.oracle_text || "";
-  const image_url = card.image_uris?.normal || card.image_uris?.large || "";
+  // Handle Scryfall error responses
+  if (card.object === "error") {
+    return Response.json(
+      { error: "Invalid Scryfall ID", details: card.details },
+      { status: 400 }
+    );
+  }
+
+  const name = card.name ?? "";
+  const set_code = card.set?.toUpperCase() ?? "";
+  const collector_number = card.collector_number ?? "";
+  const rarity = card.rarity ?? "";
+  const type_line = card.type_line ?? "";
+  const oracle_text = card.oracle_text ?? "";
+  const image_url =
+    card.image_uris?.normal ||
+    card.image_uris?.large ||
+    card.card_faces?.[0]?.image_uris?.normal ||
+    card.card_faces?.[0]?.image_uris?.large ||
+    "";
 
   await db.execute({
     sql: `INSERT INTO products 
