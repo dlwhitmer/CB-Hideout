@@ -1,7 +1,8 @@
 
 import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
-import { db } from "@/lib/db/connect";
+import { db } from "@/lib/db";
+
 type RawProductRow = {
   id: string | ArrayBuffer;
   scryfall_id: string;

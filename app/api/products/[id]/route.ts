@@ -1,4 +1,5 @@
-import { db } from "@/lib/db/connect";
+import { db } from "@/lib/db";
+
 
 export async function DELETE(_req: Request, context: any) {
   try {

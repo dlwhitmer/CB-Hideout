@@ -1,6 +1,6 @@
 
 import DeleteButton from "./DeleteButton";
-import { db } from "@/lib/db/connect";
+import { db } from "@/lib/db";
 import { Product } from "@/types/product";
 
 export const dynamic = "force-dynamic";
