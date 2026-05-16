@@ -1,8 +1,8 @@
+
+export const dynamic = "force-dynamic";
 import { DetailPageParams } from "@/types/route-params";
 import { db } from "@/lib/db";
 import { Product } from "@/types/product";
-
-export const dynamic = "force-dynamic";
 
 export default async function ProductDetailPage({ params }: DetailPageParams) {
   const p = await params; // p.id is now fully typed

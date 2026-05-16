@@ -1,4 +1,5 @@
 
+export const dynamic = "force-dynamic";
 import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
 import { db } from "@/lib/db";
@@ -14,7 +15,6 @@ type RawProductRow = {
   rarity?: string | null;
 };
 
-export const dynamic = "force-dynamic"; 
 export default async function ProductsPage({ searchParams }: PageProps) {
   const sp = await searchParams; // FIX for Next.js 15/16
   const page = parseInt(sp?.page || "1");
