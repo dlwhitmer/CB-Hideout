@@ -6,15 +6,6 @@ import { Product } from "@/types/product";
 export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
-  const result = await db.execute({
-    sql: `
-      SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url
-      FROM products
-      ORDER BY id
-    `,
-  });
-
-  export default async function ProductsPage() {
       const result = await db.execute({
         sql: `
           SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url
