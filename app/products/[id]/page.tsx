@@ -1,7 +1,7 @@
 
 export const dynamic = "force-dynamic";
-import { DetailPageParams } from "@/types/route-params";
 import { db } from "@/lib/db";
+import { DetailPageParams } from "@/types/route-params";
 import { Product } from "@/types/product";
 
 export default async function ProductDetailPage({ params }: DetailPageParams) {
