@@ -2,7 +2,6 @@
 export const dynamic = "force-dynamic";
 import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
-import { db } from "@/lib/db";
 
 type RawProductRow = {
   id: string | ArrayBuffer;

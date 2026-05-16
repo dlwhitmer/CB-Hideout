@@ -1,9 +1,10 @@
 export const dynamic = "force-dynamic";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 
 
 export async function DELETE(_req: Request, context: any) {
+  const db = getDb();
   try {
     const { id } = await context.params;
 

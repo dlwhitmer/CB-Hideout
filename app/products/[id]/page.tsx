@@ -1,10 +1,11 @@
 
 export const dynamic = "force-dynamic";
-import { db } from "@/lib/db";
 import { DetailPageParams } from "@/types/route-params";
 import { Product } from "@/types/product";
+import { getDb } from "@/lib/db";
 
 export default async function ProductDetailPage({ params }: DetailPageParams) {
+  const db = getDb();
   const p = await params; // p.id is now fully typed
   const result = await db.execute({
   sql: "SELECT * FROM products WHERE scryfall_id = ?",
