@@ -6,11 +6,35 @@ import { Product } from "@/types/product";
 export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
- const result = await db.execute({
-  sql: "SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url FROM products",
-});
+  const result = await db.execute({
+    sql: `
+      SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url
+      FROM products
+      ORDER BY id
+    `,
+  });
 
-  const products = result.rows;
+  export default async function ProductsPage() {
+      const result = await db.execute({
+        sql: `
+          SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url
+          FROM products
+          ORDER BY id
+        `,
+      });
+
+      // Normalize Turso row values
+      const products = result.rows.map((row: any) => ({
+        id: String(row.id),                                 // React key safety
+        scryfall_id: row.scryfall_id ?? "",
+        name: row.name ?? "",
+        set_code: row.set_code ?? "",
+        collector_number: row.collector_number ?? "",
+        rarity: row.rarity ?? "",
+        price: Number(row.price ?? 0),
+        image_url: row.image_url ?? "",
+      }));
+
 
   return (
     <div className="p-6">
@@ -20,7 +44,7 @@ export default async function ProductsPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {products.map((p) => (
           <div
-            key={p.id}
+           key={String(p.id)}
             className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition"
           >
             <img
