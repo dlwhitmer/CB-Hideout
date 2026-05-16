@@ -1,6 +1,6 @@
 "use client";
 
-export default function DeleteButton({ id }: { id: number }) {
+export default function DeleteButton({ id }: { id: string }) {
   async function handleDelete() {
     console.log("Sending DELETE to:", `/api/products/${id}`);
 
