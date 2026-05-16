@@ -1,5 +1,6 @@
 import { DetailPageParams } from "@/types/route-params";
 import { db } from "@/lib/db";
+import { Product } from "@/types/product";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,39 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
   args: [p.id],
 });
 
-const product = result.rows[0];
+type ProductRow = {
+  id: string | number | ArrayBuffer | null;
+  scryfall_id: string | null;
+  name: string | null;
+  set_code: string | null;
+  collector_number: string | null;
+  rarity: string | null;
+  price: number | string | null;
+  image_url: string | null;
+  type_line: string | null;
+  oracle_text: string | null;
+  description: string | null;
+  [key: string]: any;   // <-- REQUIRED
+};
+
+// Cast the entire rows array instead of the element
+const rows = result.rows as unknown as ProductRow[];
+const row = rows[0];
+
+
+const product: Product = {
+  id: String(row.id),
+  scryfall_id: row.scryfall_id ?? "",
+  name: row.name ?? "",
+  set_code: row.set_code ?? "",
+  collector_number: row.collector_number ?? "",
+  rarity: row.rarity ?? "",
+  price: Number(row.price ?? 0),
+  image_url: row.image_url ?? "",
+  type_line: row.type_line ?? "",
+  oracle_text: row.oracle_text ?? "",
+  description: row.description ?? "",
+};
 
   if (!product) {
     return <div className="p-6 text-red-400">Product not found.</div>;
