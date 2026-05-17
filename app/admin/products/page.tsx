@@ -1,46 +1,101 @@
-export const dynamic = "force-dynamic";
-
+import Link from "next/link";
 import DeleteButton from "./DeleteButton";
-import { Product } from "@/types/product";
 
-export default async function ProductsPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
+
+interface Product {
+  id: number;
+  name: string;
+  price: number | string;
+  description: string | null;
+  scryfall_id: string;
+  set_code: string;
+  collector_number: string;
+  rarity: string;
+  type_line: string;
+  oracle_text: string | null;
+  image_url: string;
+}
+
+async function getProducts(): Promise<Product[]> {
+  const res = await fetch("http://localhost:3000/api/products/list", {
     cache: "no-store",
   });
 
-  const products: Product[] = await res.json();
+  if (!res.ok) {
+    console.error("Failed to fetch products");
+    return [];
+  }
 
+  return res.json();
+}
 
+export default async function ProductsListPage() {
+  const products = await getProducts();
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6 text-white">Admin — Products</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Products</h1>
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <Link
+          href="/admin/products/add"
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Add Product
+        </Link>
+      </div>
+
+      {/* HEADER ROW */}
+      <div className="grid grid-cols-[80px_150px_1fr_100px_120px_80px_150px] gap-4 px-3 py-2 font-bold text-gray-700 border-b bg-gray-100 rounded-t-lg">
+        <div>Image</div>
+        <div>Scryfall ID</div>
+        <div>Name</div>
+        <div>Set</div>
+        <div>Rarity</div>
+        <div>Price</div>
+        <div className="text-right">Actions</div>
+      </div>
+
+      {/* PRODUCT ROWS */}
+      <div className="space-y-2 mt-2">
         {products.map((p) => (
           <div
-           key={String(p.id)}
-            className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition"
+            key={p.id}
+            className="grid grid-cols-[80px_150px_1fr_100px_120px_80px_150px] items-center gap-4 border rounded-lg p-3 bg-white shadow"
           >
+            {/* IMAGE */}
             <img
               src={p.image_url}
               alt={p.name}
-              className="rounded mb-2 w-full"
+              className="w-16 h-20 object-cover rounded"
             />
 
-            <h2 className="font-semibold text-white">{p.name}</h2>
+            {/* SCRYFALL ID */}
+            <p className="text-sm font-mono text-gray-700">{p.scryfall_id}</p>
 
-            <p className="text-gray-400 text-sm">
-              {p.set_code.toUpperCase()} — #{p.collector_number}
-            </p>
+            {/* NAME */}
+            <p className="font-semibold">{p.name}</p>
 
-            <p className="text-gray-400 text-sm capitalize">{p.rarity}</p>
+            {/* SET CODE */}
+            <p className="text-sm text-gray-600">{p.set_code.toUpperCase()}</p>
 
-            <p className="text-green-400 font-bold mt-1">${p.price}</p>
+            {/* RARITY */}
+            <p className="text-sm text-gray-600">{p.rarity}</p>
 
-            {/* Delete Button */}
-          <DeleteButton id={p.id} />
+            {/* PRICE */}
+            <p className="font-bold">${Number(p.price).toFixed(2)}</p>
+
+            {/* ACTIONS */}
+            <div className="flex gap-2 justify-end">
+              <Link
+                href={`/admin/products/${p.id}/edit`}
+                className="bg-blue-600 text-white px-3 py-1 rounded"
+              >
+                Edit
+              </Link>
+
+              <DeleteButton id={String(p.id)} />
+            </div>
           </div>
         ))}
       </div>

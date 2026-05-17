@@ -8,7 +8,7 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
   const db = getDb();
   const p = await params; // p.id is now fully typed
   const result = await db.execute({
-  sql: "SELECT * FROM products WHERE scryfall_id = ?",
+  sql: "SELECT * FROM products WHERE id = ?",
   args: [p.id],
 });
 
@@ -24,7 +24,7 @@ type ProductRow = {
   type_line: string | null;
   oracle_text: string | null;
   description: string | null;
-  [key: string]: any;   // <-- REQUIRED
+  [key: string]: unknown ;   // <-- REQUIRED
 };
 
 // Cast the entire rows array instead of the element
@@ -33,7 +33,7 @@ const row = rows[0];
 
 
 const product: Product = {
-  id: String(row.id),
+  id: Number(row.id),
   scryfall_id: row.scryfall_id ?? "",
   name: row.name ?? "",
   set_code: row.set_code ?? "",
@@ -57,7 +57,7 @@ const product: Product = {
         <div className="flex flex-col md:flex-row gap-10">
 
           <div className="flex-shrink-0">
-            <img src={product.image_url} alt={product.name} className="w-80 rounded shadow-lg" />
+            <img src={product.image_url} alt={product.name} className="w-80 rounded shadow-lg"/>
           </div>
 
           <div className="flex flex-col gap-4 flex-1 pt-4">

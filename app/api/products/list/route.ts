@@ -1,29 +1,45 @@
 export const dynamic = "force-dynamic";
 
+import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 
 export async function GET() {
-  const db = getDb();
+  try {
+    const db = getDb();
 
-
-  const result = await db.execute({
-    sql: `
-      SELECT id, scryfall_id, name, set_code, collector_number, rarity, price, image_url
+    const result = await db.execute(`
+      SELECT 
+        id,
+        scryfall_id,
+        name,
+        set_code,
+        collector_number,
+        rarity,
+        price,
+        image_url,
+        type_line,
+        oracle_text,
+        description,
+        created_at
       FROM products
-      ORDER BY id
-    `,
-  });
+      ORDER BY created_at DESC
+    `);
 
-  const products = result.rows.map((row: any) => ({
-    id: String(row.id),
-    scryfall_id: row.scryfall_id ?? "",
-    name: row.name ?? "",
-    set_code: row.set_code ?? "",
-    collector_number: row.collector_number ?? "",
-    rarity: row.rarity ?? "",
-    price: Number(row.price ?? 0),
-    image_url: row.image_url ?? "",
-  }));
+    // Convert ArrayBuffers → strings
+    const safeRows = result.rows.map((row: unknown) =>
+      Object.fromEntries(
+        Object.entries(row).map(([key, value]) => {
+          if (value instanceof ArrayBuffer) {
+            return [key, Buffer.from(value).toString()];
+          }
+          return [key, value];
+        })
+      )
+    );
 
-  return Response.json(products);
+    return NextResponse.json(safeRows);
+  } catch (err) {
+    console.error("GET /api/products/list ERROR:", err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
 }

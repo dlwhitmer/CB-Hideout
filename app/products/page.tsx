@@ -4,16 +4,7 @@ import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
 import { getDb } from "@/lib/db";
 
-type RawProductRow = {
-  id: string | ArrayBuffer;
-  scryfall_id: string;
-  name: string;
-  price: string | number;
-  image_url: string | null;
-  set_code?: string | null;
-  collector_number?: string | null;
-  rarity?: string | null;
-};
+
 
 export default async function ProductsPage({ searchParams }: PageProps) {
   const db = getDb();
@@ -33,7 +24,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
 
 const products = (result.rows ?? []).map((row) => ({
-  id: row.id?.toString(),
+  id: row.id,
   scryfall_id: row.scryfall_id,
   name: row.name,
   price: Number(row.price),
@@ -41,6 +32,9 @@ const products = (result.rows ?? []).map((row) => ({
   set_code: row.set_code ?? null,
   collector_number: row.collector_number ?? null,
   rarity: row.rarity ?? null,
+  type_line: row.type_line ?? null,
+  oracle_text: row.oracle_text ?? null,
+  description: row.description ?? null,
 })) as Product[];
 
 
@@ -70,11 +64,14 @@ const totalPages = Math.ceil(total / pageSize);
           href={`/products/${p.scryfall_id}`}
           className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
         >
-          <img
+     
+           <img
             src={p.image_url}
             alt={p.name}
             className="rounded mb-2 w-full"
           />
+
+
           <h2 className="font-semibold text-white">{p.name}</h2>
           <p className="text-gray-400 text-sm">${p.price}</p>
         </a>
