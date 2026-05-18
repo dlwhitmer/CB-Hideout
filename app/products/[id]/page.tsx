@@ -1,39 +1,28 @@
 
-export const dynamic = "force-dynamic";
+
 import { DetailPageParams } from "@/types/route-params";
-import { Product } from "@/types/product";
+import type { Product, ProductRow } from "@/types/product";
 import { getDb } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
 export default async function ProductDetailPage({ params }: DetailPageParams) {
   const db = getDb();
   const p = await params; // p.id is now fully typed
-  const result = await db.execute({
+  console.log("PARAM ID:", p.id);
+ const result = await db.execute({
   sql: "SELECT * FROM products WHERE id = ?",
   args: [p.id],
-});
+}) as unknown as { rows: any[] };
 
-type ProductRow = {
-  id: string | number | ArrayBuffer | null;
-  scryfall_id: string | null;
-  name: string | null;
-  set_code: string | null;
-  collector_number: string | null;
-  rarity: string | null;
-  price: number | string | null;
-  image_url: string | null;
-  type_line: string | null;
-  oracle_text: string | null;
-  description: string | null;
-  [key: string]: unknown ;   // <-- REQUIRED
-};
-
-// Cast the entire rows array instead of the element
-const rows = result.rows as unknown as ProductRow[];
+const rows = result.rows as ProductRow[];
 const row = rows[0];
-
+console.log("DB RESULT:", result.rows);
+if (!row) {
+  return <p>Product not found</p>;
+}
 
 const product: Product = {
-  id: Number(row.id),
+  id: Number(row.id ?? 0),
   scryfall_id: row.scryfall_id ?? "",
   name: row.name ?? "",
   set_code: row.set_code ?? "",

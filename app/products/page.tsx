@@ -37,12 +37,6 @@ const products = (result.rows ?? []).map((row) => ({
   description: row.description ?? null,
 })) as Product[];
 
-
-
-
-
-
-
 // const products = result.rows;
 
 // Fetch total count
@@ -61,7 +55,7 @@ const totalPages = Math.ceil(total / pageSize);
       {products.map((p) => (
         <a
           key={p.id}
-          href={`/products/${p.scryfall_id}`}
+          href={`/products/${p.id}`}
           className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
         >
     
