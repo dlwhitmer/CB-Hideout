@@ -39,6 +39,7 @@ const products = (result.rows ?? []).map((row) => ({
 
 // const products = result.rows;
 
+
 // Fetch total count
 const totalResult = await db.execute({
   sql: "SELECT COUNT(*) as count FROM products",
@@ -58,13 +59,13 @@ const totalPages = Math.ceil(total / pageSize);
           href={`/products/${p.id}`}
           className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
         >
-    
+          console.log("IMAGE URL:", product.image_url);
            <img
             src={p.image_url || "/placeholder.png"}
             alt={p.name}
             className="w-80 rounded shadow"
           />
-
+          
 
           <h2 className="font-semibold text-white">{p.name}</h2>
           <p className="text-gray-400 text-sm">${p.price}</p>
