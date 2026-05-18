@@ -57,7 +57,12 @@ const product: Product = {
         <div className="flex flex-col md:flex-row gap-10">
 
           <div className="flex-shrink-0">
-            <img src={product.image_url} alt={product.name} className="w-80 rounded shadow-lg"/>
+          <img
+            src={product.image_url || "/placeholder.png"}
+            alt={product.name}
+            className="w-80 rounded shadow"
+          />
+
           </div>
 
           <div className="flex flex-col gap-4 flex-1 pt-4">
