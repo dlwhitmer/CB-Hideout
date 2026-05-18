@@ -13,6 +13,7 @@ interface Product {
   rarity: string;
   type_line: string;
   oracle_text: string | null;
+  artist: string;
   image_url: string;
 }
 

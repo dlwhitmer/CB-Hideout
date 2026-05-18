@@ -28,6 +28,7 @@ export async function GET(request: Request, context: any) {
           type_line,
           oracle_text,
           description,
+          artist,
           created_at
         FROM products
         WHERE id = ?

@@ -10,6 +10,7 @@ export interface Product {
   image_url: string;
   type_line: string;
   oracle_text: string;
+  artist: string;
   description: string;
 }
 
@@ -25,5 +26,6 @@ export type ProductRow = {
   image_url: string | null;
   type_line: string | null;
   oracle_text: string | null;
+  artist: string| null
   description: string | null;
 };

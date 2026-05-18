@@ -5,7 +5,7 @@ import { getDb } from "@/lib/db";
 export async function POST(request: Request) {
   const db = getDb();
 
-  const { scryfall_id, price, description } = await request.json();
+  const { scryfall_id, price, artist, description } = await request.json();
 
   // Fetch card data
   const res = await fetch(`https://api.scryfall.com/cards/${scryfall_id}`);
@@ -34,8 +34,8 @@ export async function POST(request: Request) {
 
   await db.execute({
     sql: `INSERT INTO products 
-      (scryfall_id, name, set_code, collector_number, rarity, type_line, oracle_text, image_url, price, description)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (scryfall_id, name, set_code, collector_number, rarity, type_line, oracle_text, image_url, price, artist, description)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     args: [
       scryfall_id,
       name,
@@ -46,6 +46,7 @@ export async function POST(request: Request) {
       oracle_text,
       image_url,
       price,
+      artist,
       description,
     ],
   });

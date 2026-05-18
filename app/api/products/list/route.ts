@@ -19,6 +19,7 @@ export async function GET() {
           type_line,
           oracle_text,
           description,
+          artist,
           created_at
         FROM products
         ORDER BY created_at DESC
