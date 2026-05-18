@@ -5,6 +5,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "cards.scryfall.io",
+        pathname: "/**",
       },
     ],
   },
