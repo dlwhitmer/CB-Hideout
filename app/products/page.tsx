@@ -1,4 +1,4 @@
-
+// force vercel rebuild
 export const dynamic = "force-dynamic";
 import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
@@ -64,7 +64,7 @@ const totalPages = Math.ceil(total / pageSize);
           href={`/products/${p.scryfall_id}`}
           className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
         >
-     
+    
            <img
             src={p.image_url || "/placeholder.png"}
             alt={p.name}
