@@ -66,9 +66,9 @@ const totalPages = Math.ceil(total / pageSize);
         >
      
            <img
-            src={p.image_url}
+            src={p.image_url || "/placeholder.png"}
             alt={p.name}
-            className="rounded mb-2 w-full"
+            className="w-80 rounded shadow"
           />
 
 
