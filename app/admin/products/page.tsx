@@ -19,6 +19,7 @@ interface Product {
 
 async function getProducts(): Promise<Product[]> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
 const res = await fetch(
   `${baseUrl}/api/products/list`,

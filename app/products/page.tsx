@@ -10,6 +10,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const page = parseInt(sp?.page || "1");
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
 const response = await fetch(
   `${baseUrl}/api/products/list?page=${page}`,
