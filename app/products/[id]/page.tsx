@@ -32,6 +32,7 @@ const product: Product = {
   image_url: row.image_url ?? "",
   type_line: row.type_line ?? "",
   oracle_text: row.oracle_text ?? "",
+  artist: row.artist ?? "",
   description: row.description ?? "",
 };
 

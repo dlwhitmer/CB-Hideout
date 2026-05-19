@@ -18,18 +18,24 @@ interface Product {
 }
 
 async function getProducts(): Promise<Product[]> {
-  const res = await fetch("/api/products/list", {
-    cache: "no-store",
-  });
+  const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  "http://localhost:3000";
+
+const res = await fetch(
+  `${baseUrl}/api/products/list`,
+  { cache: "no-store" }
+);
 
   if (!res.ok) {
     console.error("Failed to fetch products");
     return [];
   }
 
-  return res.json();
-}
+  const data = await res.json();
 
+  return data.products; // ✅ THIS is the missing piece
+}
 export default async function ProductsListPage() {
   const products = await getProducts();
 
