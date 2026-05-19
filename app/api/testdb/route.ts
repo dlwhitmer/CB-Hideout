@@ -1,9 +1,15 @@
-import { createClient } from "@libsql/client";
+import { NextResponse } from "next/server";
+import { getDb } from "@/lib/db";
 
-const db = createClient({
-  url: "libsql://cbhideout-dlwhitmer.aws-us-east-2.turso.io",
-  authToken: "YOUR_TOKEN_HERE",
-});
+export async function GET() {
+  try {
+    const db = getDb(); // ✅ inside handler
 
-const result = await db.execute("SELECT 1");
-console.log(result);
+    const result = await db.execute("SELECT 1");
+
+    return NextResponse.json({ ok: true, result });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
+}
