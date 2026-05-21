@@ -58,3 +58,76 @@ export async function GET(request: Request, context: any) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  context: any
+) {
+  const params = await context.params;
+  const id = Number(params.id);
+
+  const db = getDb();
+
+  try {
+    if (!Number.isFinite(id)) {
+      return NextResponse.json(
+        { error: "Invalid ID" },
+        { status: 400 }
+      );
+    }
+
+    await db.execute({
+      sql: "DELETE FROM products WHERE id = ?",
+      args: [id],
+    });
+
+    return NextResponse.json({
+      success: true,
+    });
+
+  } catch (err) {
+    console.error("DELETE ERROR:", err);
+
+    return NextResponse.json(
+      { error: String(err) },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: Request, context: any) {
+  const params = await context.params;
+  const id = Number(params.id);
+
+  const db = getDb();
+
+  try {
+    const body = await request.json();
+
+    const { name, price, description } = body;
+
+    await db.execute({
+      sql: `
+        UPDATE products
+        SET name = ?, price = ?, description = ?
+        WHERE id = ?
+      `,
+      args: [
+        name ?? "",
+        price ?? "",
+        description ?? "",
+        id,
+      ],
+    });
+
+    return NextResponse.json({ success: true });
+
+  } catch (err) {
+    console.error("PUT ERROR:", err);
+
+    return NextResponse.json(
+      { error: String(err) },
+      { status: 500 }
+    );
+  }
+}
