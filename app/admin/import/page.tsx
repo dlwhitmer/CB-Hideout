@@ -37,7 +37,6 @@ export default function ImportPage() {
           value={scryfallId}
           onChange={(e) => setScryfallId(e.target.value)}
         />
-
         <input
           className="p-2 bg-gray-800 border border-gray-700"
           placeholder="Price"

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
 
-
 interface Product {
   id: number;
   name: string;
@@ -21,10 +20,9 @@ async function getProducts(): Promise<Product[]> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
   console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
-const res = await fetch(
-  `${baseUrl}/api/products/list`,
-  { cache: "no-store" }
-);
+  const res = await fetch(`${baseUrl}/api/products/list`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     console.error("Failed to fetch products");
@@ -52,14 +50,14 @@ export default async function ProductsListPage() {
       </div>
 
       {/* HEADER ROW */}
-      <div className="grid grid-cols-[80px_150px_1fr_100px_120px_80px_150px] gap-4 px-3 py-2 font-bold text-gray-700 border-b bg-gray-100 rounded-t-lg">
-        <div>Image</div>
-        <div>Scryfall ID</div>
-        <div>Name</div>
-        <div>Set</div>
-        <div>Rarity</div>
-        <div>Price</div>
-        <div className="text-right">Actions</div>
+      <div className="grid grid-cols-[60px_150px_110px_100px_120px_80px_150px] gap-4 px-3 py-2 font-bold text-gray-700 border-b bg-gray-100 rounded-t-lg">
+        <div className="pl-2">Image</div>
+        <div className="pl-12">Scryfall ID</div>
+        <div className="pl-11">Name</div>
+        <div className="pl-8">Set</div>
+        <div className="pl-2">Rarity</div>
+        <div className="-pl-">Price</div>
+        <div className="pl-15">Actions</div>
       </div>
 
       {/* PRODUCT ROWS */}
@@ -67,29 +65,37 @@ export default async function ProductsListPage() {
         {products.map((p) => (
           <div
             key={p.id}
-            className="grid grid-cols-[80px_150px_1fr_100px_120px_80px_150px] items-center gap-4 border rounded-lg p-3 bg-white shadow"
+            className="grid grid-cols-[80px_150px_120px_100px_120px_80px_150px] items-center gap-4 border rounded-lg p-3 bg-white shadow"
           >
             {/* IMAGE */}
             <img
               src={p.image_url}
               alt={p.name}
-              className="w-16 h-20 object-cover rounded"
+              className="w-20 h-24 flex justify-center object-cover rounded"
             />
 
             {/* SCRYFALL ID */}
-            <p className="text-sm font-mono text-gray-700">{p.scryfall_id}</p>
+            <p className="text-sm text-center font-bold text-black">
+              {p.scryfall_id}
+            </p>
 
             {/* NAME */}
-            <p className="font-semibold">{p.name}</p>
+            <p className="text-center text-sm text-gray-600 font-semibold">
+              {p.name}
+            </p>
 
             {/* SET CODE */}
-            <p className="text-sm text-gray-600">{p.set_code.toUpperCase()}</p>
+            <p className="text-sm text-black font-bold">
+              {p.set_code.toUpperCase()}
+            </p>
 
             {/* RARITY */}
-            <p className="text-sm text-gray-600">{p.rarity}</p>
+            <p className="text-sm text-black font-bold">{p.rarity}</p>
 
             {/* PRICE */}
-            <p className="font-bold">${Number(p.price).toFixed(2)}</p>
+            <p className="text-sm text-black font-bold">
+              ${Number(p.price).toFixed(2)}
+            </p>
 
             {/* ACTIONS */}
             <div className="flex gap-2 justify-end">
