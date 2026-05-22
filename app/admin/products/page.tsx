@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
+import VerticalDivider from "@/app/componets/vertical_divider";
 
 interface Product {
   id: number;
@@ -49,67 +50,66 @@ export default async function ProductsListPage() {
         </Link>
       </div>
 
-      {/* HEADER ROW */}
-      <div className="grid grid-cols-[60px_150px_110px_100px_120px_80px_150px] gap-4 px-3 py-2 font-bold text-gray-700 border-b bg-gray-100 rounded-t-lg">
-        <div className="pl-2">Image</div>
-        <div className="pl-12">Scryfall ID</div>
-        <div className="pl-11">Name</div>
-        <div className="pl-8">Set</div>
-        <div className="pl-2">Rarity</div>
-        <div className="-pl-">Price</div>
-        <div className="pl-15">Actions</div>
-      </div>
+      <div className="overflow-x-auto rounded-lg border bg-white shadow">
+        <table className="min-w-full text-sm">
+          <thead className="bg-gray-100 text-gray-700">
+            <tr>
+              <th className="px-3 py-2 text-center w-[80px]">Image</th>
+              <th className="px-3 py-2 text-center w-[120px]">Scryfall ID</th>
+              <th className="px-3 py-2 text-center w-[90px]">Name</th>
+              <th className="px-3 py-2 text-center w-[80px]">Set</th>
+              <th className="px-3 py-2 text-center w-[80px]">Rarity</th>
+              <th className="px-3 py-2 text-center w-[80px]">Price</th>
+              <th className="px-3 py-2 text-right w-[140px]">Actions</th>
+            </tr>
+          </thead>
 
-      {/* PRODUCT ROWS */}
-      <div className="space-y-2 mt-2">
-        {products.map((p) => (
-          <div
-            key={p.id}
-            className="grid grid-cols-[80px_150px_120px_100px_120px_80px_150px] items-center gap-4 border rounded-lg p-3 bg-white shadow"
-          >
-            {/* IMAGE */}
-            <img
-              src={p.image_url}
-              alt={p.name}
-              className="w-20 h-24 flex justify-center object-cover rounded"
-            />
+          <tbody>
+            {products.map((p) => (
+              <tr key={p.id} className="border-t">
+                <td className="px-3 py-2 text-center">
+                  <img
+                    src={p.image_url}
+                    alt={p.name}
+                    className="w-17 h-20 object-cover rounded mx-auto"
+                  />
+                </td>
 
-            {/* SCRYFALL ID */}
-            <p className="text-sm text-center font-bold text-black">
-              {p.scryfall_id}
-            </p>
+                <td className="px-3 py-2 text-center font-bold text-[#000] break-all">
+                  {p.scryfall_id}
+                </td>
 
-            {/* NAME */}
-            <p className="text-center text-sm text-gray-600 font-semibold">
-              {p.name}
-            </p>
+                <td className="px-3 py-2 text-center font-bold text-[#000] ">
+                  {p.name}
+                </td>
 
-            {/* SET CODE */}
-            <p className="text-sm text-black font-bold">
-              {p.set_code.toUpperCase()}
-            </p>
+                <td className="px-3 py-2 text-center font-bold text-[#000] ">
+                  {p.set_code.toUpperCase()}
+                </td>
 
-            {/* RARITY */}
-            <p className="text-sm text-black font-bold">{p.rarity}</p>
+                <td className="px-3 py-2 text-center font-bold text-[#000] ">
+                  {p.rarity}
+                </td>
 
-            {/* PRICE */}
-            <p className="text-sm text-black font-bold">
-              ${Number(p.price).toFixed(2)}
-            </p>
+                <td className="px-3 py-2 text-center font-bold text-[#000] font-bold">
+                  ${Number(p.price || 0).toFixed(2)}
+                </td>
 
-            {/* ACTIONS */}
-            <div className="flex gap-2 justify-end">
-              <Link
-                href={`/admin/products/${p.id}/edit`}
-                className="bg-blue-600 text-white px-3 py-1 rounded"
-              >
-                Edit
-              </Link>
-
-              <DeleteButton id={String(p.id)} />
-            </div>
-          </div>
-        ))}
+                <td className="px-3 py-2">
+                  <div className="flex justify-end gap-2">
+                    <Link
+                      href={`/admin/products/${p.id}/edit`}
+                      className="bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteButton id={String(p.id)} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-
 import { Product } from "@/types/product";
 import { PageProps } from "@/types/page-props";
 export const dynamic = "force-dynamic";
@@ -7,13 +6,12 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const sp = await searchParams;
   const page = parseInt(sp?.page || "1");
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
-console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
-const response = await fetch(
-  `${baseUrl}/api/products/list?page=${page}`,
-  { cache: "no-store" }
-);
+  const response = await fetch(`${baseUrl}/api/products/list?page=${page}`, {
+    cache: "no-store",
+  });
 
   console.log("RES STATUS:", response.status);
 
@@ -43,7 +41,7 @@ const response = await fetch(
               className="w-80 rounded shadow"
             />
 
-            <h2 className="font-semibold text-white">{p.name}</h2>
+            <h2 className="font-semibold text-white text-center">{p.name}</h2>
             <p className="text-gray-400 text-sm">${p.price}</p>
           </a>
         ))}
