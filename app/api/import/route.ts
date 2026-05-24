@@ -1,56 +1,97 @@
-export const dynamic = "force-dynamic";
-
 import { getDb } from "@/lib/db";
+import { mapScryfallToDB } from "@/lib/mapper";
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   const db = getDb();
 
-  const { scryfall_id, price, description } = await request.json();
+  try {
+    // get data from frontend
+    const body = await req.json();
 
-  // Fetch card data
-  const res = await fetch(`https://api.scryfall.com/cards/${scryfall_id}`);
-  const card = await res.json();
+    const { scryfall_id, price, description } = body;
 
-  // Handle Scryfall error responses
-  if (card.object === "error") {
-    return Response.json(
-      { error: "Invalid Scryfall ID", details: card.details },
-      { status: 400 }
-    );
+    // fetch ONE card from Scryfall
+    const res = await fetch(`https://api.scryfall.com/cards/${scryfall_id}`);
+
+    if (!res.ok) {
+      return Response.json(
+        { error: "Card not found on Scryfall" },
+        { status: 404 },
+      );
+    }
+
+    const card = await res.json();
+
+    // map data
+    const mapped = mapScryfallToDB(card);
+
+    // override custom values from admin form
+    mapped.price = Number(price || mapped.price || 0);
+    mapped.description = description || "";
+
+    // insert into DB
+    await db.execute({
+      sql: `
+        INSERT OR REPLACE INTO products (
+          scryfall_id,
+          name,
+          set_code,
+          set_name,
+          mana_cost,
+          cmc,
+          colors,
+          color_identity,
+          power,
+          toughness,
+          keywords,
+          type_line,
+          oracle_text,
+          layout,
+          card_faces,
+          collector_number,
+          rarity,
+          price,
+          image_url,
+          artist,
+          released_at,
+          description
+        ) VALUES (
+          ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+        )
+      `,
+      args: [
+        mapped.scryfall_id,
+        mapped.name,
+        mapped.set_code,
+        mapped.set_name,
+        mapped.mana_cost,
+        mapped.cmc,
+        mapped.colors,
+        mapped.color_identity,
+        mapped.power,
+        mapped.toughness,
+        mapped.keywords,
+        mapped.type_line,
+        mapped.oracle_text,
+        mapped.layout,
+        mapped.card_faces,
+        mapped.collector_number,
+        mapped.rarity,
+        mapped.price,
+        mapped.image_url,
+        mapped.artist,
+        mapped.released_at,
+        mapped.description,
+      ],
+    });
+
+    return Response.json({
+      success: true,
+      card: mapped.name,
+    });
+  } catch (err: any) {
+    console.error(err);
+
+    return Response.json({ error: err.message }, { status: 500 });
   }
-
-  const name = card.name ?? "";
-  const set_code = card.set?.toUpperCase() ?? "";
-  const collector_number = card.collector_number ?? "";
-  const rarity = card.rarity ?? "";
-  const type_line = card.type_line ?? "";
-  const oracle_text = card.oracle_text ?? "";
-  const artist = card.artist || "";
-  const image_url =
-    card.image_uris?.normal ||
-    card.image_uris?.large ||
-    card.card_faces?.[0]?.image_uris?.normal ||
-    card.card_faces?.[0]?.image_uris?.large || "";
-
-   
-  await db.execute({
-    sql: `INSERT INTO products 
-      (scryfall_id, name, set_code, collector_number, rarity, type_line, oracle_text, image_url, price, artist, description)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    args: [
-      scryfall_id,
-      name,
-      set_code,
-      collector_number,
-      rarity,
-      type_line,
-      oracle_text,
-      image_url,
-      price ?? "",
-      artist ?? "",
-      description ?? "",
-    ],
-  });
-
-  return Response.json({ success: true, name });
 }

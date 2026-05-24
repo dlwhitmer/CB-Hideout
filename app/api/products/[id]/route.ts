@@ -16,22 +16,32 @@ export async function GET(request: Request, context: any) {
 
     const result = await db.execute({
       sql: `
-        SELECT 
-          id,
-          scryfall_id,
-          name,
-          set_code,
-          collector_number,
-          rarity,
-          price,
-          image_url,
-          type_line,
-          oracle_text,
-          description,
-          artist,
-          created_at
-        FROM products
-        WHERE id = ?
+        SELECT
+        id,
+        scryfall_id,
+        name,
+        set_code,
+        set_name,
+        mana_cost,
+        cmc,
+        colors,
+        color_identity,
+        power,
+        toughness,
+        keywords,
+        type_line,
+        oracle_text,
+        layout,
+        card_faces,
+        collector_number,
+        rarity,
+        price,
+        image_url,
+        artist,
+        released_at,
+        created_at
+      FROM products
+      WHERE id = ?
       `,
       args: [id],
     });
@@ -48,21 +58,17 @@ export async function GET(request: Request, context: any) {
           return [key, Buffer.from(value).toString()];
         }
         return [key, value];
-      })
+      }),
     );
 
     return NextResponse.json(safeRow);
-
   } catch (err) {
     console.error("GET /api/products/[id] ERROR:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  request: Request,
-  context: any
-) {
+export async function DELETE(request: Request, context: any) {
   const params = await context.params;
   const id = Number(params.id);
 
@@ -70,10 +76,7 @@ export async function DELETE(
 
   try {
     if (!Number.isFinite(id)) {
-      return NextResponse.json(
-        { error: "Invalid ID" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
     await db.execute({
@@ -84,14 +87,10 @@ export async function DELETE(
     return NextResponse.json({
       success: true,
     });
-
   } catch (err) {
     console.error("DELETE ERROR:", err);
 
-    return NextResponse.json(
-      { error: String(err) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
 
@@ -112,22 +111,13 @@ export async function PUT(request: Request, context: any) {
         SET name = ?, price = ?, description = ?
         WHERE id = ?
       `,
-      args: [
-        name ?? "",
-        price ?? "",
-        description ?? "",
-        id,
-      ],
+      args: [name ?? "", price ?? "", description ?? "", id],
     });
 
     return NextResponse.json({ success: true });
-
   } catch (err) {
     console.error("PUT ERROR:", err);
 
-    return NextResponse.json(
-      { error: String(err) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

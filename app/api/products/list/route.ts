@@ -1,69 +1,75 @@
-export const runtime = "nodejs";
-import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 
+export async function GET(req: Request) {
+  const db = getDb();
+  const url = new URL(req.url);
 
-export async function GET(request: Request) {
-  try {
-    const db = getDb();
+  // pagination
+  const page = Number(url.searchParams.get("page") ?? 1);
+  const limit = Number(url.searchParams.get("limit") ?? 20);
+  const offset = (page - 1) * limit;
 
-    const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = 20;
-    const offset = (page - 1) * pageSize;
+  // filters
+  const type = url.searchParams.get("type");
+  const rarity = url.searchParams.get("rarity");
 
-    // Fetch paginated products
-    const result = await db.execute({
-      sql: `
-        SELECT 
-          id,
-          scryfall_id,
-          name,
-          set_code,
-          collector_number,
-          rarity,
-          price,
-          image_url,
-          type_line,
-          oracle_text,
-          description,
-          artist,
-          created_at
-        FROM products
-        ORDER BY created_at DESC
-        LIMIT :limit OFFSET :offset
-      `,
-      args: {
-        limit: pageSize,
-        offset: offset,
-      },
-    }); // ✅ THIS WAS MISSING
+  // sorting (SAFE)
+  const allowedSorts = ["name", "price", "cmc", "rarity", "released_at"];
+  const sortParam = url.searchParams.get("sort") ?? "name";
+  const sort = allowedSorts.includes(sortParam) ? sortParam : "name";
 
-    const products = result.rows.map((row) => {
-      const obj = row;
+  const order = url.searchParams.get("order") === "desc" ? "DESC" : "ASC";
 
-      return Object.fromEntries(
-        Object.entries(obj).map(([key, value]) => {
-          if (value instanceof ArrayBuffer) {
-            return [key, Buffer.from(value).toString()];
-          }
-          return [key, value];
-        })
-      );
-    });
+  const where: string[] = [];
+  const args: any = { limit, offset };
 
-    const totalResult = await db.execute({
-      sql: "SELECT COUNT(*) as count FROM products",
-    });
-
-    const total = Number(totalResult.rows[0].count);
-
-    return NextResponse.json({ products, total });
-  } catch (err) {
-    console.error("GET /api/products/list ERROR:", err);
-    return NextResponse.json(
-      { error: String(err) },
-      { status: 500 }
-    );
+  if (type) {
+    where.push(`type_line LIKE :type`);
+    // args.type = `%${type}%`;
   }
+
+  if (rarity) {
+    where.push(`rarity = :rarity`);
+    args.rarity = rarity;
+  }
+
+  const whereSQL = where.length ? `WHERE ${where.join(" AND ")}` : "";
+
+  const result = await db.execute({
+    sql: `
+    SELECT *
+    FROM products
+    ${whereSQL}
+    ORDER BY ${sort} ${order}
+    LIMIT :limit OFFSET :offset
+  `,
+    args,
+  });
+
+  const countArgs: any = {};
+
+  if (type) {
+    countArgs.type = `%${type}%`;
+  }
+
+  if (rarity) {
+    countArgs.rarity = rarity;
+  }
+
+  const countResult = await db.execute({
+    sql: `
+    SELECT COUNT(*) as count
+    FROM products
+    ${whereSQL}
+  `,
+    args: countArgs,
+  });
+  const total = Number((countResult.rows?.[0] as any)?.count ?? 0);
+
+  return Response.json({
+    rows: result.rows,
+    page,
+    limit,
+    total,
+  });
 }

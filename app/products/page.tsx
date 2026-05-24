@@ -1,35 +1,69 @@
 import { Product } from "@/types/product";
-import { PageProps } from "@/types/page-props";
+// import { PageProps } from "@/types/page-props";
 export const dynamic = "force-dynamic";
 
-export default async function ProductsPage({ searchParams }: PageProps) {
+type SearchParams = {
+  page?: string;
+  type?: string;
+  rarity?: string;
+};
+
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    page?: string;
+    type?: string;
+    rarity?: string;
+  }>;
+}) {
   const sp = await searchParams;
-  const page = parseInt(sp?.page || "1");
+
+  const page = parseInt(sp.page ?? "1");
+  const type = sp.type ?? "";
+  const rarity = sp.rarity ?? "";
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
   console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
-  const response = await fetch(`${baseUrl}/api/products/list?page=${page}`, {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${baseUrl}/api/products/list?page=${page}&type=${type}&rarity=${rarity}`,
+    { cache: "no-store" },
+  );
 
   console.log("RES STATUS:", response.status);
 
   const data = await response.json();
 
-  const { products, total } = data;
+  const products = data.rows;
+  const total = data.total ?? data.rows.length;
 
   const pageSize = 20;
   const totalPages = Math.ceil(total / pageSize);
 
   return (
-    // ... your JSX stays the same
-
     <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
+      {/* FILTER BAR */}
+      <div className="flex gap-4 mb-6 text-white">
+        <a href="/products">All</a>
+        <a href="/products?type=Creature">Creature</a>
+        <a href="/products?type=Instant">Instant</a>
+        <a href="/products?type=Sorcery">Sorcery</a>
+
+        <span className="mx-2">|</span>
+
+        <a href="/products?rarity=common">Common</a>
+        <a href="/products?rarity=uncommon">Uncommon</a>
+        <a href="/products?rarity=rare">Rare</a>
+        <a href="/products?rarity=mythic">Mythic</a>
+      </div>
+
+      {/* TITLE */}
       <h1 className="text-3xl font-bold mb-6 text-white">Products</h1>
 
+      {/* GRID */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {products?.map((p: Product) => (
+        {products.map((p) => (
           <a
             key={p.id}
             href={`/products/${p.id}`}
@@ -42,11 +76,13 @@ export default async function ProductsPage({ searchParams }: PageProps) {
             />
 
             <h2 className="font-semibold text-white text-center">{p.name}</h2>
+
             <p className="text-gray-400 text-sm">${p.price}</p>
           </a>
         ))}
       </div>
 
+      {/* PAGINATION */}
       <div className="flex justify-center gap-4 mt-8 text-white">
         {page > 1 && (
           <a

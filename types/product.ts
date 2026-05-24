@@ -4,28 +4,61 @@ export interface Product {
   scryfall_id: string;
   name: string;
   set_code: string;
-  collector_number: string;
+  set_name?: string;
+
+  mana_cost?: string;
+  cmc?: number;
+
+  colors?: string;
+  color_identity?: string;
+
+  power?: string;
+  toughness?: string;
+
+  type_line: string;
+  oracle_text?: string;
+
   rarity: string;
   price: number;
+
   image_url: string;
-  type_line: string;
-  oracle_text: string;
-  artist: string;
-  description: string;
+  artist?: string;
+  released_at?: string;
 }
 
 // This matches EXACTLY what Turso/libSQL returns
-export type ProductRow = {
-  id: string | number | null;
-  scryfall_id: string | null;
-  name: string | null;
-  set_code: string | null;
-  collector_number: string | null;
-  rarity: string | null;
-  price: string | number | null;
-  image_url: string | null;
-  type_line: string | null;
-  oracle_text: string | null;
-  artist: string | null
-  description: string | null;
+export type ProductDb = {
+  id: number;
+  scryfall_id: string;
+  name: string;
+
+  set_code?: string;
+  set_name?: string;
+
+  mana_cost?: string;
+  cmc?: number;
+
+  colors?: string; // JSON string for now
+  color_identity?: string;
+
+  power?: string;
+  toughness?: string;
+
+  keywords?: string;
+  type_line?: string;
+  oracle_text?: string;
+
+  layout?: string;
+  card_faces?: string;
+
+  collector_number?: string;
+  rarity?: string;
+
+  price?: number;
+  image_url?: string;
+
+  artist?: string;
+  released_at?: string;
+
+  created_at: string;
 };

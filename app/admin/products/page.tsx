@@ -1,44 +1,120 @@
+"use client";
+
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
-import VerticalDivider from "@/app/componets/vertical_divider";
+import { useEffect, useState } from "react";
 
 interface Product {
   id: number;
   name: string;
   price: number | string;
+
   description: string | null;
+
   scryfall_id: string;
   set_code: string;
+  set_name?: string;
+
   collector_number: string;
   rarity: string;
   type_line: string;
   oracle_text: string | null;
+
+  cmc?: number;
+
+  colors?: string;
+  color_identity?: string;
+
+  power: string | null;
+  toughness: string | null;
+
+  keywords?: string;
+
   artist: string;
   image_url: string;
+
+  released_at?: string;
 }
 
-async function getProducts(): Promise<Product[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
-  console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
+export default function Page() {
+  const [type, setType] = useState("");
+  const [rarity, setRarity] = useState("");
 
-  const res = await fetch(`${baseUrl}/api/products/list`, {
-    cache: "no-store",
-  });
+  const [products, setProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
-  if (!res.ok) {
-    console.error("Failed to fetch products");
-    return [];
+  const limit = 20;
+  const totalPages = Math.ceil(total / limit);
+
+  async function loadProducts(currentPage: number) {
+    console.log("test");
+    const params = new URLSearchParams();
+
+    params.set("page", String(currentPage));
+    params.set("limit", String(limit));
+
+    if (type) params.set("type", type);
+    if (rarity) params.set("rarity", rarity);
+
+    const res = await fetch(`/api/products/list?${params.toString()}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      console.error("Failed to load products");
+      return;
+    }
+
+    const data = await res.json();
+
+    setProducts(data.rows);
+    setTotal(data.total);
+    setPage(currentPage);
   }
 
-  const data = await res.json();
+  useEffect(() => {
+    loadProducts(1);
+  }, []);
 
-  return data.products; // ✅ THIS is the missing piece
-}
-export default async function ProductsListPage() {
-  const products = await getProducts();
+  useEffect(() => {
+    loadProducts(1);
+  }, [type, rarity]);
 
   return (
     <div className="p-6">
+      {/* FILTERS */}
+      <div className="flex gap-4 mb-4">
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="">All Types</option>
+          <option value="Creature">Creature</option>
+          <option value="Instant">Instant</option>
+          <option value="Sorcery">Sorcery</option>
+          <option value="Artifact">Artifact</option>
+          <option value="Enchantment">Enchantment</option>
+          <option value="Planeswalker">Planeswalker</option>
+          <option value="Land">Land</option>
+        </select>
+
+        <select value={rarity} onChange={(e) => setRarity(e.target.value)}>
+          <option value="">All Rarities</option>
+          <option value="common">Common</option>
+          <option value="uncommon">Uncommon</option>
+          <option value="rare">Rare</option>
+          <option value="mythic">Mythic</option>
+        </select>
+
+        <button
+          onClick={() => {
+            setType("");
+            setRarity("");
+          }}
+        >
+          Reset
+        </button>
+      </div>
+
+      {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Products</h1>
 
@@ -50,17 +126,18 @@ export default async function ProductsListPage() {
         </Link>
       </div>
 
+      {/* TABLE */}
       <div className="overflow-x-auto rounded-lg border bg-white shadow">
-        <table className="min-w-full text-sm">
+        <table className="min-w-full text-sm text-black">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
-              <th className="px-3 py-2 text-center w-[80px]">Image</th>
-              <th className="px-3 py-2 text-center w-[120px]">Scryfall ID</th>
-              <th className="px-3 py-2 text-center w-[90px]">Name</th>
-              <th className="px-3 py-2 text-center w-[80px]">Set</th>
-              <th className="px-3 py-2 text-center w-[80px]">Rarity</th>
-              <th className="px-3 py-2 text-center w-[80px]">Price</th>
-              <th className="px-3 py-2 text-right w-[140px]">Actions</th>
+              <th className="px-3 py-2 text-center">Image</th>
+              <th className="px-3 py-2 text-center">Scryfall ID</th>
+              <th className="px-3 py-2 text-center">Name</th>
+              <th className="px-3 py-2 text-center">Set</th>
+              <th className="px-3 py-2 text-center">Rarity</th>
+              <th className="px-3 py-2 text-center">Price</th>
+              <th className="px-3 py-2 text-right">Actions</th>
             </tr>
           </thead>
 
@@ -71,27 +148,23 @@ export default async function ProductsListPage() {
                   <img
                     src={p.image_url}
                     alt={p.name}
-                    className="w-17 h-20 object-cover rounded mx-auto"
+                    className="w-16 h-20 object-cover rounded mx-auto"
                   />
                 </td>
 
-                <td className="px-3 py-2 text-center font-bold text-[#000] break-all">
+                <td className="px-3 py-2 text-center font-bold">
                   {p.scryfall_id}
                 </td>
 
-                <td className="px-3 py-2 text-center font-bold text-[#000] ">
-                  {p.name}
-                </td>
+                <td className="px-3 py-2 text-center font-bold">{p.name}</td>
 
-                <td className="px-3 py-2 text-center font-bold text-[#000] ">
+                <td className="px-3 py-2 text-center font-bold">
                   {p.set_code.toUpperCase()}
                 </td>
 
-                <td className="px-3 py-2 text-center font-bold text-[#000] ">
-                  {p.rarity}
-                </td>
+                <td className="px-3 py-2 text-center font-bold">{p.rarity}</td>
 
-                <td className="px-3 py-2 text-center font-bold text-[#000] font-bold">
+                <td className="px-3 py-2 text-center font-bold">
                   ${Number(p.price || 0).toFixed(2)}
                 </td>
 
@@ -103,6 +176,7 @@ export default async function ProductsListPage() {
                     >
                       Edit
                     </Link>
+
                     <DeleteButton id={String(p.id)} />
                   </div>
                 </td>
@@ -110,6 +184,29 @@ export default async function ProductsListPage() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* PAGINATION */}
+      <div className="flex justify-center gap-4 mt-6">
+        <button
+          onClick={() => loadProducts(page - 1)}
+          disabled={page <= 1}
+          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+        >
+          Previous
+        </button>
+
+        <span className="self-center">
+          Page {page} / {totalPages || 1}
+        </span>
+
+        <button
+          onClick={() => loadProducts(page + 1)}
+          disabled={page >= totalPages}
+          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
