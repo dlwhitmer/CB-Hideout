@@ -27,7 +27,7 @@ export interface Product {
 }
 
 // This matches EXACTLY what Turso/libSQL returns
-export type ProductDb = {
+export type ProductRow = {
   id: number;
   scryfall_id: string;
   name: string;
