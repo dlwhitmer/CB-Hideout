@@ -8,6 +8,11 @@ type SearchParams = {
   rarity?: string;
 };
 
+type ProductsResponse = {
+  rows: Product[];
+  total: number;
+};
+
 export default async function ProductsPage({
   searchParams,
 }: {
@@ -33,7 +38,7 @@ export default async function ProductsPage({
 
   console.log("RES STATUS:", response.status);
 
-  const data = await response.json();
+  const data: ProductsResponse = await response.json();
 
   const products = data.rows;
   const total = data.total ?? data.rows.length;
