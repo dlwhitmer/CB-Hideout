@@ -44,19 +44,41 @@ export default async function ProductsPage({
   return (
     <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
-      <div className="flex gap-4 mb-6 text-white">
-        <a href="/products">All</a>
-        <a href="/products?type=Creature">Creature</a>
-        <a href="/products?type=Instant">Instant</a>
-        <a href="/products?type=Sorcery">Sorcery</a>
+      <form className="flex gap-4 mb-6 pt-10 text-white">
+        <select
+          name="type"
+          defaultValue={type}
+          className="bg-gray-800 border border-gray-600 p-2 rounded"
+        >
+          <option value="">All Types</option>
+          <option value="Creature">Creature</option>
+          <option value="Instant">Instant</option>
+          <option value="Sorcery">Sorcery</option>
+          <option value="Artifact">Artifact</option>
+          <option value="Enchantment">Enchantment</option>
+          <option value="Planeswalker">Planeswalker</option>
+          <option value="Land">Land</option>
+        </select>
 
-        <span className="mx-2">|</span>
+        <select
+          name="rarity"
+          defaultValue={rarity}
+          className="bg-gray-800 border border-gray-600 p-2 rounded"
+        >
+          <option value="">All Rarities</option>
+          <option value="common">Common</option>
+          <option value="uncommon">Uncommon</option>
+          <option value="rare">Rare</option>
+          <option value="mythic">Mythic</option>
+        </select>
 
-        <a href="/products?rarity=common">Common</a>
-        <a href="/products?rarity=uncommon">Uncommon</a>
-        <a href="/products?rarity=rare">Rare</a>
-        <a href="/products?rarity=mythic">Mythic</a>
-      </div>
+        <button
+          type="submit"
+          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Filter
+        </button>
+      </form>
 
       {/* TITLE */}
       <h1 className="text-3xl font-bold mb-6 text-white">Products</h1>

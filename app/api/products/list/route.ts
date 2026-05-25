@@ -21,19 +21,22 @@ export async function GET(req: Request) {
   const order = url.searchParams.get("order") === "desc" ? "DESC" : "ASC";
 
   const where: string[] = [];
-  const args: any = { limit, offset };
+  const args: any = {
+    limit,
+    offset,
+  };
 
-  if (type) {
+  if (type && type.trim() !== "") {
     where.push(`type_line LIKE :type`);
-    // args.type = `%${type}%`;
+    args.type = `%${type}%`;
   }
 
-  if (rarity) {
+  if (rarity && rarity.trim() !== "") {
     where.push(`rarity = :rarity`);
     args.rarity = rarity;
   }
 
-  const whereSQL = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const whereSQL = where.length > 0 ? `WHERE ${where.join(" AND ")}` : "";
 
   const result = await db.execute({
     sql: `
