@@ -20,9 +20,10 @@ export interface Product {
 
   rarity: string;
   price: number;
-
+  collector_number: string;
   image_url: string;
   artist?: string;
+  description: string;
   released_at?: string;
 }
 
@@ -59,6 +60,7 @@ export type ProductRow = {
 
   artist?: string;
   released_at?: string;
+  description?: string;
 
   created_at: string;
 };
