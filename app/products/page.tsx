@@ -1,3 +1,4 @@
+
 import { Product } from "@/types/product";
 // import { PageProps } from "@/types/page-props";
 export const dynamic = "force-dynamic";
@@ -49,7 +50,7 @@ export default async function ProductsPage({
   return (
     <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
-      <form className="flex gap-4 mb-6 pt-10 text-white">
+      <form className="flex gap-4 mb-4 pt-3 text-white">
         <select
           name="type"
           defaultValue={type}
@@ -86,7 +87,10 @@ export default async function ProductsPage({
       </form>
 
       {/* TITLE */}
-      <h1 className="text-3xl font-bold mb-6 text-white">Products</h1>
+     <h1 className="text-4xl text-white">
+  Products
+</h1>
+
 
       {/* GRID */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
