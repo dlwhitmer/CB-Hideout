@@ -1,4 +1,4 @@
-
+import { cardboard } from "@/lib/fonts";
 import { Product } from "@/types/product";
 // import { PageProps } from "@/types/page-props";
 export const dynamic = "force-dynamic";
@@ -33,7 +33,7 @@ export default async function ProductsPage({
   console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
   const response = await fetch(
-    `${baseUrl}/api/products/list?page=${page}&type=${type}&rarity=${rarity}`,
+    `${baseUrl}/api/products/pokemon/list?page=${page}&type=${type}&rarity=${rarity}`,
     { cache: "no-store" },
   );
 
@@ -87,17 +87,20 @@ export default async function ProductsPage({
       </form>
 
       {/* TITLE */}
-     <h1 className="text-4xl text-white">
-  Products
-</h1>
-
+      <div className="flex justify-center">
+        <img
+          src="/images/pokemon.webp"
+          alt="Pokemon"
+          className=" flex items-center h-[80px]  md:h-[300px] lg:h-[90px] object-contain"
+        ></img>
+      </div>
 
       {/* GRID */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-5 gap-6">
         {products.map((p) => (
           <a
             key={p.id}
-            href={`/products/${p.id}`}
+            href={`/products/pokemon/${p.id}`}
             className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
           >
             <img
@@ -106,7 +109,9 @@ export default async function ProductsPage({
               className="w-80 rounded shadow"
             />
 
-            <h2 className="font-semibold text-white text-center">{p.name}</h2>
+            <h2 className="font-semibold text-sm text-white text-center">
+              {p.name}
+            </h2>
 
             <p className="text-gray-400 text-sm">${p.price}</p>
           </a>

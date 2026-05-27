@@ -1,5 +1,5 @@
 "use client";
-
+import { cardboard } from "@/lib/fonts";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
 import { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ export default function Page() {
     if (type) params.set("type", type);
     if (rarity) params.set("rarity", rarity);
 
-    const res = await fetch(`/api/products/list?${params.toString()}`, {
+    const res = await fetch(`/api/products/magic/list?${params.toString()}`, {
       cache: "no-store",
     });
 
@@ -116,10 +116,26 @@ export default function Page() {
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Products</h1>
+        <h1 className={`${cardboard.className} text-center leading-[1.1]`}>
+          {/* MAGIC — gradient */}
+          <span
+            className="
+              block
+              text-[60px]
+              italic
+              text-transparent
+              bg-clip-text
+              bg-gradient-to-b
+              from-[#cc3300]
+              to-[#ff9900]
+            "
+          >
+            Magic
+          </span>
+        </h1>
 
         <Link
-          href="/admin/products/add"
+          href="/admin/products/magic/add"
           className="bg-green-600 text-white px-4 py-2 rounded"
         >
           Add Product
@@ -171,7 +187,7 @@ export default function Page() {
                 <td className="px-3 py-2">
                   <div className="flex justify-end gap-2">
                     <Link
-                      href={`/admin/products/${p.id}/edit`}
+                      href={`/admin/products/magic/${p.id}/edit`}
                       className="bg-blue-600 text-white px-3 py-1 rounded"
                     >
                       Edit

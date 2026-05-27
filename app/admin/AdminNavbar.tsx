@@ -15,12 +15,16 @@ export default function AdminNavbar() {
     <nav className="w-full bg-gray-900 border-b border-gray-700 px-6 py-3 flex items-center gap-8">
       <h1 className="text-xl font-bold text-white">Admin Panel</h1>
 
-      <Link href="/admin/products" className={linkClass("/admin/products")}>
-        Products
+      <Link href="/admin/products/magic" className={linkClass("/admin/products")}>
+        Magic Cards
+      </Link>
+
+      <Link href="/admin/products/pokemon" className={linkClass("/admin/pokemon")}>
+        Pokemon Cards
       </Link>
 
       <Link href="/admin/import" className={linkClass("/admin/import")}>
-        Import Card
+        Import Magic Cards
       </Link>
 
       <Link href="/admin/users" className={linkClass("/admin/users")}>

@@ -17,7 +17,7 @@ export default function EditProductPage() {
   useEffect(() => {
     async function loadProduct() {
       try {
-        const res = await fetch(`/api/products/${id}`);
+        const res = await fetch(`/api/products/pokemon/${id}`);
         const data = await res.json();
 
         // Prefill form fields
@@ -37,7 +37,7 @@ export default function EditProductPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    await fetch(`/api/products/${id}`, {
+    await fetch(`/api/products/pokemon/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

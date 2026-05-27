@@ -1,6 +1,8 @@
 import { DetailPageParams } from "@/types/route-params";
 import type { Product, ProductRow } from "@/types/product";
+
 import { getDb } from "@/lib/db";
+import BackButton from "@/app/backbutton";
 
 export const dynamic = "force-dynamic";
 export default async function ProductDetailPage({ params }: DetailPageParams) {
@@ -86,10 +88,12 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
                 {product.description}
               </div>
             )}
-
-            <p className="text-green-400 text-2xl font-bold">
-              ${product.price}
-            </p>
+            <div className="flex justify-left">
+              <p className="mx-15 text-green-400 text-2xl font-bold">
+                ${product.price}
+              </p>
+              <BackButton />
+            </div>
           </div>
         </div>
       </div>

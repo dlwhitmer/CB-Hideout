@@ -63,7 +63,7 @@ export async function GET(request: Request, context: any) {
 
     return NextResponse.json(safeRow);
   } catch (err) {
-    console.error("GET /api/products/[id] ERROR:", err);
+    console.error("GET /api/products/magic/[id] ERROR:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

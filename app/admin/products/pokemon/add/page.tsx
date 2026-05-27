@@ -19,7 +19,7 @@ export default function AddProductPage() {
       body: JSON.stringify({ name, price, description }),
     });
 
-    router.push("/admin/products");
+    router.push("/admin/products/pokemon");
   }
 
   return (
