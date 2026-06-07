@@ -1,5 +1,5 @@
-export interface DetailPageParams {
-  params: Promise<{
+export type DetailPageParams = {
+  params: {
     id: string;
-  }>;
-}
+  };
+};

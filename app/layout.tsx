@@ -1,11 +1,7 @@
 import "./globals.css";
 import NavBar from "./navbar";
-import localFont from "next/font/local";
 
-const cardboard = localFont({
-  src: "./fonts/MagicTheGathering.ttf",
-  variable: "--font-cardboard",
-});
+
 
 export default function RootLayout({
   children,

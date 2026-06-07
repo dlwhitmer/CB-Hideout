@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
+    "@tursodatabase/database": "^0.6.1",
     "better-sqlite3": "^12.10.0",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -24,9 +27,11 @@
     "@types/react-dom": "^19",
     "@types/sqlite3": "^3.1.11",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9.39.4",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
+    "tsx": "^4.22.3",
     "typescript": "^5"
   }
 }

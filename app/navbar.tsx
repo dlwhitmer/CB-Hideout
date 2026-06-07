@@ -1,19 +1,27 @@
 "use client";
 import { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-20">
       <div className="backdrop-blur-md bg-black border-b">
         <div className="px-10 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="/images/CBH_Logo.png" alt="Logo" className="w-[40px] object-contain"></img>
-           <span className="text-[#fff] text-[12px] lg:text-[20px] font-bold">THE CARDBOARD HIDEOUT</span>
+            <Image
+              src="/images/CBH_Logo.png"
+              alt="Logo"
+              width={45}
+              height={45}
+              className="object-contain"
+            ></Image>
+            <span className="text-[#fff] text-[12px] lg:text-[20px] font-bold">
+              THE CARDBOARD HIDEOUT
+            </span>
           </div>
 
           <ul className="hidden md:flex space-x-6 text-white">
@@ -44,21 +52,21 @@ export default function NavBar() {
                 <div className="absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded min-w-[180px] z-50">
                   <Link
                     className="block px-4 py-2 hover:bg-gray-800"
-                    href="/products/magic"
+                    href="/magic/"
                   >
                     Magic Cards
                   </Link>
 
                   <Link
                     className="block px-4 py-2 hover:bg-gray-800"
-                    href="/products/pokemon"
+                    href="/pokemon/"
                   >
                     Pokemon Cards
                   </Link>
 
                   <Link
                     className="block px-4 py-2 hover:bg-gray-800"
-                    href="/accessories"
+                    href="/accessories/"
                   >
                     Accessories
                   </Link>

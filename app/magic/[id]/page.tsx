@@ -1,0 +1,84 @@
+import { DetailPageParams } from "@/types/route-params";
+import { db } from "@/lib/db";
+import * as magic from "@/lib/db/schema/magic";
+import { eq } from "drizzle-orm";
+import BackButton from "@/app/backtomagicbutton";
+import Image from "next/image";
+
+export const dynamic = "force-dynamic";
+
+export default async function ProductDetailPage({ params }: DetailPageParams) {
+  const p = await params;
+  const id = p.id;
+
+  const result = await db
+    .select()
+    .from(magic.magicCards)
+    .where(eq(magic.magicCards.id, Number(id)));
+
+  const product = result[0];
+
+  if (!product) {
+    return <p className="p-6 text-red-400">Product not found.</p>;
+  }
+
+  return (
+    <main className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%]">
+      <div className="p-6 max-w-5xl mx-auto text-white">
+        <div className="flex flex-col md:flex-row gap-10">
+          <div className="flex-shrink-0">
+            <Image
+              src={product.imageUrl || "/placeholder.png"}
+              alt={product.name ?? ""}
+              width={320}
+              height={320}
+              className="rounded shadow"
+            />
+          </div>
+
+          <div className="flex flex-col gap-4 flex-1 pt-4">
+            <h1 className="text-3xl font-bold">{product.name}</h1>
+
+            <div className="grid grid-cols-2 gap-y-2 text-white">
+              <p>
+                <span className="font-semibold">Set:</span> {product.setCode}
+              </p>
+              <p>
+                <span className="font-semibold">Collector #:</span>{" "}
+                {product.collectorNumber}
+              </p>
+              <p>
+                <span className="font-semibold">Rarity:</span> {product.rarity}
+              </p>
+              <p>
+                <span className="font-semibold">Type:</span> {product.typeLine}
+              </p>
+              <p>
+                <span className="font-semibold">Artist:</span> {product.artist}
+              </p>
+            </div>
+
+            {product.oracleText && (
+              <div className="bg-black/40 p-4 rounded leading-relaxed whitespace-pre-line">
+                {product.oracleText}
+              </div>
+            )}
+
+            {product.description && (
+              <div className="bg-gray-500/40 p-4 rounded font-bold text-white leading-relaxed">
+                {product.description}
+              </div>
+            )}
+
+            <div className="flex justify-left items-center gap-6">
+              <p className="text-green-400 text-2xl font-bold">
+                ${product.price}
+              </p>
+              <BackButton />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
