@@ -23,7 +23,7 @@ export default function EditProductPage() {
         // Prefill form fields
         setName(data.name || "");
         setPrice(data.price || "");
-        setDescription(data.flavor_text || data.description || "");
+        setDescription(data.flavorText || "");
 
         setLoading(false);
       } catch (err) {

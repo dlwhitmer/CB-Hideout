@@ -1,6 +1,6 @@
 import { client } from "@/lib/db";
 import { mapScryfallToDB } from "@/lib/mappers/magic";
-import { MappedMagicCard } from "@/lib/mappers/magic_types";
+
 
 export async function POST(req: Request) {
   const db = client;
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const card = await res.json();
 
     // map data
-    const mapped: MappedMagicCard = mapScryfallToDB(card);
+    const mapped = mapScryfallToDB(card);
 
     // override custom values from admin form
     mapped.price = Number(price || mapped.price || 0);

@@ -26,14 +26,14 @@ export interface MappedMagicCard {
   collectorNumber: string;
   rarity: string;
 
-  flavorText: string;
-  supertypes: string;
   price: number;
+  description: string;
 
   imageUrl: string | null;
   artist: string | null;
 
-  releasedAt: string | null;
+  releaseAt: string | null;
+  createdAt: string | null
 
-  description: string;
+  
 }

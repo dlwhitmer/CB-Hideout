@@ -1,5 +1,5 @@
-import { MappedPokemonCard } from "./pokemon_types";
-export function mapPokemonToDB(card: any): MappedPokemonCard {
+
+export function mapPokemonToDB(card: any){
   if (!card) {
     throw new Error("mapPokemonToDB received undefined card");
   }

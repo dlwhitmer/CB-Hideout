@@ -1,5 +1,4 @@
 export interface Product {
-  id: number;
   scryfallId: string | null;
   name: string | null;
   setCode: string | null;
@@ -21,6 +20,6 @@ export interface Product {
   imageUrl: string | null;
   artist: string | null;
   description: string | null;
-  releaseAt: string | null;
+  releasedAt: string | null;
   createdAt: string | null;
 }

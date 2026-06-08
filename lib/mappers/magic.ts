@@ -1,5 +1,5 @@
-
-export function mapScryfallToDB(card: any){
+import { Product } from "@/types/magic";
+export function mapScryfallToDB(card: any): Product{
   return {
     scryfallId: card.id,
     name: card.name,
@@ -25,6 +25,7 @@ export function mapScryfallToDB(card: any){
       null,
     artist: card.artist || null,
     releasedAt: card.released_at || null,
+    createdAt: card.created_at || null,
     description: "",
   };
 }

@@ -4,9 +4,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function EditProductPage() {
-  const params = useParams();
-  console.log("PARAMS:", params);
-
   const { id } = useParams();
   const router = useRouter();
 
@@ -22,14 +19,13 @@ export default function EditProductPage() {
       try {
         const res = await fetch(`/api/magic/${id}`);
         const data = await res.json();
-        console.log(data);
+        console.log("EDIT DATA:", data);
 
-        if (!data) {
-          console.error("Product not found");
-          // Option 1: redirect back to admin list
-          window.location.href = "/admin/magic";
-          return;
-        }
+        // Prefill form fields
+        setName(data.name || "");
+        setPrice(data.price || "");
+        setDescription(data.oracleText || "");
+
         setLoading(false);
       } catch (err) {
         console.error("Error loading product", err);
@@ -51,14 +47,12 @@ export default function EditProductPage() {
         description,
       }),
     });
-    console.log("body json {name}, {price}, {description} ");
+      console.log(description)
 
     router.push("/admin/magic");
   }
 
   if (loading) return <p>Loading...</p>;
-
-  
 
   return (
     <div className="p-6 max-w-xl mx-auto">
@@ -85,7 +79,7 @@ export default function EditProductPage() {
 
         <div>
           <label className="block font-semibold">
-            Description (oracleText)
+            Description (Oracle Text)
           </label>
           <textarea
             className="border p-2 w-full h-40"

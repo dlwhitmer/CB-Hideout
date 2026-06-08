@@ -2,9 +2,9 @@
 
 export default function DeleteButton({ id }: { id: string }) {
   async function handleDelete() {
-    console.log("Sending DELETE to:", `/api/products/${id}`);
+    console.log("Sending DELETE to:", `/api/pokemon/${id}`);
 
-    await fetch(`/api/products/${id}`, {
+    await fetch(`/api/pokemon/${id}`, {
       method: "DELETE",
     });
 
