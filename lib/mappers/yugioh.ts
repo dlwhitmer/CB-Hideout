@@ -1,44 +1,36 @@
-export function mapYugiohToDB(card: any) {
+import { YugiohProduct } from "@/types/yugioh";
+
+export function mapYugiohToDB(card: any): Omit<YugiohProduct, "id"> {
   return {
-    scryfall_id: card.id,
-    name: card.name,
+    yugiohId: String(card.id),
+    name: card.name ?? "",
 
-    set_code: card.set,
-    set_name: card.set_name,
+    typeline: JSON.stringify(card.typeline ?? []),
+    type: card.type ?? "",
+    humanReadableCardType: card.humanReadableCardType ?? "",
+    frameType: card.frameType ?? "",
 
-    mana_cost: card.mana_cost,
-    cmc: card.cmc,
+    desc: card.desc ?? "",
+    race: card.race ?? "",
+    atk: card.atk ?? null,
+    def: card.def ?? null,
+    level: card.level ?? null,
+    attribute: card.attribute ?? "",
+    archetype: card.archetype ?? "",
 
-    colors: JSON.stringify(card.colors || []),
-    color_identity: JSON.stringify(card.color_identity || []),
+    // MATCH DB EXACTLY
+    card_sets: JSON.stringify(card.card_sets ?? []),
+    card_images: JSON.stringify(card.card_images ?? []),
+    card_prices: JSON.stringify(card.card_prices ?? []),
 
-    power: card.power || null,
-    toughness: card.toughness || null,
+    // PRICE
+    price: card.card_prices?.[0]?.cardmarket_price ?? "0.00",
 
-    keywords: JSON.stringify(card.keywords || []),
+    // IMAGES
+    image_small: card.card_images?.[0]?.image_url_small ?? "",
+    image_large: card.card_images?.[0]?.image_url ?? "",
 
-    type_line: card.type_line,
-    oracle_text: card.oracle_text || null,
-
-    layout: card.layout,
-
-    card_faces: card.card_faces ? JSON.stringify(card.card_faces) : null,
-
-    collector_number: card.collector_number,
-
-    rarity: card.rarity,
-
-    price: parseFloat(card.prices?.usd ?? "0") || 0,
-
-    image_url:
-      card.image_uris?.normal ||
-      card.card_faces?.[0]?.image_uris?.normal ||
-      null,
-
-    artist: card.artist || null,
-
-    released_at: card.released_at || null,
-
-    description: "",
+    // DB auto-fills this
+    created_at: null,
   };
 }

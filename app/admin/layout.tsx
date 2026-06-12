@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+
 export default function AdminLayout({
   children,
 }: {
@@ -15,7 +16,7 @@ export default function AdminLayout({
           <Link href="/admin" className="hover:text-blue-400">
             Dashboard
           </Link>
-          <h2 className="underline decoration-4 decoration-[#ff6361] text-[#ff6361] text-[16px]  font-bold mt-2 mb-1">
+          <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px]  font-bold mt-2 mb-1">
             View & Edit Products
           </h2>
 
@@ -25,14 +26,17 @@ export default function AdminLayout({
           <Link href="/admin/pokemon/" className="hover:text-blue-400">
             Pokemon Cards
           </Link>
-          <h2 className="underline decoration-4 decoration-[#ff6361] text-[#ff6361] text-[16px]  font-bold mt-2 mb-1">
+          <Link href="/admin/yugioh/" className="hover:text-blue-400">
+            Yu-Gi-Oh Cards
+          </Link>
+          <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px]  font-bold mt-2 mb-1">
             Add Products
           </h2>
 
           <Link href="/admin/magic/add/" className="hover:text-blue-400">
             Add Product
           </Link>
-          <h2 className="underline decoration-4 decoration-[#ff6361] text-[#ff6361] text-[16px]  font-bold mt-2 mb-1">
+          <h2 className="underline decoration-2 decoration-[#fff000] text-[#fff000] text-[16px]  font-bold mt-2 mb-1">
             Import Cards
           </h2>
           <Link href="/admin/magic/import" className="hover:text-blue-400">
@@ -41,7 +45,10 @@ export default function AdminLayout({
           <Link href="/admin/pokemon/import" className="hover:text-blue-400">
             Import Pokemon Card
           </Link>
-          <h2 className="underline decoration-4 decoration-[#ff6361] text-[#ff6361] text-[16px] font-bold mt-2 mb-1">
+          <Link href="/admin/yugioh/import" className="hover:text-blue-400">
+            Import Yu-Gi-Oh Card
+          </Link>
+          <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             Edit Users
           </h2>
           <Link href="/admin/users" className="hover:text-blue-400">

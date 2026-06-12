@@ -10,7 +10,7 @@ export default function Page() {
   const [type, setType] = useState("");
   const [rarity, setRarity] = useState("");
   const [loading, setLoading] = useState(true);
-  const [pproduct, setPProduct] = useState<PokemonProduct[]>([]);
+  const [pokemonproduct, setPokemonProduct] = useState<PokemonProduct[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -39,7 +39,7 @@ export default function Page() {
 
         console.log("Data:", data);
 
-        setPProduct(data.rows ?? []);
+        setPokemonProduct(data.rows ?? []);
         setTotal(data.total);
         setPage(currentPage);
       } catch (err) {
@@ -156,7 +156,7 @@ export default function Page() {
           </thead>
 
           <tbody>
-            {pproduct.map((p) => (
+            {pokemonproduct.map((p) => (
               <tr key={p.id} className="border-t">
                 <td className="px-3 py-2 text-center">
                   {p.imageSmall ? (

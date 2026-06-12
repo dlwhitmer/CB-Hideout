@@ -1,37 +1,35 @@
-import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
-
-export const yugioh_products = sqliteTable("yugiohpokemon_products", {
+export const yugiohCards = sqliteTable("yugioh_products", {
   id: integer("id").primaryKey({ autoIncrement: true }),
 
-  game: text("game"),
-  category: text("category"),
-
-  pokemon_id: text("pokemon_id").unique(),
-
+  yugiohId: text("yugioh_id").unique(),
   name: text("name"),
 
-  set_code: text("set_code"),
-  set_name: text("set_name"),
+  typeline: text("typeline"),
+  type: text("type"),
+  humanReadableCardType: text("human_readable_card_type"),
+  frameType: text("frame_type"),
 
-  card_number: text("card_number"),
+  desc: text("desc"),
+  race: text("race"),
+  atk: integer("atk"),
+  def: integer("def"),
+  level: integer("level"),
+  attribute: text("attribute"),
+  archetype: text("archetype"),
 
-  rarity: text("rarity"),
-  supertype: text("supertype"),
-  subtypes: text("subtypes"),
+  // ⭐ FIX: use snake_case property names
+  card_sets: text("card_sets"),
+  card_images: text("card_images"),
+  card_prices: text("card_prices"),
 
-  hp: text("hp"),
-  types: text("types"),
+  price: text("price"),
 
-  artist: text("artist"),
-
+  // ⭐ FIX: use snake_case property names
   image_small: text("image_small"),
   image_large: text("image_large"),
-
-  price: real("price"),
-
-  release_date: text("release_date"),
 
   created_at: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 });

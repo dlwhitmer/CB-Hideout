@@ -57,7 +57,7 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
                 <span className="font-semibold">Artist:</span> {product.artist}
               </p>
             </div>
-
+            
             {product.flavorText && (
               <div className="bg-black/40 p-4 rounded leading-relaxed whitespace-pre-line">
                 {product.flavorText}

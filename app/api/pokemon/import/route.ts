@@ -50,26 +50,8 @@ export async function POST(req: Request) {
 
     console.log("7. About to insert into DB");
 
-    await db.insert(pokemonCards).values({
-      game: mapped.game,
-      category: mapped.category,
-      pokemonId: mapped.pokemonId,
-      name: mapped.name,
-      setCode: mapped.setCode,
-      setName: mapped.setName,
-      cardNumber: mapped.cardNumber,
-      rarity: mapped.rarity,
-      flavorText: mapped.flavorText,
-      supertype: mapped.supertype,
-      subtypes: mapped.subtypes,
-      hp: mapped.hp,
-      types: mapped.types,
-      artist: mapped.artist,
-      imageSmall: mapped.imageSmall,
-      imageLarge: mapped.imageLarge,
-      price: mapped.price,
-      releaseDate: mapped.releaseDate,
-    });
+    await db.insert(pokemonCards).values(mapped);
+
     console.log("8. DB insert complete");
 
     return NextResponse.json({

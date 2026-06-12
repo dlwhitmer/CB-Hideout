@@ -22,9 +22,21 @@ export default function AdminNavbar() {
       <Link href="/admin/pokemon" className={linkClass("/admin/pokemon")}>
         Pokemon Cards
       </Link>
+     
+      <Link href="/admin/yugioh" className={linkClass("/admin/yugioh")}>
+        Yu-Gi-Oh Cards
+      </Link>
 
       <Link href="/admin/magic/import" className={linkClass("/admin/magic/import")}>
         Import Magic Cards
+      </Link>
+
+      <Link href="/admin/pokemon/import" className={linkClass("/admin/pokemon/import")}>
+        Import Pokemon Cards
+      </Link>
+      
+      <Link href="/admin/yugioh/import" className={linkClass("/admin/yugioh/import")}>
+        Import Yu-Gi-Oh Cards
       </Link>
 
       <Link href="/admin/users" className={linkClass("/admin/users")}>

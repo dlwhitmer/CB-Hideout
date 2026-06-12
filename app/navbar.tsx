@@ -63,6 +63,13 @@ export default function NavBar() {
                   >
                     Pokemon Cards
                   </Link>
+                 
+                  <Link
+                    className="block px-4 py-2 hover:bg-gray-800"
+                    href="/yugioh/"
+                  >
+                    Yu-Gi-Oh Cards
+                  </Link>
 
                   <Link
                     className="block px-4 py-2 hover:bg-gray-800"

@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -9,6 +10,11 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "images.pokemontcg.io",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.ygoprodeck.com",
         pathname: "/**",
       },
     ],
