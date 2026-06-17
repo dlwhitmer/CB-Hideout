@@ -3,12 +3,13 @@ import { cardboard } from "@/lib/fonts";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
 import { useEffect, useState } from "react";
-import Image from 'next/image'
+import Image from "next/image";
 
 export interface Product {
-  id: number;
+  id: string;
   scryfallId: string | null;
   name: string;
+  quantity: number;
 
   setCode: string | null;
   setName: string | null;
@@ -43,7 +44,7 @@ export interface Product {
 
   created_at: string | null;
 }
-
+      
 export default function Page() {
   const [type, setType] = useState("");
   const [rarity, setRarity] = useState("");
@@ -56,46 +57,12 @@ export default function Page() {
   const totalPages = Math.ceil(total / limit);
 
   async function loadProducts(currentPage: number) {
-  setLoading(true);
-
-  try {
-    const params = new URLSearchParams();
-
-    params.set("page", String(currentPage));
-    params.set("limit", String(limit));
-
-    if (type) params.set("type", type);
-    if (rarity) params.set("rarity", rarity);
-
-    const res = await fetch(`/api/magic/list?${params.toString()}`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      console.error("Failed to load products");
-      return;
-    }
-
-    const data = await res.json();
-
-    setProducts(data.rows);
-    setTotal(data.total);
-    setPage(currentPage);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-}
-
- useEffect(() => {
-  async function load() {
     setLoading(true);
 
     try {
       const params = new URLSearchParams();
 
-      params.set("page", "1");
+      params.set("page", String(currentPage));
       params.set("limit", String(limit));
 
       if (type) params.set("type", type);
@@ -105,11 +72,16 @@ export default function Page() {
         cache: "no-store",
       });
 
+      if (!res.ok) {
+        console.error("Failed to load products");
+        return;
+      }
+
       const data = await res.json();
 
       setProducts(data.rows);
       setTotal(data.total);
-      setPage(1);
+      setPage(currentPage);
     } catch (err) {
       console.error(err);
     } finally {
@@ -117,8 +89,37 @@ export default function Page() {
     }
   }
 
-  load();
-}, [type, rarity]);
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+
+      try {
+        const params = new URLSearchParams();
+
+        params.set("page", "1");
+        params.set("limit", String(limit));
+
+        if (type) params.set("type", type);
+        if (rarity) params.set("rarity", rarity);
+
+        const res = await fetch(`/api/magic/list?${params.toString()}`, {
+          cache: "no-store",
+        });
+
+        const data = await res.json();
+
+        setProducts(data.rows);
+        setTotal(data.total);
+        setPage(1);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, [type, rarity]);
 
   return (
     <div className="p-6">
@@ -154,7 +155,7 @@ export default function Page() {
       </div>
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-center items-center mb-6">
         <h1 className={`${cardboard.className} text-center leading-[1.1]`}>
           {/* MAGIC — gradient */}
           <span
@@ -187,12 +188,12 @@ export default function Page() {
           </span>
         </h1>
 
-        <Link
+        {/* <Link
           href="/admin/magic/add"
           className="bg-green-600 text-white px-4 py-2 rounded"
         >
           Add Product
-        </Link>
+        </Link> */}
       </div>
 
       {/* TABLE */}
@@ -208,6 +209,7 @@ export default function Page() {
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               <th className="px-3 py-2 text-center">Image</th>
+              <th className="px-3 py-2 text-center">In Stock</th>
               <th className="px-3 py-2 text-center">Scryfall ID</th>
               <th className="px-3 py-2 text-center">Name</th>
               <th className="px-3 py-2 text-center">Set</th>
@@ -230,6 +232,9 @@ export default function Page() {
                   />
                 </td>
 
+                <td className="px-3 py-2 text-center font-bold">
+                  {p.quantity}
+                </td>
                 <td className="px-3 py-2 text-center font-bold">
                   {p.scryfallId}
                 </td>
@@ -254,8 +259,10 @@ export default function Page() {
                     >
                       Edit
                     </Link>
+                  
+                   <DeleteButton scryfallId={p.scryfallId} />
 
-                    <DeleteButton id={String(p.id)} />
+
                   </div>
                 </td>
               </tr>

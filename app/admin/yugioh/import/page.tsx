@@ -10,43 +10,20 @@ export default function ImportPage() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
 
-  const [loading, setLoading] = useState<boolean>(false);
-
   async function handleImport(e: React.FormEvent) {
     e.preventDefault();
 
-    if (loading) return;
-    if (!yugiohId.trim()) return;
+    await fetch("/api/yugioh/import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        yugioh_id: yugiohId,
+        price,
+        description,
+      }),
+    });
 
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/yugioh/import", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          yugiohId: yugiohId.trim(),
-          price,
-          desc: description,
-        }),
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        console.error("IMPORT ERROR:", res.status, text);
-        throw new Error("Import failed");
-      }
-
-      setYugiohId("");
-      setPrice("");
-      setDescription("");
-
-      router.refresh(); // optional but recommended
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    router.push("/admin/yugioh");
   }
 
   return (
@@ -73,12 +50,8 @@ export default function ImportPage() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-green-600 hover:bg-green-700 p-2 rounded"
-        >
-          {loading ? "Importing..." : "Import Card"}
+        <button className="bg-green-600 hover:bg-green-700 p-2 rounded">
+          Import Card
         </button>
       </form>
     </div>

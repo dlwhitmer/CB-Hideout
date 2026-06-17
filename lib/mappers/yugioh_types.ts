@@ -1,4 +1,3 @@
-
 export interface MappedYugiohCard {
   yougiohId: string;
   name: string;
@@ -23,9 +22,9 @@ export interface MappedYugiohCard {
   cardSets: string;
   cardImages: string | null;
 
+  quantity: number;
+
   cardPrices: string;
 
-  createdAt: string | null
-
-  
+  createdAt: string | null;
 }

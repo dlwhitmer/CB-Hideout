@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function AddYugiohProductPage() {
+export default function AddProductPage() {
   const router = useRouter();
 
   const [yugiohId, setYugiohId] = useState("");
@@ -17,7 +17,7 @@ export default function AddYugiohProductPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        yugiohId: yugiohId.trim(),
+        yugiohId,
         price,
         desc: description,
       }),

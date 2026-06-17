@@ -1,96 +1,93 @@
-import { client } from "@/lib/db";
+import { db } from "@/lib/db";
 import { mapScryfallToDB } from "@/lib/mappers/magic";
-
+import { NextResponse } from "next/server";
+import { magicCards } from "@/lib/db/schema/magic";
+import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
-  const db = client;
+  console.log("1. Route hit");
 
   try {
-    // get data from frontend
     const body = await req.json();
+    console.log("2. Body:", body);
 
-    const { scryfall_id, price, description } = body;
+    const { scryfall_id, price, oracle_text } = body;
 
-    // fetch ONE card from Scryfall
-    const res = await fetch(`https://api.scryfall.com/cards/${scryfall_id}`);
+    console.log("3. Fetching Magic card:", scryfall_id);
+
+    // ⭐ Correct API for Magic
+    console.log("FETCH EXISTS:", typeof fetch);
+
+    const res = await fetch(`https://api.scryfall.com/cards/${scryfall_id}`, {
+  headers: {
+    "User-Agent": "HideoutMagicImporter/1.0 (https://example.com)",
+  },
+});
 
     if (!res.ok) {
-      return Response.json(
+      return NextResponse.json(
         { error: "Card not found on Scryfall" },
         { status: 404 },
       );
     }
+    console.log("STATUS:", res.status);
 
     const card = await res.json();
+    console.log("CARD FROM SCRYFALL:", card);
 
-    // map data
+    // ⭐ Scryfall does NOT wrap in "data"
+    // ⭐ Scryfall does NOT wrap in "data"
+    // const card = await res.json();
+
+    console.log("CARD FROM SCRYFALL:", card);
+
     const mapped = mapScryfallToDB(card);
 
-    // override custom values from admin form
+    // Apply overrides
     mapped.price = Number(price || mapped.price || 0);
-    mapped.description = description || "";
+    mapped.oracleText = oracle_text || mapped.oracleText || "";
 
-    await db.execute({
-      sql: `
-    INSERT OR REPLACE INTO products (
-      scryfall_id,
-      name,
-      set_code,
-      set_name,
-      mana_cost,
-      cmc,
-      colors,
-      color_identity,
-      power,
-      toughness,
-      keywords,
-      type_line,
-      oracle_text,
-      layout,
-      card_faces,
-      collector_number,
-      rarity,
-      price,
-      image_url,
-      artist,
-      released_at,
-      description
-    ) VALUES (
-      ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-    )
-  `,
-      args: [
-        mapped.scryfallId,
-        mapped.name,
-        mapped.setCode,
-        mapped.setName,
-        mapped.manaCost,
-        mapped.cmc,
-        mapped.colors,
-        mapped.colorIdentity,
-        mapped.power,
-        mapped.toughness,
-        mapped.keywords,
-        mapped.typeLine,
-        mapped.oracleText,
-        mapped.layout,
-        mapped.cardFaces,
-        mapped.collectorNumber,
-        mapped.rarity,
-        mapped.price,
-        mapped.imageUrl,
-        mapped.artist,
-        mapped.releasedAt,
-        mapped.description,
-      ],
+    console.log("6. Mapped");
+
+    // ⭐⭐⭐ Duplicate handling (same as Pokémon) ⭐⭐⭐
+
+    // 1. Check if card already exists
+    const existing = await db
+      .select()
+      .from(magicCards)
+      .where(eq(magicCards.scryfallId, mapped.scryfallId));
+
+    if (existing.length > 0) {
+      // 2. Card exists → increment quantity
+      await db
+        .update(magicCards)
+        .set({ quantity: existing[0].quantity + 1 })
+        .where(eq(magicCards.id, existing[0].id));
+
+      return NextResponse.json({
+        success: true,
+        updated: true,
+        quantity: existing[0].quantity + 1,
+      });
+    }
+
+    // 3. Card does NOT exist → insert with quantity = 1
+    console.log("7. About to insert into DB");
+
+    await db.insert(magicCards).values({
+      ...mapped,
+      quantity: 1,
     });
-    return Response.json({
+
+    console.log("8. DB insert complete");
+
+    return NextResponse.json({
       success: true,
-      card: mapped.name,
+      inserted: true,
+      quantity: 1,
     });
   } catch (err: any) {
-    console.error(err);
-
-    return Response.json({ error: err.message }, { status: 500 });
+    console.error("🔥 IMPORT FAILED:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

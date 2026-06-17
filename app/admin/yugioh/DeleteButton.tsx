@@ -1,10 +1,10 @@
 "use client";
 
-export default function DeleteButton({ id }: { id: string }) {
+export default function DeleteButton({ yugiohId }: { yugiohId: string | null }) {
   async function handleDelete() {
-    console.log("Sending DELETE to:", `/api/pokemon/${id}`);
+    console.log("Sending DELETE to:", `/api/yugioh/${yugiohId}`);
 
-    await fetch(`/api/pokemon/${id}`, {
+    await fetch(`/api/yugioh/${yugiohId}`, {
       method: "DELETE",
     });
 

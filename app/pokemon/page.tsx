@@ -50,7 +50,7 @@ export default async function ProductsPage({
   // RENDER
   // ---------------------------
   return (
-    <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
+    <div className="min-h-screen bg-[url('/images/bg-50.webp')] bg-no-repeat bg-[length:100%_100%]">
       
       {/* FILTER BAR */}
       <form className="flex gap-4 mb-4 pt-3 text-white">

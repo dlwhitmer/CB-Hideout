@@ -23,7 +23,7 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
   }
 
   return (
-    <main className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%]">
+    <main className="min-h-screen bg-[url('/images/bg-27.webp')] bg-no-repeat bg-[length:100%_100%]">
       <div className="p-6 max-w-5xl mx-auto text-white">
         <div className="flex flex-col md:flex-row gap-10">
           <div className="flex-shrink-0">
@@ -36,38 +36,44 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
             />
           </div>
 
-          <div className="flex flex-col gap-4 flex-1 pt-4">
-            <h1 className="text-3xl font-bold">{product.name}</h1>
+          <div className="bg-[#ffffffB3] h-[400px] w-[250px] flex flex-col gap-4 flex-auto pl-10 pt-4">
+            <h1 className="text-3xl text-black font-bold">{product.name}</h1>
 
-            <div className="grid grid-cols-2 gap-y-2 text-white">
+            <div className="grid grid-cols-2 gap-y-2 text-black">
               <p>
-                <span className="font-semibold">Set:</span> {product.setCode}
+                <span className="font-semibold">Set:</span>
+                <span className="font-semibold">  {product.setCode}</span> 
               </p>
               <p>
-                <span className="font-semibold">Collector #:</span>{" "}
-                {product.cardNumber}
+                <span className="font-semibold">Collector #</span>
+                <span className="font-semibold"> {product.cardNumber}</span>
+                
               </p>
               <p>
-                <span className="font-semibold">Rarity:</span> {product.rarity}
+                <span className="font-semibold">Rarity:</span>
+                <span className="font-semibold">   {product.rarity}</span>
               </p>
               <p>
-                <span className="font-semibold">Type:</span> {product.types}
+                <span className="font-semibold">Type:</span> 
+                <span className="font-semibold">  {product.types}</span> 
               </p>
               <p>
-                <span className="font-semibold">Artist:</span> {product.artist}
+                <span className="font-semibold">Artist:</span> 
+                <span className="font-semibold">  {product.artist}</span> 
+              </p>
+              <p>
+                <span className="font-semibold">In-Stock:</span> 
+                <span className="font-semibold">  {product.quantity}</span> 
+              </p>
+              
+              <p className="col-span-2">
+                <span className="font-bold">Description:</span>{" "}
+                <span className="font-semibold">{product.flavorText}</span>
               </p>
             </div>
-            
-            {product.flavorText && (
-              <div className="bg-black/40 p-4 rounded leading-relaxed whitespace-pre-line">
-                {product.flavorText}
-              </div>
-            )}
 
-            <div className="flex justify-left items-center gap-6">
-              <p className="text-green-400 text-2xl font-bold">
-                ${product.price}
-              </p>
+            <div className="flex justify-left items-center gap-10">
+              <p className="text-black text-2xl font-bold">${product.price}</p>
               <BackButton />
             </div>
           </div>

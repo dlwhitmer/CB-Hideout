@@ -56,6 +56,9 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
               <p>
                 <span className="font-semibold">Artist:</span> {product.artist}
               </p>
+              <p>
+                <span className="font-semibold">In Stock:</span> {product.quantity}
+              </p>
             </div>
 
             {product.oracleText && (

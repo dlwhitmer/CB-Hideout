@@ -93,7 +93,7 @@ export default function Page() {
       </div>
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-center items-center mb-6">
         <h1 className={`${cardboard.className} text-center leading-[1.1]`}>
           {/* Pokemon — gradient */}
           <span
@@ -126,12 +126,12 @@ export default function Page() {
           </span>
         </h1>
 
-        <Link
+        {/* <Link
           href="/admin/pokemon/add"
           className="bg-green-600 text-white px-4 py-2 rounded"
         >
           Add Product
-        </Link>
+        </Link> */}
       </div>
 
       {/* TABLE */}
@@ -146,6 +146,7 @@ export default function Page() {
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               <th className="px-3 py-2 text-center">Image</th>
+              <th className="px-3 py-2 text-center">In-Stock</th>
               <th className="px-3 py-2 text-center">Pokemon ID</th>
               <th className="px-3 py-2 text-center">Name</th>
               <th className="px-3 py-2 text-center">Set</th>
@@ -172,6 +173,10 @@ export default function Page() {
                 </td>
 
                 <td className="px-3 py-2 text-center font-bold">
+                  {p.quantity}
+                </td>
+                
+                <td className="px-3 py-2 text-center font-bold">
                   {p.pokemonId}
                 </td>
 
@@ -196,7 +201,7 @@ export default function Page() {
                       Edit
                     </Link>
 
-                    <DeleteButton id={String(p.id)} />
+                   <DeleteButton pokemonId={p.pokemonId} />
                   </div>
                 </td>
               </tr>

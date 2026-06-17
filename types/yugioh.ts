@@ -9,6 +9,7 @@ export interface YugiohProduct {
   desc: string | null;
   race: string | null;
   atk: number | null;
+  quantity: number | null;
   def: number | null;
   level: number | null;
   attribute: string | null;
@@ -18,7 +19,7 @@ export interface YugiohProduct {
   card_images: string | null;
   card_prices: string | null;
 
-  price: string | null;
+  price: number | null;
   image_small: string | null;
   image_large: string | null;
 

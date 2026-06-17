@@ -1,10 +1,10 @@
 "use client";
 
-export default function DeleteButton({ id }: { id: string }) {
+export default function DeleteButton({ pokemonId }: { pokemonId: string | null }) {
   async function handleDelete() {
-    console.log("Sending DELETE to:", `/api/pokemon/${id}`);
+    console.log("Sending DELETE to:", `/api/pokemon/${pokemonId}`);
 
-    await fetch(`/api/pokemon/${id}`, {
+    await fetch(`/api/pokemon/${pokemonId}`, {
       method: "DELETE",
     });
 

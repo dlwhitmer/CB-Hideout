@@ -16,6 +16,7 @@ export function mapPokemonToDB(card: any){
     flavorText: card.flavorText ?? "",
     supertype: card.supertype ?? "",
     subtypes: card.subtypes?.join(", ") ?? null,
+    quantity: 0,
     hp: card.hp ?? "",
     types: card.types?.join(", ") ?? null,
     artist: card.artist ?? "",

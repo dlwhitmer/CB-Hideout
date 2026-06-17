@@ -1,25 +1,32 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
-
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const role = cookieStore.get("role")?.value;
+
+  if (role !== "admin") {
+    redirect("/login");
+  }
+
   return (
     <div className="min-h-screen flex bg-gray-900 text-white">
       {/* Sidebar */}
-
       <aside className="w-64 bg-gray-800 p-4">
         <h2 className="text-xl font-bold mb-4">Admin Panel</h2>
         <nav className="flex flex-col gap-2">
           <Link href="/admin" className="hover:text-blue-400">
             Dashboard
           </Link>
-          <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px]  font-bold mt-2 mb-1">
+
+          <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             View & Edit Products
           </h2>
-
           <Link href="/admin/magic/" className="hover:text-blue-400">
             Magic Cards
           </Link>
@@ -29,14 +36,15 @@ export default function AdminLayout({
           <Link href="/admin/yugioh/" className="hover:text-blue-400">
             Yu-Gi-Oh Cards
           </Link>
-          <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px]  font-bold mt-2 mb-1">
+
+          <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             Add Products
           </h2>
-
           <Link href="/admin/magic/add/" className="hover:text-blue-400">
             Add Product
           </Link>
-          <h2 className="underline decoration-2 decoration-[#fff000] text-[#fff000] text-[16px]  font-bold mt-2 mb-1">
+
+          <h2 className="underline decoration-2 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             Import Cards
           </h2>
           <Link href="/admin/magic/import" className="hover:text-blue-400">
@@ -48,6 +56,7 @@ export default function AdminLayout({
           <Link href="/admin/yugioh/import" className="hover:text-blue-400">
             Import Yu-Gi-Oh Card
           </Link>
+
           <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             Edit Users
           </h2>

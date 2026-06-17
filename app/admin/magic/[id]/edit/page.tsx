@@ -12,7 +12,8 @@ export default function EditProductPage() {
   // Form fields
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [description, setDescription] = useState(""); // Oracle Text
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     async function loadProduct() {
@@ -21,10 +22,10 @@ export default function EditProductPage() {
         const data = await res.json();
         console.log("EDIT DATA:", data);
 
-        // Prefill form fields
         setName(data.name || "");
         setPrice(data.price || "");
         setDescription(data.oracleText || "");
+        setQuantity(data.quantity ?? 0);
 
         setLoading(false);
       } catch (err) {
@@ -45,9 +46,9 @@ export default function EditProductPage() {
         name,
         price,
         description,
+        quantity,
       }),
     });
-      console.log(description)
 
     router.push("/admin/magic");
   }
@@ -78,9 +79,17 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-semibold">
-            Description (Oracle Text)
-          </label>
+          <label className="block font-semibold">Quantity</label>
+          <input
+            type="number"
+            className="border p-2 w-full"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+          />
+        </div>
+
+        <div>
+          <label className="block font-semibold">Description (Oracle Text)</label>
           <textarea
             className="border p-2 w-full h-40"
             value={description}

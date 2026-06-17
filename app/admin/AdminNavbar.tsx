@@ -12,40 +12,48 @@ export default function AdminNavbar() {
       : "text-gray-400 hover:text-white";
 
   return (
-    <nav className="w-full bg-gray-900 border-b border-gray-700 px-6 py-3 flex items-center gap-8">
-      <h1 className="text-xl font-bold text-white">Admin Panel</h1>
+    <aside className="w-64 bg-gray-900 text-white p-6 space-y-6 min-h-screen">
+      <h1 className="text-2xl font-bold">Admin Panel</h1>
 
-      <Link href="/admin/magic" className={linkClass("/admin/magic")}>
-        Magic Cards
-      </Link>
+      <nav className="space-y-4">
 
-      <Link href="/admin/pokemon" className={linkClass("/admin/pokemon")}>
-        Pokemon Cards
-      </Link>
-     
-      <Link href="/admin/yugioh" className={linkClass("/admin/yugioh")}>
-        Yu-Gi-Oh Cards
-      </Link>
+        <Link href="/admin/magic" className={linkClass("/admin/magic")}>
+          Magic Cards
+        </Link>
 
-      <Link href="/admin/magic/import" className={linkClass("/admin/magic/import")}>
-        Import Magic Cards
-      </Link>
+        <Link href="/admin/pokemon" className={linkClass("/admin/pokemon")}>
+          Pokémon Cards
+        </Link>
 
-      <Link href="/admin/pokemon/import" className={linkClass("/admin/pokemon/import")}>
-        Import Pokemon Cards
-      </Link>
-      
-      <Link href="/admin/yugioh/import" className={linkClass("/admin/yugioh/import")}>
-        Import Yu-Gi-Oh Cards
-      </Link>
+        <Link href="/admin/yugioh" className={linkClass("/admin/yugioh")}>
+          Yu‑Gi‑Oh Cards
+        </Link>
 
-      <Link href="/admin/users" className={linkClass("/admin/users")}>
-        Users
-      </Link>
+        <hr className="border-gray-700" />
 
-      <Link href="/admin/settings" className={linkClass("/admin/settings")}>
-        Settings
-      </Link>
-    </nav>
+        <Link href="/admin/magic/import" className={linkClass("/admin/magic/import")}>
+          Import Magic Cards
+        </Link>
+
+        <Link href="/admin/pokemon/import" className={linkClass("/admin/pokemon/import")}>
+          Import Pokémon Cards
+        </Link>
+
+        <Link href="/admin/yugioh/import" className={linkClass("/admin/yugioh/import")}>
+          Import Yu‑Gi‑Oh Cards
+        </Link>
+
+        <hr className="border-gray-700" />
+
+        <Link href="/admin/users" className={linkClass("/admin/users")}>
+          Users
+        </Link>
+
+        <Link href="/admin/settings" className={linkClass("/admin/settings")}>
+          Settings
+        </Link>
+
+      </nav>
+    </aside>
   );
 }

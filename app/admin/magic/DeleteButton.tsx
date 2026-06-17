@@ -1,10 +1,10 @@
 "use client";
 
-export default function DeleteButton({ id }: { id: string }) {
+export default function DeleteButton({ scryfallId }: { scryfallId: string | null }) {
   async function handleDelete() {
-    console.log("Sending DELETE to:", `/api/magic/${id}`);
+    console.log("Sending DELETE to:", `/api/magic/${scryfallId}`);
 
-    await fetch(`/api/magic/${id}`, {
+    await fetch(`/api/magic/${scryfallId}`, {
       method: "DELETE",
     });
 

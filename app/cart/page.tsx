@@ -1,8 +1,18 @@
-export default function ShoppingCart(){
-    return(
-        <div className="min-h-screen bg-[#2d2c5e] text-white pt-20 p-10">
-            <h1 className="text-3xl text-center">Shopping Cart</h1>
-            <p className="text-lg text-center">Coming Soon!</p>
-        </div>
-    );
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+export default async function CartPage() {
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("userId")?.value;
+
+  if (!userId) {
+    redirect("/login");
+  }
+
+  return (
+    <div>
+      <h1>Your Cart</h1>
+      {/* Your cart UI goes here */}
+    </div>
+  );
 }

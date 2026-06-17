@@ -31,6 +31,7 @@ export interface MappedMagicCard {
 
   imageUrl: string | null;
   artist: string | null;
+  quantity: number| null;
 
   releaseAt: string | null;
   createdAt: string | null

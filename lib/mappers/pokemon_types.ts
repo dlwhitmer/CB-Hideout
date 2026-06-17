@@ -26,6 +26,7 @@ export interface MappedPokemonCard {
 
   imageLarge: string;
   price: number;
+  quantity:number;
 
   releaseDate: string | null;
   createdAt: string;

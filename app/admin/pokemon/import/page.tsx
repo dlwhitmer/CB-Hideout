@@ -10,44 +10,25 @@ export default function ImportPage() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
 
-  const [loading, setLoading] = useState<boolean>(false);
-
   async function handleImport(e: React.FormEvent) {
     e.preventDefault();
 
-    if (loading) return;
-    if (!pokemonId.trim()) return;
+    await fetch("/api/pokemon/import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        pokemon_id: pokemonId,
+        price,
+        description,
+      }),
+    });
 
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/pokemon/import", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pokemon_id: pokemonId.trim(),
-          price,
-          flavor_text: description,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Import failed");
-
-      setPokemonId("");
-      setPrice("");
-      setDescription("");
-
-      router.refresh(); // optional but recommended
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    router.push("/admin/pokemon");
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Import Pokemon Card</h1>
+      <h1 className="text-2xl font-bold mb-4">Import MTG Card</h1>
 
       <form onSubmit={handleImport} className="flex flex-col gap-4 max-w-lg">
         <input
@@ -69,12 +50,9 @@ export default function ImportPage() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-green-600 hover:bg-green-700 p-2 rounded"
-        >
-          {loading ? "Importing..." : "Import Card"}
+
+        <button className="bg-green-600 hover:bg-green-700 p-2 rounded">
+          Import Card
         </button>
       </form>
     </div>

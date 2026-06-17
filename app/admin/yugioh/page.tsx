@@ -124,7 +124,7 @@ export default function Page() {
       </div>
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-center items-center mb-6">
         <Image
           src="/images/yugioh_logo.webp"
           alt="Yugioh Logo"
@@ -132,12 +132,12 @@ export default function Page() {
           width={220}
         />
 
-        <Link
+        {/* <Link
           href="/admin/yugioh/add"
           className="bg-green-600 text-white px-4 py-2 rounded"
         >
           Add Product
-        </Link>
+        </Link> */}
       </div>
 
       {/* TABLE */}
@@ -152,6 +152,7 @@ export default function Page() {
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               <th className="px-3 py-2 text-center">Image</th>
+              <th className="px-3 py-2 text-center">In-Stock</th>
               <th className="px-3 py-2 text-center">Yu-Gi-Oh ID</th>
               <th className="px-3 py-2 text-center">Name</th>
               <th className="px-3 py-2 text-center">Type</th>
@@ -181,6 +182,10 @@ export default function Page() {
                   </td>
 
                   <td className="px-3 py-2 text-center font-bold">
+                    {p.quantity}
+                  </td>
+                  
+                  <td className="px-3 py-2 text-center font-bold">
                     {p.yugiohId}
                   </td>
                   <td className="px-3 py-2 text-center font-bold">{p.name}</td>
@@ -199,7 +204,8 @@ export default function Page() {
                         Edit
                       </Link>
 
-                      <DeleteButton id={String(p.id)} />
+                       <DeleteButton yugiohId={p.yugiohId} />
+                     
                     </div>
                   </td>
                 </tr>

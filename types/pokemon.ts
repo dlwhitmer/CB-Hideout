@@ -14,6 +14,7 @@ export interface PokemonProduct {
   hp: string | null;
   types: string | null;
   artist: string | null;
+  quantity: string | null;
   imageSmall: string | null;
   imageLarge: string | null;
   price: number | null;
