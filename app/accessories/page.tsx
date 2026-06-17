@@ -26,11 +26,11 @@ export default async function AccessoryPage({
   // ---------------------------
   const rows = await db
     .select()
-    .from(accessories)
+    .from(Accessory)
     .where(
       and(
-        type ? like(accessories.types, `%${type}%`) : undefined,
-        genre ? eq(accessories.genre, genre) : undefined
+        type ? like(Accessory.type, `%${type}%`) : undefined,
+        genre ? eq(Accessory.game, genre) : undefined
       )
     )
     .limit(pageSize)
@@ -41,7 +41,7 @@ export default async function AccessoryPage({
   // ---------------------------
   const totalResult = await db
     .select({ count: sql<number>`count(*)` })
-    .from(accessories);
+    .from(Accessory);
 
   const total = totalResult[0]?.count ?? 0;
   const totalPages = Math.ceil(total / pageSize);
@@ -109,7 +109,7 @@ export default async function AccessoryPage({
             className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
           >
             <Image
-              src={p.imageLarge || "/placeholder.png"}
+              src={p.imgage.png || "/placeholder.png"}
               alt={p.name || "Pokemon card"}
               width={320}
               height={446}
