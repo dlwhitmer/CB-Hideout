@@ -109,7 +109,8 @@ export default async function AccessoryPage({
             className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
           >
             <Image
-              src={p.imgage.png || "/placeholder.png"}
+              src={(p as any).image_url || "/placeholder.png"}
+
               alt={p.name || "Pokemon card"}
               width={320}
               height={446}
