@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware(req) {
+export function middleware(req: NextRequest) {
   const userId = req.cookies.get("userId")?.value;
 
   const protectedRoutes = ["/cart", "/checkout", "/account"];
@@ -13,3 +14,4 @@ export function middleware(req) {
 
   return NextResponse.next();
 }
+
