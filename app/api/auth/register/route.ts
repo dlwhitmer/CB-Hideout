@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { Users } from "@/lib/db/schema";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
+import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -12,7 +13,11 @@ export async function POST(req: Request) {
   }
 
   // Check if username already exists
-  const existing = await db.select().from(Users).where(Users.username.eq(username));
+  const existing = await db
+  .select()
+  .from(Users)
+  .where(eq(Users.username, username));
+  
   if (existing.length > 0) {
     return Response.json({ error: "Username already taken" }, { status: 400 });
   }

@@ -1,7 +1,9 @@
 import Image from "next/image";
+// import { eq } from "drizzle-orm";
+import { Users } from "@/lib/db/schema";
 import { db } from "@/lib/db";
 import { Accessory } from "@/lib/db/schema/accessory";
-import { eq, like, and, sql } from "drizzle-orm";
+import { like, and, eq, sql } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
 
@@ -11,15 +13,20 @@ export default async function AccessoryPage({
   searchParams?: {
     page?: string;
     type?: string;
-    genre: string;
+    game: string;
   };
 }) {
   const page = Number(searchParams?.page ?? 1);
   const type = searchParams?.type ?? "";
-  const genre = searchParams?.genre ?? "";
+  const genre = searchParams?.game ?? "";
 
   const pageSize = 20;
   const offset = (page - 1) * pageSize;
+
+  // const existing = await db
+  //   .select()
+  //   .from(Users)
+  //   .where(eq(Users.username, username));
 
   // ---------------------------
   // DATA QUERY
@@ -30,8 +37,8 @@ export default async function AccessoryPage({
     .where(
       and(
         type ? like(Accessory.type, `%${type}%`) : undefined,
-        genre ? eq(Accessory.game, genre) : undefined
-      )
+        genre ? eq(Accessory.game, genre) : undefined,
+      ),
     )
     .limit(pageSize)
     .offset(offset);
@@ -51,7 +58,6 @@ export default async function AccessoryPage({
   // ---------------------------
   return (
     <div className="min-h-screen bg-[url('/images/bg-50.webp')] bg-no-repeat bg-[length:100%_100%]">
-      
       {/* FILTER BAR */}
       <form className="flex gap-4 mb-4 pt-3 text-white">
         <select
@@ -110,7 +116,6 @@ export default async function AccessoryPage({
           >
             <Image
               src={(p as any).image_url || "/placeholder.png"}
-
               alt={p.name || "Pokemon card"}
               width={320}
               height={446}
