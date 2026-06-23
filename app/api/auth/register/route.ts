@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     passwordHash: hash,
     name,
     address,
+    po_box: body.po_box,
     city,
     state,
     zipcode,

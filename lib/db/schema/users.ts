@@ -6,6 +6,7 @@ export const Users = sqliteTable("users", {
   passwordHash: text("password_hash").notNull(),
   name: text("name"),
   address: text("address"),
+  po_box: text("po_box"),
   city: text("city"),
   state: text("state"),
   zipcode: text("zipcode"),

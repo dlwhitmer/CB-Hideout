@@ -143,7 +143,7 @@ export default async function ProductsPage({
           return (
             <a
               key={p.id}
-              href={`/yugioh/${p.id}`}
+              href={`/yugioh/singles/${p.id}`}
               className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
             >
               <Image

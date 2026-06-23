@@ -1,36 +1,37 @@
 "use client";
-import { useState } from "react";
 
-export default function LoginPage() {
+import React, { useState } from "react";
+
+export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  async function handleLogin() {
-    const res = await fetch("/api/auth/login-user", {
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError("");
+
+    const res = await fetch("/api/auth/login", {
       method: "POST",
-      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
-    console.log("Status:", res.status, "Redirected:", res.redirected);
 
-    // If the server redirected, follow it
     if (res.redirected) {
       window.location.href = res.url;
       return;
     }
 
-    // If login failed, show error
-    const data = await res;
-    console.log(data);
+    const data = await res.json();
+    setError(data.error || "Login failed");
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
-      <div className="w-[250p] max-w-md bg-gray-900 p-8 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+      <div className="w-[300px] bg-gray-900 p-8 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
 
-        <div className="flex flex-col gap-4">
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <input
             className="p-2 bg-gray-800 border border-gray-700 rounded"
             placeholder="Username"
@@ -44,22 +45,17 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
+          {error && (
+            <p className="text-red-400 text-sm text-center">{error}</p>
+          )}
+
           <button
-            onClick={handleLogin}
+            type="submit"
             className="bg-blue-600 py-2 rounded hover:bg-blue-700 transition"
           >
             Login
           </button>
-        </div>
-
-        <div className="mt-4 text-center">
-          <p className="text-gray-400">
-            Don’t have an account?{" "}
-            <a href="/register" className="text-blue-400 hover:underline">
-              Create one here
-            </a>
-          </p>
-        </div>
+        </form>
       </div>
     </div>
   );

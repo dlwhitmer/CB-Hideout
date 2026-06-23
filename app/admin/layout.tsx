@@ -1,19 +1,10 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const role = cookieStore.get("role")?.value;
-
-  if (role !== "admin") {
-    redirect("/login");
-  }
-
   return (
     <div className="min-h-screen flex bg-gray-900 text-white">
       {/* Sidebar */}

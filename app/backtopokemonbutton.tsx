@@ -6,7 +6,7 @@ export default function BackButton() {
 
   return (
     <button
-      onClick={() => router.push("/pokemon")}
+      onClick={() => router.push("/pokemon/singles")}
       className="bg-[#000]/30 w-[100px] border-2 border-[gray]/80"
     >
       Back

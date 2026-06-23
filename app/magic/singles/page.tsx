@@ -1,57 +1,49 @@
-import Image from "next/image";
-import { db } from "@/lib/db";
-import { pokemonCards } from "@/lib/db/schema/pokemon";
-import { eq, like, and, sql } from "drizzle-orm";
+// import { cardboard } from "@/lib/fonts";
+import { headers } from "next/headers";
+import MagicWord from "@/app/components/MagicWord";
+import Image from 'next/image'
 
 export const dynamic = "force-dynamic";
+
+type SearchParams = {
+  page?: string;
+  type?: string;
+  rarity?: string;
+};
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams?: {
-    page?: string;
-    type?: string;
-    rarity?: string;
-  };
+  searchParams: SearchParams;
 }) {
-  const page = Number(searchParams?.page ?? 1);
-  const type = searchParams?.type ?? "";
-  const rarity = searchParams?.rarity ?? "";
+  const sp = await searchParams;
+  const page = parseInt(sp.page ?? "1");
+  const type = sp.type ?? "";
+  const rarity = sp.rarity ?? "";
 
-  const pageSize = 20;
-  const offset = (page - 1) * pageSize;
+  // FIX: absolute URL required in server components
+  const h = await headers();
+  const host = h.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 
-  // ---------------------------
-  // DATA QUERY
-  // ---------------------------
-  const rows = await db
-    .select()
-    .from(pokemonCards)
-    .where(
-      and(
-        type ? like(pokemonCards.types, `%${type}%`) : undefined,
-        rarity ? eq(pokemonCards.rarity, rarity) : undefined
-      )
-    )
-    .limit(pageSize)
-    .offset(offset);
+  const response = await fetch(
+    `${protocol}://${host}/api/magic/list?page=${page}&type=${type}&rarity=${rarity}`,
+    { cache: "no-store" },
+  );
 
-  // ---------------------------
-  // COUNT QUERY
-  // ---------------------------
-  const totalResult = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(pokemonCards);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch magic cards: ${response.status}`);
+  }
 
-  const total = totalResult[0]?.count ?? 0;
+  const data = await response.json();
+
+  const products = data.rows;
+  const total = data.total;
+  const pageSize = data.pageSize;
   const totalPages = Math.ceil(total / pageSize);
 
-  // ---------------------------
-  // RENDER
-  // ---------------------------
   return (
-    <div className="min-h-screen bg-[url('/images/bg-50.webp')] bg-no-repeat bg-[length:100%_100%]">
-      
+    <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
       <form className="flex gap-4 mb-4 pt-3 text-white">
         <select
@@ -90,29 +82,49 @@ export default async function ProductsPage({
       </form>
 
       {/* TITLE */}
-      <div className="flex justify-center">
-        <Image
-          src="/images/pokemon.webp"
-          alt="Pokemon"
-          width={300}
-          height={100}
-          className="h-[80px] md:h-[300px] lg:h-[90px] object-contain"
-        />
-      </div>
+      <h1 className="text-center leading-[1.1]">
+        <MagicWord>
+          <span
+            className="
+            block 
+            text-[80px] 
+            font-style: italic
+            text-transparent 
+            bg-clip-text 
+            bg-gradient-to-b 
+            from-[#cc3300] 
+            to-[#ff9900]
+          "
+          >
+            Magic
+          </span>
+        </MagicWord>
+
+        <span
+          className="
+            block 
+            text-[50px] 
+            text-[#f17908] 
+            [text-shadow:_2px_4px_6px_#000]
+          "
+        >
+          The Gathering
+        </span>
+      </h1>
 
       {/* GRID */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-5 gap-6">
-        {rows.map((p) => (
+        {products.map((p: any) => (
           <a
             key={p.id}
-            href={`/pokemon/${p.id}`}
+            href={`/magic/singles/${p.id}`}
             className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
           >
             <Image
-              src={p.imageLarge || "/placeholder.png"}
-              alt={p.name || "Pokemon card"}
-              width={320}
-              height={446}
+              src={p.imageUrl || "/placeholder.png"}
+              alt={p.name}
+              width={300}
+              height={300}
               className="rounded shadow"
             />
 
@@ -129,7 +141,7 @@ export default async function ProductsPage({
       <div className="flex justify-center gap-4 mt-8 text-white">
         {page > 1 && (
           <a
-            href={`/pokemon?page=${page - 1}`}
+            href={`/magic/singles?page=${page - 1}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
           >
             Previous
@@ -138,7 +150,7 @@ export default async function ProductsPage({
 
         {page < totalPages && (
           <a
-            href={`/pokemon?page=${page + 1}`}
+            href={`/magic/singles?page=${page + 1}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
           >
             Next

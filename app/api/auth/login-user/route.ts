@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Admins } from "@/lib/db/schema";
+import { Users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
@@ -7,36 +7,36 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const { username, password } = await request.json();
 
-  // 1. Find admin
-  const admins = await db
+  // 1. Find user
+  const user = await db
     .select()
-    .from(Admins)
-    .where(eq(Admins.username, username))
+    .from(Users)
+    .where(eq(Users.username, username))
     .limit(1);
 
-  if (admins.length === 0) {
+  if (user.length === 0) {
     return NextResponse.json({ error: "Invalid username" }, { status: 401 });
   }
 
-  const user = admins[0];
+  const u = user[0];
 
   // 2. Check password
-  const valid = await bcrypt.compare(password, user.passwordHash);
+  const valid = await bcrypt.compare(password, u.passwordHash);
 
   if (!valid) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
   // 3. Create redirect response
-  const response = NextResponse.redirect(new URL("/admin", request.url));
+  const response = NextResponse.redirect(new URL("/", request.url));
 
-  // 4. Set cookies
-  response.cookies.set("role", "admin", {
+  // 4. Set cookie
+  response.cookies.set("userId", u.id.toString(), {
     httpOnly: true,
     path: "/",
   });
 
-  response.cookies.set("userId", user.id.toString(), {
+  response.cookies.set("role", "user", {
     httpOnly: true,
     path: "/",
   });

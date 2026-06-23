@@ -6,7 +6,7 @@ export default function BackButton() {
 
   return (
     <button
-      onClick={() => router.push("/magic")}
+      onClick={() => router.push("/magic/singles")}
       className="bg-[#000]/30 w-[100px] border-2 border-[gray]/80"
     >
       Back

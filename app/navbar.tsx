@@ -28,7 +28,6 @@ export default function NavBar() {
     <nav className="fixed top-0 left-0 right-0 z-20">
       <div className="backdrop-blur-md bg-black border-b">
         <div className="px-10 py-2 flex items-center justify-between">
-          
           {/* Logo */}
           <div className="flex items-center gap-2">
             <Image
@@ -45,8 +44,12 @@ export default function NavBar() {
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex space-x-6 text-white items-center">
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/about">About</Link></li>
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+            <li>
+              <Link href="/about">About</Link>
+            </li>
 
             {/* Desktop Products Dropdown */}
             <li
@@ -65,28 +68,62 @@ export default function NavBar() {
 
               {desktopDropdownOpen && (
                 <div className="absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded min-w-[180px] z-50">
-                  <Link className="block px-4 py-2 hover:bg-gray-800" href="/magic/">Magic Cards</Link>
-                  <Link className="block px-4 py-2 hover:bg-gray-800" href="/pokemon/">Pokemon Cards</Link>
-                  <Link className="block px-4 py-2 hover:bg-gray-800" href="/yugioh/">Yu-Gi-Oh Cards</Link>
-                  <Link className="block px-4 py-2 hover:bg-gray-800" href="/accessories/">Accessories</Link>
+                  <Link
+                    className="block px-4 py-2 hover:bg-gray-800"
+                    href="/magic/"
+                  >
+                    Magic Cards
+                  </Link>
+                  <Link
+                    className="block px-4 py-2 hover:bg-gray-800"
+                    href="/pokemon/"
+                  >
+                    Pokemon Cards
+                  </Link>
+                  <Link
+                    className="block px-4 py-2 hover:bg-gray-800"
+                    href="/yugioh/"
+                  >
+                    Yu-Gi-Oh Cards
+                  </Link>
+                  <Link
+                    className="block px-4 py-2 hover:bg-gray-800"
+                    href="/accessories/"
+                  >
+                    Accessories
+                  </Link>
                 </div>
               )}
             </li>
 
-            <li><Link href="/cart">Cart</Link></li>
+            <li>
+              <Link href="/cart">Cart</Link>
+            </li>
 
             {/* Auth Section */}
             {userId ? (
               <>
-                <li><Link href="/account">Account</Link></li>
                 <li>
-                  <button onClick={handleLogout} className="hover:text-gray-300">
+                  <Link href="/account">Account</Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="hover:text-gray-300"
+                  >
                     Logout
                   </button>
                 </li>
               </>
             ) : (
-              <li><Link href="/login">Login</Link></li>
+              <>
+                <li>
+                  <Link href="/login">Login</Link>
+                </li>
+                <li>
+                  <Link href="/register">Register</Link>
+                </li>
+              </>
             )}
           </ul>
 
@@ -102,7 +139,6 @@ export default function NavBar() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="md:hidden flex flex-col items-center gap-4 py-4 text-white border-t border-gray-700">
-
             <Link href="/">Home</Link>
             <Link href="/about">About</Link>
 
