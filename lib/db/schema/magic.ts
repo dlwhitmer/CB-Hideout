@@ -1,42 +1,48 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
+import { InferModel } from "drizzle-orm";
 
-export const magicCards = sqliteTable("products", {
-  id: integer("id").primaryKey(),
+/* -------------------------------------------------------
+   MAGIC — SINGLES (FIXED)
+------------------------------------------------------- */
+export const magicSingles = sqliteTable("magic_singles", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
 
-  // Required identifiers
-  scryfallId: text("scryfall_id").notNull().unique(),
+  scryfall_id: text("scryfall_id").notNull().unique(),
   name: text("name").notNull(),
-  setCode: text("set_code").notNull(),
-  setName: text("set_name").notNull(),
-  collectorNumber: text("collector_number").notNull(),
 
-  // Gameplay fields (always present in Scryfall)
-  typeLine: text("type_line").notNull(),
-  rarity: text("rarity").notNull(),
-  layout: text("layout").notNull(),
+  set_code: text("set_code").notNull(),
+  set_name: text("set_name").notNull(),
 
-  // Optional gameplay fields
-  manaCost: text("mana_cost"),
-  cmc: integer("cmc"),
+  mana_cost: text("mana_cost"),
+  cmc: real("cmc"),
   colors: text("colors"),
-  colorIdentity: text("color_identity"),
+  color_identity: text("color_identity"),
   power: text("power"),
   toughness: text("toughness"),
   keywords: text("keywords"),
-  oracleText: text("oracle_text"),
-  cardFaces: text("card_faces"),
+  type_line: text("type_line"),
+  oracle_text: text("oracle_text"),
+  layout: text("layout"),
+  card_faces: text("card_faces"),
 
-  // Inventory + pricing
-  price: real("price").notNull(),
-  quantity: integer("quantity").notNull().default(0),
+  collector_number: text("collector_number").notNull(),
+  rarity: text("rarity").notNull(),
 
-  // Optional metadata
-  imageUrl: text("image_url"),
+  price: real("price"),
+  foil_price: real("foil_price"),
+  quantity: integer("quantity").default(0),
+
+  // image_uris: text("image_uris"),
+  image_small: text("image_small"),
+  image_normal: text("image_normal"),
+
   artist: text("artist"),
   description: text("description"),
-  releasedAt: text("released_at"),
+  released_at: text("released_at"),
 
-  // Auto timestamp
-  created_at: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  created_at: text("created_at").default("CURRENT_TIMESTAMP"),
 });
+
+
+export type MagicSingle = InferModel<typeof magicSingles>;
+export type NewMagicSingle = InferModel<typeof magicSingles, "insert">;

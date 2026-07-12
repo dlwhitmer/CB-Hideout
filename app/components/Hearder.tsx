@@ -32,7 +32,7 @@ export default function Header() {
           <Link href="/login" className="hover:text-blue-300">
             Login
           </Link>
-          <Link href="/admin/login" className="hover:text-blue-300">
+          <Link href="/admin-login" className="hover:text-blue-300">
             Admin
           </Link>
         </nav>

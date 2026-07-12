@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
-import { Admins } from "@/lib/db/schema";
+import { db } from "../../../../lib/db/db";
+import { Admins } from "../../../../lib/db/schema/admins";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";

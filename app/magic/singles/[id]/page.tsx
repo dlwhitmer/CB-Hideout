@@ -1,9 +1,8 @@
-import { DetailPageParams } from "@/types/route-params";
-import { db } from "@/lib/db";
-import * as magic from "@/lib/db/schema/magic";
+import { DetailPageParams } from "../../../../types/route-params";
+import { db } from "../../../../lib/db/db";
 import { eq } from "drizzle-orm";
-import BackButton from "@/app/backtomagicbutton";
-import Image from "next/image";
+import BackButton from "../../../backtomagicbutton";
+import { magicSingles } from "../../../../lib/db/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -13,27 +12,54 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
 
   const result = await db
     .select()
-    .from(magic.magicCards)
-    .where(eq(magic.magicCards.id, Number(id)));
+    .from(magicSingles)
+    .where(eq(magicSingles.id, Number(id)));
 
   const product = result[0];
+  const faces = product.card_faces ? JSON.parse(product.card_faces) : null;
+
+  const front = product.image_small ?? "/placeholder.png";
+  const back = faces?.[1]?.image_uris?.small;
+  console.log("FRONT:", front);
+  console.log("BACK:", back);
 
   if (!product) {
     return <p className="p-6 text-red-400">Product not found.</p>;
   }
+  // console.log(product.card_faces);
+  // console.log(product.image_small);
+  console.log("Front:", front);
+  console.log("Back:", back);
+  console.log("cardFaces:", product.card_faces);
 
   return (
     <main className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%]">
       <div className="p-6 max-w-5xl mx-auto text-white">
         <div className="flex flex-col md:flex-row gap-10">
           <div className="flex-shrink-0">
-            <Image
-              src={product.imageUrl || "/placeholder.png"}
-              alt={product.name ?? ""}
-              width={320}
-              height={320}
-              className="rounded shadow"
-            />
+            <div className="group perspective w-[320px] aspect-[63/88]">
+              <div
+                className={`relative w-full h-full transform-style-preserve-3d transition-transform duration-500 ${
+                  back ? "group-hover:rotate-y-180" : ""
+                }`}
+              >
+                {/* Front */}
+                <img
+                  src={front}
+                  alt={product.name}
+                  className="absolute inset-0 w-full h-full rounded-lg shadow-lg backface-hidden"
+                />
+
+                {/* Back */}
+                {back && (
+                  <img
+                    src={back}
+                    alt={`${product.name} (Back Face)`}
+                    className="absolute inset-0 w-full h-full rounded-lg shadow-lg backface-hidden rotate-y-180"
+                  />
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col gap-4 flex-1 pt-4">
@@ -41,29 +67,30 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
 
             <div className="grid grid-cols-2 gap-y-2 text-white">
               <p>
-                <span className="font-semibold">Set:</span> {product.setCode}
+                <span className="font-semibold">Set:</span> {product.set_code}
               </p>
               <p>
                 <span className="font-semibold">Collector #:</span>{" "}
-                {product.collectorNumber}
+                {product.collector_number}
               </p>
               <p>
                 <span className="font-semibold">Rarity:</span> {product.rarity}
               </p>
               <p>
-                <span className="font-semibold">Type:</span> {product.typeLine}
+                <span className="font-semibold">Type:</span> {product.type_line}
               </p>
               <p>
                 <span className="font-semibold">Artist:</span> {product.artist}
               </p>
               <p>
-                <span className="font-semibold">In Stock:</span> {product.quantity}
+                <span className="font-semibold">In Stock:</span>{" "}
+                {product.quantity}
               </p>
             </div>
 
-            {product.oracleText && (
+            {product.oracle_text && (
               <div className="bg-black/40 p-4 rounded leading-relaxed whitespace-pre-line">
-                {product.oracleText}
+                {product.oracle_text}
               </div>
             )}
 

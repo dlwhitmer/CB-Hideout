@@ -1,8 +1,8 @@
-import { DetailPageParams } from "@/types/route-params";
-import { db } from "@/lib/db";
-import * as yugioh from "@/lib/db/schema/yugioh";
+import { DetailPageParams } from "../../../../types/route-params";
+import { db } from "../../../../lib/db";
+import * as yugioh from "../../../../lib/db/schema/yugioh";
 import { eq } from "drizzle-orm";
-import BackButton from "@/app/backtoyugiohbutton";
+import BackButton from "../../../../app/backtoyugiohbutton";
 import Image from "next/image";
 
 export const dynamic = "force-dynamic";
@@ -13,8 +13,8 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
 
   const result = await db
     .select()
-    .from(yugioh.yugiohCards)
-    .where(eq(yugioh.yugiohCards.id, Number(id)));
+    .from(yugioh.yugiohSingles)
+    .where(eq(yugioh.yugiohSingles.id, Number(id)));
 
   const product = result[0];
 
@@ -29,7 +29,7 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
           {/* Image */}
           <div className="flex-shrink-0">
             <Image
-              src={product.image_large || "/placeholder.png"}
+              src={product.imageLarge || "/placeholder.png"}
               alt={product.name ?? ""}
               width={320}
               height={420}

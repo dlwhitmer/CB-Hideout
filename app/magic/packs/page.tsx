@@ -1,8 +1,7 @@
 // import { cardboard } from "@/lib/fonts";
 import { headers } from "next/headers";
-import MagicWord from "@/app/components/MagicWord";
-import Image from 'next/image'
-
+import Image from 'next/image';
+import MagicWord from "../../components/MagicWord";
 export const dynamic = "force-dynamic";
 
 type SearchParams = {

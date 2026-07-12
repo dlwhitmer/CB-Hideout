@@ -1,39 +1,66 @@
-import { Product } from "@/types/magic";
+import { NewMagicSingle } from "../db/schema/magic";
 
-export function mapScryfallToDB(card: any): Product {
+/* -------------------------------------------------------
+   MAGIC — SINGLE CARD MAPPER (snake_case)
+------------------------------------------------------- */
+export function mapMagicSingleToDB(card: any): NewMagicSingle {
+  let image_small = null;
+  let image_normal = null;
+
+  // Normal single-faced card
+  if (card.image_uris) {
+    image_small = card.image_uris.small;
+    image_normal = card.image_uris.normal;
+  }
+
+  // Double-faced card (DFC)
+  else if (Array.isArray(card.card_faces) && card.card_faces.length > 0) {
+    const face = card.card_faces[0];
+    image_small = face.image_uris?.small ?? null;
+    image_normal = face.image_uris?.normal ?? null;
+  }
+
   return {
-    scryfallId: card.id,
+    scryfall_id: card.id,
     name: card.name,
-    setCode: card.set,
-    setName: card.set_name,
-    manaCost: card.mana_cost ?? null,
-    cmc: card.cmc ?? null,
-    colors: JSON.stringify(card.colors || []),
-    colorIdentity: JSON.stringify(card.color_identity || []),
+
+    // ⭐ FIXED — Scryfall uses "set", not "set_code"
+    set_code: card.set,
+    set_name: card.set_name,
+
+    mana_cost: card.mana_cost,
+    cmc: card.cmc,
+
+    colors: JSON.stringify(card.colors ?? []),
+    color_identity: JSON.stringify(card.color_identity ?? []),
+
     power: card.power ?? null,
     toughness: card.toughness ?? null,
-    keywords: JSON.stringify(card.keywords || []),
-    typeLine: card.type_line,
-    oracleText: card.oracle_text ?? null,
+
+    keywords: JSON.stringify(card.keywords ?? []),
+
+    type_line: card.type_line,
+    oracle_text: card.oracle_text,
     layout: card.layout,
-    cardFaces: card.card_faces ? JSON.stringify(card.card_faces) : null,
-    collectorNumber: card.collector_number,
+
+    // ⭐ store full card_faces JSON (snake_case)
+    card_faces: card.card_faces ? JSON.stringify(card.card_faces) : null,
+
+    collector_number: card.collector_number,
     rarity: card.rarity,
-    
-    // ⭐ ALWAYS SET DEFAULT QUANTITY
-    quantity: 0,
 
-    price: parseFloat(card.prices?.usd ?? "0") || 0,
+    price: Number(card.prices?.usd ?? 0),
+    foil_price: Number(card.prices?.usd_foil ?? 0),
 
-    imageUrl:
-      card.image_uris?.normal ||
-      card.card_faces?.[0]?.image_uris?.normal ||
-      null,
+    quantity: 1,
 
-    artist: card.artist ?? null,
-    releasedAt: card.released_at ?? null,
+    // ⭐ snake_case image fields
+    image_small,
+    image_normal,
 
-    // ⭐ DO NOT SET created_at — DB handles it
-    description: "",
+    artist: card.artist,
+    released_at: card.released_at,
+
+    description: ""
   };
 }

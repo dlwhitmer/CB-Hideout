@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { db } from "@/lib/db";
-import { yugiohCards } from "@/lib/db/schema/yugioh";
+import { db } from "../../../lib/db";
+import { yugiohSingles } from "../../../lib/db/schema/yugioh";
 import { eq, like, and, sql } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
@@ -28,11 +28,11 @@ export default async function ProductsPage({
   // ---------------------------
   const rows = await db
     .select()
-    .from(yugiohCards)
+    .from(yugiohSingles)
     .where(
       and(
-        type ? like(yugiohCards.type, `%${type}%`) : undefined,
-        race ? eq(yugiohCards.race, race) : undefined,
+        type ? like(yugiohSingles.type, `%${type}%`) : undefined,
+        race ? eq(yugiohSingles.race, race) : undefined,
       ),
     )
     .limit(pageSize)
@@ -43,7 +43,7 @@ export default async function ProductsPage({
   // ---------------------------
   const totalResult = await db
     .select({ count: sql<number>`count(*)` })
-    .from(yugiohCards);
+    .from(yugiohSingles);
 
   const total = totalResult[0]?.count ?? 0;
   const totalPages = Math.ceil(total / pageSize);
@@ -138,7 +138,7 @@ export default async function ProductsPage({
       {/* GRID */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-5 gap-6">
         {rows.map((p) => {
-          const small = p.image_small;
+          const small = p.imageSmall;
 
           return (
             <a

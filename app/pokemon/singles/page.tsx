@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { db } from "@/lib/db";
-import { pokemonCards } from "@/lib/db/schema/pokemon";
+import { db } from "../../../lib/db";
+import { pokemonSingles } from "../../../lib/db/schema/pokemon";
 import { eq, like, and, sql } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
@@ -26,12 +26,12 @@ export default async function ProductsPage({
   // ---------------------------
   const rows = await db
     .select()
-    .from(pokemonCards)
+    .from(pokemonSingles)
     .where(
       and(
-        type ? like(pokemonCards.types, `%${type}%`) : undefined,
-        rarity ? eq(pokemonCards.rarity, rarity) : undefined
-      )
+        type ? like(pokemonSingles.types, `%${type}%`) : undefined,
+        rarity ? eq(pokemonSingles.rarity, rarity) : undefined,
+      ),
     )
     .limit(pageSize)
     .offset(offset);
@@ -41,7 +41,7 @@ export default async function ProductsPage({
   // ---------------------------
   const totalResult = await db
     .select({ count: sql<number>`count(*)` })
-    .from(pokemonCards);
+    .from(pokemonSingles);
 
   const total = totalResult[0]?.count ?? 0;
   const totalPages = Math.ceil(total / pageSize);
@@ -51,7 +51,6 @@ export default async function ProductsPage({
   // ---------------------------
   return (
     <div className="min-h-screen bg-[url('/images/bg-50.webp')] bg-no-repeat bg-[length:100%_100%]">
-      
       {/* FILTER BAR */}
       <form className="flex gap-4 mb-4 pt-3 text-white">
         <select

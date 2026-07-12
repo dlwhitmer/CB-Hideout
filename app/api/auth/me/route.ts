@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { Users } from "@/lib/db/schema/users";
+import { db } from "../../../../lib/db/db";
+import { Users } from "../../../../lib/db/schema/users";
 import { eq } from "drizzle-orm";
 
 export async function GET() {

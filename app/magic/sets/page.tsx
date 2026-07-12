@@ -27,7 +27,7 @@ export default async function ProductsPage({
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 
   const response = await fetch(
-    `${protocol}://${host}/api/magic/list?page=${page}&type=${type}&rarity=${rarity}`,
+    `${protocol}://${host}/api/magic/sets?page=${page}&type=${type}&rarity=${rarity}`,
     { cache: "no-store" },
   );
 

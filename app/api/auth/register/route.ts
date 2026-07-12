@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
-import { Users } from "@/lib/db/schema";
+import { db } from "../../../../lib/db/db";
+import { Users } from "../../../../lib/db/schema";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { eq } from "drizzle-orm";

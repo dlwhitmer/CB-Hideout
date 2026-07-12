@@ -1,7 +1,6 @@
 // import { cardboard } from "@/lib/fonts";
 import { headers } from "next/headers";
-import MagicWord from "@/app/components/MagicWord";
-import Image from 'next/image'
+import MagicWord from "../../components/MagicWord";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +8,7 @@ type SearchParams = {
   page?: string;
   type?: string;
   rarity?: string;
+  set?: string; // ⭐ add this
 };
 
 export default async function ProductsPage({
@@ -20,14 +20,23 @@ export default async function ProductsPage({
   const page = parseInt(sp.page ?? "1");
   const type = sp.type ?? "";
   const rarity = sp.rarity ?? "";
+  const set = sp.set ?? "";
 
   // FIX: absolute URL required in server components
   const h = await headers();
   const host = h.get("host");
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 
+  const setsResponse = await fetch(
+    `${protocol}://${host}/api/magic/sets/list`,
+    {
+      cache: "no-store",
+    },
+  );
+  const sets = await setsResponse.json();
+
   const response = await fetch(
-    `${protocol}://${host}/api/magic/list?page=${page}&type=${type}&rarity=${rarity}`,
+    `${protocol}://${host}/api/magic/singles/list?page=${page}&type=${type}&rarity=${rarity}&set=${set}`,
     { cache: "no-store" },
   );
 
@@ -35,17 +44,29 @@ export default async function ProductsPage({
     throw new Error(`Failed to fetch magic cards: ${response.status}`);
   }
 
-  const data = await response.json();
+  const json = await response.json();
 
-  const products = data.rows;
-  const total = data.total;
-  const pageSize = data.pageSize;
-  const totalPages = Math.ceil(total / pageSize);
+  const singles = json.data ?? []; // safe fallback
+  const total = json.total ?? 0;
+  const pageSize = json.pageSize ?? singles.length;
 
   return (
     <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
       <form className="flex gap-4 mb-4 pt-3 text-white">
+        <select
+          name="set"
+          defaultValue={set}
+          className="bg-gray-800 border border-gray-600 p-2 rounded"
+        >
+          <option value="">All Sets</option>
+          {sets.map((s: any) => (
+            <option key={s.set_code} value={s.set_code}>
+              {s.set_name}
+            </option>
+          ))}
+        </select>
+
         <select
           name="type"
           defaultValue={type}
@@ -113,28 +134,38 @@ export default async function ProductsPage({
       </h1>
 
       {/* GRID */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-5 gap-6">
-        {products.map((p: any) => (
-          <a
-            key={p.id}
-            href={`/magic/singles/${p.id}`}
-            className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
-          >
-            <Image
-              src={p.imageUrl || "/placeholder.png"}
-              alt={p.name}
-              width={300}
-              height={300}
-              className="rounded shadow"
-            />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pt-5">
+        {singles.map((p: any) => {
+          const faces = p.card_faces ? JSON.parse(p.card_faces) : null;
 
-            <h2 className="font-semibold text-sm text-white text-center">
-              {p.name}
-            </h2>
+          const img =
+            p.image_small ??
+            faces?.[0]?.image_uris?.small ??
+            "/placeholder.png";
 
-            <p className="text-gray-400 text-sm">${p.price}</p>
-          </a>
-        ))}
+          return (
+            <a
+              key={p.id}
+              href={`/magic/singles/${p.id}`}
+              className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
+            >
+              <img
+                src={img}
+                alt={p.name}
+                width={600}
+                height={600}
+                className="rounded shadow"
+                loading="lazy"
+              />
+
+              <h2 className="font-semibold text-sm text-white text-center">
+                {p.name}
+              </h2>
+
+              <p className="text-gray-400 text-sm">${p.price}</p>
+            </a>
+          );
+        })}
       </div>
 
       {/* PAGINATION */}
@@ -148,7 +179,7 @@ export default async function ProductsPage({
           </a>
         )}
 
-        {page < totalPages && (
+        {page < total && (
           <a
             href={`/magic/singles?page=${page + 1}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"

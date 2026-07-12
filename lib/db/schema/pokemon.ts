@@ -1,26 +1,89 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
+import { InferModel } from "drizzle-orm";
 
-export const pokemonCards = sqliteTable("pokemon_products", {
+/* -------------------------------------------------------
+   POKÉMON — SINGLES
+------------------------------------------------------- */
+export const pokemonSingles = sqliteTable("pokemon_singles", {
   id: integer("id").primaryKey(),
-  game: text("game").notNull(),
-  category: text("category").notNull(),
-  pokemonId: text("pokemon_id").notNull().unique(),
-  name: text("name").notNull(),
-  setCode: text("set_code").notNull(),
-  setName: text("set_name").notNull(),
-  cardNumber: text("card_number").notNull(),
-  rarity: text("rarity").notNull(),
+
+  game: text("game"),
+  category: text("category"),
+
+  pokemonId: text("pokemon_id").unique(),
+
+  name: text("name"),
+
+  setCode: text("set_code"),
+  setName: text("set_name"),
+
+  cardNumber: text("card_number"),
+  rarity: text("rarity"),
   flavorText: text("flavor_text"),
-  supertype: text("supertype").notNull(),
+
+  supertype: text("supertype"),
   subtypes: text("subtypes"),
+
   hp: text("hp"),
   types: text("types"),
+
   artist: text("artist"),
-  quantity: integer("quantity").notNull().default(0),
+
   imageSmall: text("image_small"),
   imageLarge: text("image_large"),
-  price: real("price").notNull(),
+
+  price: real("price"),
+
   releaseDate: text("release_date"),
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+
+  createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
+  quantity: integer("quantity").notNull().default(1),
 });
+
+export type PokemonSingle = InferModel<typeof pokemonSingles>;
+export type NewPokemonSingle = InferModel<typeof pokemonSingles, "insert">;
+
+/* -------------------------------------------------------
+   POKÉMON — SETS
+------------------------------------------------------- */
+export const pokemonSets = sqliteTable("pokemon_sets", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+
+  setCode: text("set_code").notNull(),
+  setName: text("set_name").notNull(),
+  series: text("series").notNull(),
+
+  printedTotal: integer("printed_total"),
+  totalCards: integer("total_cards"),
+
+  releaseDate: text("release_date"),
+
+  imageUrl: text("image_url"),
+  logoUrl: text("logo_url"),
+  symbolUrl: text("symbol_url"),
+
+  createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
+});
+
+export type PokemonSet = InferModel<typeof pokemonSets>;
+export type NewPokemonSet = InferModel<typeof pokemonSets, "insert">;
+
+/* -------------------------------------------------------
+   POKÉMON — PACKS
+------------------------------------------------------- */
+export const pokemonPacks = sqliteTable("pokemon_packs", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+
+  setCode: text("set_code").notNull(),
+  packName: text("pack_name").notNull(),
+
+  imageUrl: text("image_url"),
+
+  price: real("price").notNull().default(0),
+  quantity: integer("quantity").notNull().default(1),
+
+  createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
+});
+
+export type PokemonPack = InferModel<typeof pokemonPacks>;
+export type NewPokemonPack = InferModel<typeof pokemonPacks, "insert">;

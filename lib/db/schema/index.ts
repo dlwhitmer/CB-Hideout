@@ -5,5 +5,3 @@ export * from "./yugioh";
 export * from "./accessory";
 export * from "./cart";
 export * from "./admins";
-
-

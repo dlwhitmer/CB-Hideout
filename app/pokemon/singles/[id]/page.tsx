@@ -1,8 +1,8 @@
-import { DetailPageParams } from "@/types/route-params";
-import { db } from "@/lib/db";
-import * as pokemon from "@/lib/db/schema/pokemon";
+import { DetailPageParams } from "../../../../types/route-params";
+import { db } from "../../../../lib/db";
+import * as pokemon from "../../../../lib/db/schema/pokemon";
 import { eq } from "drizzle-orm";
-import BackButton from "@/app/backtopokemonbutton";
+import BackButton from "../../../../app/backtopokemonbutton";
 import Image from "next/image";
 
 export const dynamic = "force-dynamic";
@@ -13,8 +13,8 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
 
   const result = await db
     .select()
-    .from(pokemon.pokemonCards)
-    .where(eq(pokemon.pokemonCards.id, Number(id)));
+    .from(pokemon.pokemonSingles)
+    .where(eq(pokemon.pokemonSingles.id, Number(id)));
 
   const product = result[0];
 
@@ -28,7 +28,7 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
         <div className="flex flex-col md:flex-row gap-10">
           <div className="flex-shrink-0">
             <Image
-              src={product.imageLarge || "/placeholder.png"}
+              src={product.imageLarge ?? "/placeholder.png"}
               alt={product.name ?? ""}
               width={320}
               height={320}
@@ -42,30 +42,29 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
             <div className="grid grid-cols-2 gap-y-2 text-black">
               <p>
                 <span className="font-semibold">Set:</span>
-                <span className="font-semibold">  {product.setCode}</span> 
+                <span className="font-semibold"> {product.setCode}</span>
               </p>
               <p>
                 <span className="font-semibold">Collector #</span>
                 <span className="font-semibold"> {product.cardNumber}</span>
-                
               </p>
               <p>
                 <span className="font-semibold">Rarity:</span>
-                <span className="font-semibold">   {product.rarity}</span>
+                <span className="font-semibold"> {product.rarity}</span>
               </p>
               <p>
-                <span className="font-semibold">Type:</span> 
-                <span className="font-semibold">  {product.types}</span> 
+                <span className="font-semibold">Type:</span>
+                <span className="font-semibold"> {product.types}</span>
               </p>
               <p>
-                <span className="font-semibold">Artist:</span> 
-                <span className="font-semibold">  {product.artist}</span> 
+                <span className="font-semibold">Artist:</span>
+                <span className="font-semibold"> {product.artist}</span>
               </p>
               <p>
-                <span className="font-semibold">In-Stock:</span> 
-                <span className="font-semibold">  {product.quantity}</span> 
+                <span className="font-semibold">In-Stock:</span>
+                <span className="font-semibold"> {product.quantity}</span>
               </p>
-              
+
               <p className="col-span-2">
                 <span className="font-bold">Description:</span>{" "}
                 <span className="font-semibold">{product.flavorText}</span>

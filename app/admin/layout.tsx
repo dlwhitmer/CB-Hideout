@@ -18,15 +18,92 @@ export default function AdminLayout({
           <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             View & Edit Products
           </h2>
-          <Link href="/admin/magic/" className="hover:text-blue-400">
-            Magic Cards
-          </Link>
-          <Link href="/admin/pokemon/" className="hover:text-blue-400">
-            Pokemon Cards
-          </Link>
-          <Link href="/admin/yugioh/" className="hover:text-blue-400">
-            Yu-Gi-Oh Cards
-          </Link>
+          {/* MAGIC DROPDOWN */}
+          <div className="relative group">
+            <div className="flex justify-between items-center px-2 py-2 cursor-pointer hover:text-blue-400">
+              <span>Magic Cards</span>
+              <span className="text-xs">▼</span>
+            </div>
+
+            <div className="hidden group-hover:block bg-gray-900 border border-gray-700 rounded-md mt-1">
+              <Link
+                href="/admin/magic/singles"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Single Cards
+              </Link>
+              <Link
+                href="/admin/magic/packs"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Packs
+              </Link>
+              <Link
+                href="/admin/magic/sets"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Sets
+              </Link>
+            </div>
+          </div>
+
+          {/* POKEMON DROPDOWN */}
+          <div className="relative group">
+            <div className="flex justify-between items-center px-2 py-2 cursor-pointer hover:text-blue-400">
+              <span>Pokemon Cards</span>
+              <span className="text-xs">▼</span>
+            </div>
+
+            <div className="hidden group-hover:block bg-gray-900 border border-gray-700 rounded-md mt-1">
+              <Link
+                href="/admin/pokemon/singles"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Single Cards
+              </Link>
+              <Link
+                href="/admin/pokemon/packs"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Packs
+              </Link>
+              <Link
+                href="/admin/pokemon/sets"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Sets
+              </Link>
+            </div>
+          </div>
+
+          {/* YU-GI-OH DROPDOWN */}
+          <div className="relative group">
+            <div className="flex justify-between items-center px-2 py-2 cursor-pointer hover:text-blue-400">
+              <span>Yu-Gi-Oh Cards</span>
+              <span className="text-xs">▼</span>
+            </div>
+
+            <div className="hidden group-hover:block bg-gray-900 border border-gray-700 rounded-md mt-1">
+              <Link
+                href="/admin/yugioh/singles"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Single Cards
+              </Link>
+              <Link
+                href="/admin/yugioh/packs"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Packs
+              </Link>
+              <Link
+                href="/admin/yugioh/sets"
+                className="block px-4 py-2 hover:bg-gray-700"
+              >
+                Sets
+              </Link>
+            </div>
+          </div>
 
           <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             Add Products
@@ -38,14 +115,8 @@ export default function AdminLayout({
           <h2 className="underline decoration-2 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
             Import Cards
           </h2>
-          <Link href="/admin/magic/import" className="hover:text-blue-400">
-            Import Magic Card
-          </Link>
-          <Link href="/admin/pokemon/import" className="hover:text-blue-400">
-            Import Pokemon Card
-          </Link>
-          <Link href="/admin/yugioh/import" className="hover:text-blue-400">
-            Import Yu-Gi-Oh Card
+          <Link href="/admin/import" className="hover:text-blue-400">
+            Universal Import
           </Link>
 
           <h2 className="underline decoration-4 decoration-[#fff000] text-[#fff000] text-[16px] font-bold mt-2 mb-1">
