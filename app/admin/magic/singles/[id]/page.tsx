@@ -26,10 +26,10 @@ export default function MagicSingleDetail() {
   return (
     <div>
       <h1>{card.name}</h1>
-      <p>Set: {card.setName}</p>
+      <p>Set: {card.set_name}</p>
       <p>Rarity: {card.rarity}</p>
       <p>Price: ${card.price}</p>
-      <img src={card.imageUris || "/placeholder.png"} alt={card.name} />
+      <img src={card.image_small || "/placeholder.png"} alt={card.name} />
     </div>
   );
 }

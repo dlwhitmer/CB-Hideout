@@ -1,58 +1,72 @@
+// import { cardboard } from "@/lib/fonts";
+import { headers } from "next/headers";
 import Image from "next/image";
-import { db } from "../../../lib/db";
-import { pokemonSingles } from "../../../lib/db/schema/pokemon";
-import { eq, like, and, sql } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
+
+type SearchParams = {
+  page?: string;
+  type?: string;
+  rarity?: string;
+  set?: string; // ⭐ add this
+};
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams?: {
-    page?: string;
-    type?: string;
-    rarity?: string;
-  };
+  searchParams: SearchParams;
 }) {
-  const page = Number(searchParams?.page ?? 1);
-  const type = searchParams?.type ?? "";
-  const rarity = searchParams?.rarity ?? "";
+  const sp = await searchParams;
+  const page = parseInt(sp.page ?? "1");
+  const type = sp.type ?? "";
+  const rarity = sp.rarity ?? "";
+  const set = sp.set ?? "";
 
-  const pageSize = 20;
-  const offset = (page - 1) * pageSize;
+  // FIX: absolute URL required in server components
+  const h = await headers();
+  const host = h.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 
-  // ---------------------------
-  // DATA QUERY
-  // ---------------------------
-  const rows = await db
-    .select()
-    .from(pokemonSingles)
-    .where(
-      and(
-        type ? like(pokemonSingles.types, `%${type}%`) : undefined,
-        rarity ? eq(pokemonSingles.rarity, rarity) : undefined,
-      ),
-    )
-    .limit(pageSize)
-    .offset(offset);
+  const setsResponse = await fetch(
+    `${protocol}://${host}/api/pokemon/sets/list`,
+    {
+      cache: "no-store",
+    },
+  );
+  const sets = await setsResponse.json();
 
-  // ---------------------------
-  // COUNT QUERY
-  // ---------------------------
-  const totalResult = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(pokemonSingles);
+  const response = await fetch(
+    `${protocol}://${host}/api/pokemon/singles/list?page=${page}&type=${type}&rarity=${rarity}&set=${set}`,
+    { cache: "no-store" },
+  );
 
-  const total = totalResult[0]?.count ?? 0;
-  const totalPages = Math.ceil(total / pageSize);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch Pokemon cards: ${response.status}`);
+  }
 
-  // ---------------------------
-  // RENDER
-  // ---------------------------
+  const json = await response.json();
+
+  const singles = json.data ?? []; // safe fallback
+  const total = json.total ?? 0;
+  const pageSize = json.pageSize ?? singles.length;
+
   return (
-    <div className="min-h-screen bg-[url('/images/bg-50.webp')] bg-no-repeat bg-[length:100%_100%]">
+    <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
       <form className="flex gap-4 mb-4 pt-3 text-white">
+        <select
+          name="set"
+          defaultValue={set}
+          className="bg-gray-800 border border-gray-600 p-2 rounded"
+        >
+          <option value="">All Sets</option>
+          {sets.map((s: any) => (
+            <option key={s.set_code} value={s.set_code}>
+              {s.set_name}
+            </option>
+          ))}
+        </select>
+
         <select
           name="type"
           defaultValue={type}
@@ -93,35 +107,45 @@ export default async function ProductsPage({
         <Image
           src="/images/pokemon.webp"
           alt="Pokemon"
-          width={300}
-          height={100}
-          className="h-[80px] md:h-[300px] lg:h-[90px] object-contain"
+          width={400}
+          height={150}
+          className="h-[80px] md:h-[90px] lg:h-[120px] object-contain"
         />
       </div>
 
       {/* GRID */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-5 gap-6">
-        {rows.map((p) => (
-          <a
-            key={p.id}
-            href={`/pokemon/singles/${p.id}`}
-            className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
-          >
-            <Image
-              src={p.imageLarge || "/placeholder.png"}
-              alt={p.name || "Pokemon card"}
-              width={320}
-              height={446}
-              className="rounded shadow"
-            />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pt-5">
+        {singles.map((p: any) => {
+          const faces = p.card_faces ? JSON.parse(p.card_faces) : null;
 
-            <h2 className="font-semibold text-sm text-white text-center">
-              {p.name}
-            </h2>
+          const img =
+            p.imageSmall ??
+            faces?.[0]?.image_uris?.small ??
+            "/placeholder.png";
 
-            <p className="text-gray-400 text-sm">${p.price}</p>
-          </a>
-        ))}
+          return (
+            <a
+              key={p.id}
+              href={`/pokemon/singles/${p.id}`}
+              className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
+            >
+              <img
+                src={img}
+                alt={p.name}
+                width={600}
+                height={600}
+                className="rounded shadow"
+                loading="lazy"
+              />
+
+              <h2 className="font-semibold text-sm text-white text-center">
+                {p.name}
+              </h2>
+
+              <p className="text-gray-400 text-sm">${p.price}</p>
+            </a>
+          );
+        })}
       </div>
 
       {/* PAGINATION */}
@@ -135,7 +159,7 @@ export default async function ProductsPage({
           </a>
         )}
 
-        {page < totalPages && (
+        {page < total && (
           <a
             href={`/pokemon/singles?page=${page + 1}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"

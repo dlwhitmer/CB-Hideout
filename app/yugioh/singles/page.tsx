@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { db } from "../../../lib/db";
+import { db } from "../../../lib/db/db";
 import { yugiohSingles } from "../../../lib/db/schema/yugioh";
 import { eq, like, and, sql } from "drizzle-orm";
 
@@ -8,17 +8,20 @@ export const dynamic = "force-dynamic";
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams?: {
+  searchParams: Promise<{
     page?: string;
     type?: string;
     race?: string;
-    attribute?: string; // ⭐ REQUIRED
-  };
+    attribute?: string;
+    set?: string;
+  }>;
 }) {
-  const page = Number(searchParams?.page ?? 1);
-  const type = searchParams?.type ?? "";
-  const race = searchParams?.race ?? "";
-  const attribute = searchParams?.attribute ?? ""; // ⭐ MUST BE HERE
+  const params = await searchParams;
+  const page = Number(params.page ?? 1);
+  const type = params.type ?? "";
+  const race = params.race ?? "";
+  const attribute = params.attribute ?? "";
+  const set = params.set ?? "";
 
   const pageSize = 20;
   const offset = (page - 1) * pageSize;
@@ -26,6 +29,7 @@ export default async function ProductsPage({
   // ---------------------------
   // DATA QUERY
   // ---------------------------
+  console.log("SELECTED SET:", set);
   const rows = await db
     .select()
     .from(yugiohSingles)
@@ -33,10 +37,17 @@ export default async function ProductsPage({
       and(
         type ? like(yugiohSingles.type, `%${type}%`) : undefined,
         race ? eq(yugiohSingles.race, race) : undefined,
+        set ? eq(yugiohSingles.primarySet, set) : undefined,
       ),
     )
     .limit(pageSize)
     .offset(offset);
+  const sets = await db
+    .select({
+      set_name: yugiohSingles.primarySet,
+    })
+    .from(yugiohSingles)
+    .groupBy(yugiohSingles.primarySet);
 
   // ---------------------------
   // COUNT QUERY
@@ -55,6 +66,21 @@ export default async function ProductsPage({
     <div className="min-h-screen bg-[url('/images/bg-28.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
       <form className="flex gap-4 mb-4 pt-3 text-white">
+        {/* SETS */}
+        <select
+          name="set"
+          defaultValue={set}
+          className="bg-gray-800 border border-gray-600 p-2 rounded"
+        >
+          <option value="">All Sets</option>
+
+          {sets.map((s) => (
+            <option key={s.set_name} value={s.set_name}>
+              {s.set_name}
+            </option>
+          ))}
+        </select>
+
         {/* TYPE */}
         <select
           name="type"
@@ -103,7 +129,7 @@ export default async function ProductsPage({
         {/* ATTRIBUTE */}
         <select
           name="attribute"
-          defaultValue={searchParams?.attribute ?? ""}
+          defaultValue={attribute}
           className="bg-gray-800 border border-gray-600 p-2 rounded"
         >
           <option value="">All Attributes</option>
@@ -162,7 +188,7 @@ export default async function ProductsPage({
       <div className="flex justify-center gap-4 mt-8 text-white">
         {page > 1 && (
           <a
-            href={`?page=${page - 1}&type=${type}&race=${race}`}
+            href={`?page=${page + 1}&type=${type}&race=${race}&attribute=${attribute}&set=${set}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
           >
             Previous
@@ -171,7 +197,7 @@ export default async function ProductsPage({
 
         {page < totalPages && (
           <a
-            href={`?page=${page + 1}&type=${type}&race=${race}`}
+            href={`?page=${page + 1}&type=${type}&race=${race}&attribute=${attribute}&set=${set}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
           >
             Next

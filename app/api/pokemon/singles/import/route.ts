@@ -1,22 +1,57 @@
 import { db } from "../../../../../lib/db/db";
-import { pokemonSingles } from "../../../../../lib/db/schema";
+import { pokemonSingles } from "../../../../../lib/db/schema/pokemon";
+import { eq } from "drizzle-orm";
+import { mapPokemonSingleToDB } from "../../../../../lib/mappers/pokemon";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const { id } = await req.json();
 
-    const inserted = await db.insert(pokemonSingles).values(body).returning();
+    if (!id) {
+      return Response.json({ error: "Missing card ID" }, { status: 400 });
+    }
 
-    return Response.json({
-      success: true,
-      message: "Pokémon card imported!",
-      data: inserted[0],
+    // ⭐ Fetch ONE Pokémon card
+    const res = await fetch(`https://api.pokemontcg.io/v2/cards/${id}`, {
+      headers: { "User-Agent": "hideout-app/1.0" },
     });
+
+    const data = await res.json();
+
+    if (!data.data) {
+      return Response.json({ error: "Card not found" }, { status: 404 });
+    }
+
+    const card = data.data;
+
+    const mapped = mapPokemonSingleToDB(card);
+
+    // ⭐ Check if card exists
+    const existing = await db
+      .select()
+      .from(pokemonSingles)
+      .where(eq(pokemonSingles.pokemonId, card.id));
+
+    if (existing.length > 0) {
+      const newQty = existing[0].quantity + 1;
+
+      await db
+        .update(pokemonSingles)
+        .set({ quantity: newQty })
+        .where(eq(pokemonSingles.pokemonId, card.id));
+
+      return Response.json({
+        success: true,
+        updated: true,
+        quantity: newQty,
+      });
+    }
+
+    // ⭐ Insert new card
+    await db.insert(pokemonSingles).values(mapped);
+
+    return Response.json({ success: true, inserted: true });
   } catch (err: any) {
-    return Response.json(
-      { success: false, message: err.message },
-      { status: 400 }
-    );
+    return Response.json({ error: err.message }, { status: 500 });
   }
 }
-

@@ -1,8 +1,8 @@
-import { DetailPageParams } from "@/types/route-params";
-import { db } from "@/lib/db";
-import * as pokemon from "@/lib/db/schema/pokemon";
+import { DetailPageParams } from "../../../types/route-params";
+import { db } from "../../../lib/db/db";
+import * as pokemon from "../..lib/db/schema/pokemon";
 import { eq } from "drizzle-orm";
-import BackButton from "@/app/backtopokemonbutton";
+import BackButton from "../../backtomagicbutton";
 import Image from "next/image";
 
 export const dynamic = "force-dynamic";

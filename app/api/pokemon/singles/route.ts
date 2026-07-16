@@ -1,5 +1,5 @@
 import { db } from "../../../../lib/db/db";
-import { pokemonSingles } from "../../../../lib/db/schema";
+import { pokemonSingles } from "../../../../lib/db/schema/pokemon";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

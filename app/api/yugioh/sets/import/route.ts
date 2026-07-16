@@ -1,9 +1,81 @@
 import { db } from "../../../../../lib/db/db";
-import { yugiohSets } from "../../../../../lib/db/schema";
-
+import { yugiohSingles } from "../../../../../lib/db/schema/yugioh";
+import { eq } from "drizzle-orm";
+import { mapYugiohSingleToDB } from "../../../../../lib/mappers/yugioh";
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
+    console.log("IMPORT BODY:", body);
+    const { setName } = body;
+    console.log("SET NAME:", setName);
 
-  const inserted = await db.insert(yugiohSets).values(body).returning();
-  return Response.json({ data: inserted[0] });
+    // const setName = setCode;
+
+    console.log("setName:", setName);
+
+    if (!setName) {
+      return Response.json({ error: "Missing setName" }, { status: 400 });
+    }
+    // ⭐ Fetch ALL cards in the Yugioh set
+    const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?cardset=${encodeURIComponent(setName)}`;
+
+    const res = await fetch(url, {
+      headers: { "User-Agent": "hideout-app/1.0" },
+    });
+
+    const data = await res.json();
+    console.log("URL:", url);
+    console.log("Status:", res.status);
+    console.log("Response:", data);
+
+    if (!data.data) {
+      return Response.json({ error: "No cards returned" }, { status: 400 });
+    }
+
+    const cards = data.data;
+
+    let inserted = 0;
+    let updated = 0;
+
+    for (const c of cards) {
+      const printing = c.card_sets?.find((s: any) => s.set_name === setName);
+
+      const mapped = mapYugiohSingleToDB(c, printing);
+
+      console.log("Mapped card:", mapped);
+
+      const existing = await db
+        .select()
+        .from(yugiohSingles)
+        .where(eq(yugiohSingles.yugiohId, mapped.yugiohId));
+
+      if (existing.length > 0) {
+        const newQty = existing[0].quantity + 1;
+
+        await db
+          .update(yugiohSingles)
+          .set({ quantity: newQty })
+          .where(eq(yugiohSingles.yugiohId, mapped.yugiohId));
+
+        updated++;
+        continue;
+      }
+
+      // Insert new card
+      await db.insert(yugiohSingles).values(mapped);
+      inserted++;
+    }
+
+    return Response.json({
+      success: true,
+      inserted,
+      updated,
+    });
+  } catch (err: any) {
+    console.error("IMPORT ERROR:", err);
+    return Response.json(
+      { error: err.message, stack: err.stack },
+      { status: 500 },
+    );
+  }
 }

@@ -15,12 +15,13 @@ export default function UniversalImportPage() {
     e.preventDefault();
 
     const body =
-      type === "singles"
-        ? { id } // ✔ ONLY send id
-        : type === "packs"
-          ? { packName }
-          : { setCode };
-
+  type === "singles"
+    ? { id }
+    : type === "packs"
+      ? { packName }
+      : game === "yugioh"
+        ? { setName: setCode }
+        : { setCode };
     console.log("FRONTEND BODY:", body);
 
     const res = await fetch(`/api/${game}/${type}/import`, {
@@ -31,7 +32,9 @@ export default function UniversalImportPage() {
     const data = await res.json();
     if (data.success) {
       // ⭐ THIS IS WHERE router.push GOES
-      router.push("/admin/magic/singles");
+      if (data.success) {
+        router.push(`/admin/${game}/singles`);
+      }
     }
   };
 

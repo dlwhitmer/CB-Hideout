@@ -1,5 +1,5 @@
 import { DetailPageParams } from "../../../../types/route-params";
-import { db } from "../../../../lib/db";
+import { db } from "../../../../lib/db/db";
 import * as yugioh from "../../../../lib/db/schema/yugioh";
 import { eq } from "drizzle-orm";
 import BackButton from "../../../../app/backtoyugiohbutton";

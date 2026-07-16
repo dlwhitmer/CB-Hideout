@@ -3,25 +3,27 @@ import Link from "next/link";
 import DeleteButton from "../DeleteButton";
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { YugiohSingle } from "@/lib/db/schema";
+import { YugiohSingle } from "../../../../lib/db/schema";
 
 export default function Page() {
   const [type, setType] = useState("");
   const [race, setRace] = useState("");
+  const [selectedSet, setSelectedSet] = useState("");
   const [attribute, setAttribute] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [yugiohSingles, setYugiohSingles] = useState<YugiohSingle[]>([]);
 
+  const [sets, setSets] = useState<{ set_code: string; set_name: string }[]>(
+    [],
+  );
+  const [yugiohSingles, setYugiohSingles] = useState<YugiohSingle[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const limit = 20;
   const totalPages = Math.ceil(total / limit);
 
   const loadYugiohSingles = useCallback(
     async (currentPage: number) => {
-      console.log("Starting load");
-
       setLoading(true);
 
       try {
@@ -30,36 +32,75 @@ export default function Page() {
         params.set("page", String(currentPage));
         params.set("limit", String(limit));
 
-        const res = await fetch(`/api/yugioh/list?${params.toString()}`, {
-          cache: "no-store",
-        });
+        if (selectedSet) params.set("set", selectedSet);
+        if (type) params.set("type", type);
+        if (race) params.set("race", race);
+        if (attribute) params.set("attribute", attribute);
+
+        const res = await fetch(
+          `/api/yugioh/singles/list?${params.toString()}`,
+          {
+            cache: "no-store",
+          },
+        );
 
         const data = await res.json();
 
-        setYugiohSingles(data.rows ?? []);
-        setTotal(data.total);
+        setYugiohSingles(data.data ?? []);
+        setTotal(data.total ?? 0);
         setPage(currentPage);
       } catch (err) {
         console.error("LOAD ERROR:", err);
       } finally {
-        console.log("Finished load");
         setLoading(false);
       }
     },
-    [type, race, attribute],
+    [selectedSet, type, race, attribute],
   );
 
   useEffect(() => {
-    const load = async () => {
+    async function load() {
       await loadYugiohSingles(1);
-    };
+    }
+
     load();
   }, [loadYugiohSingles]);
 
+  useEffect(() => {
+    async function loadSets() {
+      try {
+        const res = await fetch("/api/yugioh/sets/list");
+        const data = await res.json();
+
+        console.log("YuGiOh sets:", data);
+        console.log("SET LIST:", data.data);
+
+        setSets(data.data ?? []);
+      } catch (err) {
+        console.error("SET LOAD ERROR:", err);
+      }
+    }
+
+    loadSets();
+  }, []);
   return (
     <div className="p-6">
       {/* FILTERS */}
-      <div className="flex gap-4 mb-4">
+      <div className="bg-white text-black flex gap-4 mb-4">
+        <select
+          value={selectedSet}
+          onChange={(e) => {
+            console.log("SELECTED SET VALUE:", e.target.value);
+            setSelectedSet(e.target.value);
+          }}
+        >
+          <option value="">All Sets</option>
+          {sets.map((set) => (
+            <option key={set.set_code} value={set.set_name}>
+              {set.set_name}
+            </option>
+          ))}
+        </select>
         {/* TYPE */}
         <select value={type} onChange={(e) => setType(e.target.value)}>
           <option value="">All Types</option>
@@ -115,6 +156,7 @@ export default function Page() {
         {/* RESET BUTTON */}
         <button
           onClick={() => {
+            setSelectedSet("");
             setType("");
             setRace("");
             setAttribute("");
@@ -125,21 +167,18 @@ export default function Page() {
       </div>
 
       {/* HEADER */}
-      <div className="flex justify-center items-center mb-6">
+      <div className="flex justify-center mb-6">
         <Image
           src="/images/yugioh_logo.webp"
-          alt="Yugioh Logo"
-          height={70}
+          alt="Yu-Gi-Oh Logo"
           width={220}
+          height={70}
+          className="h-auto"
         />
-
-        {/* <Link
-          href="/admin/yugioh/add"
-          className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Add Product
-        </Link> */}
       </div>
+
+      {/* FILTER BAR */}
+      {/* <div className="flex gap-3 mb-6">...</div> */}
 
       {/* TABLE */}
       <div className="relative overflow-x-auto rounded-lg border bg-white shadow">
@@ -155,7 +194,8 @@ export default function Page() {
               <th className="px-3 py-2 text-center">Image</th>
               <th className="px-3 py-2 text-center">In-Stock</th>
               <th className="px-3 py-2 text-center">Yu-Gi-Oh ID</th>
-              <th className="px-3 py-2 text-center">Name</th>
+              {/* <th className="px-3 py-2 text-center">Name</th> */}
+              <th className="px-3 py-2 text-center">Set</th>
               <th className="px-3 py-2 text-center">Type</th>
               <th className="px-3 py-2 text-center">Race</th>
               <th className="px-3 py-2 text-center">Price</th>
@@ -165,7 +205,7 @@ export default function Page() {
 
           <tbody>
             {yugiohSingles.map((p) => {
-              const small = p.imageSmall; // ✔ define it here
+              const small = p.imageSmall;
 
               return (
                 <tr key={p.id} className="border-t">
@@ -189,10 +229,13 @@ export default function Page() {
                   <td className="px-3 py-2 text-center font-bold">
                     {p.yugiohId}
                   </td>
-                  <td className="px-3 py-2 text-center font-bold">{p.name}</td>
-                  <td className="px-3 py-2 text-center font-bold">{p.type}</td>
-                  <td className="px-3 py-2 text-center font-bold">{p.race}</td>
-                  <td className="px-3 py-2 text-center font-bold">
+                  <td className="px-3 py-2 text-center">{p.primarySet}</td>
+
+                  <td className="px-3 py-2 text-center">{p.type}</td>
+
+                  <td className="px-3 py-2 text-center">{p.race}</td>
+
+                  <td className="px-3 py-2 text-center">
                     ${Number(p.price || 0).toFixed(2)}
                   </td>
 

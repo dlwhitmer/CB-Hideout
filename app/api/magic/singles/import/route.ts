@@ -1,6 +1,5 @@
 
 
-
 import { db } from "../../../../../lib/db/db";
 import { magicSingles } from "../../../../../lib/db/schema/magic";
 import { mapMagicSingleToDB } from "../../../../../lib/mappers/magic";

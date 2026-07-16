@@ -1,6 +1,6 @@
 // import { cardboard } from "@/lib/fonts";
 import { headers } from "next/headers";
-import MagicWord from "@/app/components/MagicWord";
+import MagicWord from "../../components/MagicWord";
 import Image from 'next/image'
 
 export const dynamic = "force-dynamic";

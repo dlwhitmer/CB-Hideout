@@ -113,6 +113,7 @@ export default function MagicSinglesPage() {
                     await fetch(`/api/magic/singles/${card.id}`, {
                       method: "DELETE",
                     });
+                   
                     location.reload();
                   }}
                 >

@@ -1,21 +1,22 @@
 "use client";
-import { cardboard } from "../../../../lib/fonts"
+import { cardboard } from "../../../../lib/fonts";
 import Link from "next/link";
-import DeleteButton from "../DeleteButton";
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { PokemonSingle } from "../../../../lib/db/schema";
-
 
 export default function PokemonSinglesPage() {
   const [type, setType] = useState("");
   const [rarity, setRarity] = useState("");
   const [loading, setLoading] = useState(true);
   const [pokemonSingles, setPokemonSingles] = useState<PokemonSingle[]>([]);
+  const [setCode, setSetCode] = useState("");
+  const [sets, setSets] = useState<{ set_code: string; set_name: string }[]>(
+    [],
+  );
 
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-
   const limit = 20;
   const totalPages = Math.ceil(total / limit);
 
@@ -31,29 +32,40 @@ export default function PokemonSinglesPage() {
         params.set("page", String(currentPage));
         params.set("limit", String(limit));
 
-        const res = await fetch(`/api/pokemon/list?${params.toString()}`, {
-          cache: "no-store",
-        });
+        if (setCode) params.set("set", setCode);
+        if (type) params.set("type", type);
+        if (rarity) params.set("rarity", rarity);
 
-        console.log("Response status:", res.status);
+        const res = await fetch(
+          `/api/pokemon/singles/list?${params.toString()}`,
+          {
+            cache: "no-store",
+          },
+        );
 
         const data = await res.json();
 
-        console.log("Data:", data);
-
-        setPokemonSingles(data.rows ?? []);
+        setPokemonSingles(data.data ?? []);
         setTotal(data.total);
         setPage(currentPage);
       } catch (err) {
         console.error("LOAD ERROR:", err);
       } finally {
-        console.log("Finished load");
         setLoading(false);
       }
     },
-    [limit]
-,
+    [limit, setCode, type, rarity], // ⭐ FIXED
   );
+
+  useEffect(() => {
+    const loadSets = async () => {
+      const res = await fetch("/api/pokemon/sets/list");
+      const data = await res.json();
+      setSets(data);
+    };
+
+    loadSets();
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -65,7 +77,16 @@ export default function PokemonSinglesPage() {
   return (
     <div className="p-6">
       {/* FILTERS */}
-      <div className="flex gap-4 mb-4">
+      <div className="bg-white text-black flex gap-4 mb-4">
+        <select value={setCode} onChange={(e) => setSetCode(e.target.value)}>
+          <option value="">All Sets</option>
+          {sets.map((s) => (
+            <option key={s.set_code} value={s.set_code}>
+              {s.set_name}
+            </option>
+          ))}
+        </select>
+
         <select value={type} onChange={(e) => setType(e.target.value)}>
           <option value="">All Types</option>
           <option value="Creature">Creature</option>
@@ -112,20 +133,6 @@ export default function PokemonSinglesPage() {
             "
           >
             Pokemon
-          </span>
-          <span
-            className="
-              block
-              text-[40px]
-              italic
-              text-transparent
-              bg-clip-text
-              bg-gradient-to-b
-              from-[#cc3300]
-              to-[#ff9900]
-            "
-          >
-            The Gathering
           </span>
         </h1>
 
@@ -178,7 +185,7 @@ export default function PokemonSinglesPage() {
                 <td className="px-3 py-2 text-center font-bold">
                   {p.quantity}
                 </td>
-                
+
                 <td className="px-3 py-2 text-center font-bold">
                   {p.pokemonId}
                 </td>
@@ -198,13 +205,24 @@ export default function PokemonSinglesPage() {
                 <td className="px-3 py-2">
                   <div className="flex justify-end gap-2">
                     <Link
-                      href={`/admin/pokemon/${p.id}/edit`}
+                      href={`/admin/pokemon/singles/${p.id}/edit`}
                       className="bg-blue-600 text-white px-3 py-1 rounded"
                     >
                       Edit
                     </Link>
 
-                   <DeleteButton pokemonId={p.pokemonId} />
+                    <button
+                      className="text-red-600 hover:underline"
+                      onClick={async () => {
+                        await fetch(`/api/pokemon/singles/${p.id}`, {
+                          method: "DELETE",
+                        });
+                         console.log("Pokemon Id {id}")
+                        location.reload();
+                      }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>
