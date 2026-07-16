@@ -1,4 +1,4 @@
-import { Accessory } from "@/types/accessory";
+import { Accessory } from "../../types/accessory";
 
 export function mapAccessoryToDB(accessory: any): Accessory {
   return {
