@@ -1,4 +1,4 @@
-import { NewPokemonSingle,NewPokemonPack,NewPokemonSet } from "../db/schema/pokemon";
+import { NewPokemonSingle} from "../db/schema/pokemon";
 
 /* -------------------------------------------------------
    POKÉMON — SINGLE CARD MAPPER
@@ -44,7 +44,7 @@ export function mapPokemonSingleToDB(card: any): NewPokemonSingle {
 /* -------------------------------------------------------
    POKÉMON — SET MAPPER
 ------------------------------------------------------- */
-export function mapPokemonSetToDB(set: any): NewPokemonSet {
+export function mapPokemonSetToDB(set: any){
   return {
     setCode: set.set_code,
     setName: set.set_name ?? set.name ?? "",
@@ -65,25 +65,5 @@ export function mapPokemonSetToDB(set: any): NewPokemonSet {
 
     logoUrl: set.logo_url ?? null,
     symbolUrl: set.symbol_url ?? null,
-  };
-}
-
-/* -------------------------------------------------------
-   POKÉMON — PACK MAPPER
-------------------------------------------------------- */
-export function mapPokemonPackToDB(pack: any): NewPokemonPack {
-  return {
-    setCode: pack.set_code,
-    packName: pack.pack_name ?? pack.name ?? "",
-
-    price: Number(pack.price ?? 0),
-    quantity: 1,
-
-    imageUrl:
-      pack.image_url ??
-      pack.image_uris?.normal ??
-      pack.images?.logo ??
-      pack.images?.symbol ??
-      null,
   };
 }
