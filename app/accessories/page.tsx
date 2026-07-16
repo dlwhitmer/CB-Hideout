@@ -1,8 +1,8 @@
 import Image from "next/image";
 // import { eq } from "drizzle-orm";
-import { Users } from "@/lib/db/schema";
-import { db } from "@/lib/db";
-import { Accessory } from "@/lib/db/schema/accessory";
+import { Users } from "../../lib/db/schema";
+import { db } from "../../lib/db/db";
+import { Accessory } from "../../lib/db/schema";
 import { like, and, eq, sql } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
