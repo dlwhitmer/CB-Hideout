@@ -19,7 +19,10 @@ export async function GET(req: Request) {
   const conditions = [];
 
   if (type) {
-    conditions.push(like(magicSingles.typeLine, `%${type}%`));
+    conditions.push(like(magicSingles.frontTypeLine, `%${type}%`));
+  }
+  if (type) {
+    conditions.push(like(magicSingles.backTypeLine, `%${type}%`));
   }
   if (rarity) {
     conditions.push(eq(magicSingles.rarity, rarity));
