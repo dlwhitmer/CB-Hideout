@@ -48,8 +48,8 @@ export default function EditMagicSinglePage() {
         />
 
         <input
-          value={form.set_name}
-          onChange={e => setForm({ ...form, set_name: e.target.value })}
+          value={form.setName}
+          onChange={e => setForm({ ...form, setName: e.target.value })}
         />
 
         <input
