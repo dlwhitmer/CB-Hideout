@@ -1,16 +1,16 @@
 "use client";
+
 import { cardboard } from "../../../../lib/fonts";
 import Link from "next/link";
 import { useEffect, useState, useCallback } from "react";
-import Image from "next/image";
 import { PokemonSingle } from "../../../../lib/db/schema";
 
 export default function PokemonSinglesPage() {
   const [type, setType] = useState("");
   const [rarity, setRarity] = useState("");
   const [loading, setLoading] = useState(true);
+  const [setName, setSetName] = useState("");
   const [pokemonSingles, setPokemonSingles] = useState<PokemonSingle[]>([]);
-  const [setCode, setSetCode] = useState("");
   const [sets, setSets] = useState<{ set_code: string; set_name: string }[]>(
     [],
   );
@@ -20,7 +20,7 @@ export default function PokemonSinglesPage() {
   const limit = 20;
   const totalPages = Math.ceil(total / limit);
 
-  const loadPokemonProducts = useCallback(
+  const loadPokemonSingles = useCallback(
     async (currentPage: number) => {
       console.log("Starting load");
 
@@ -32,18 +32,21 @@ export default function PokemonSinglesPage() {
         params.set("page", String(currentPage));
         params.set("limit", String(limit));
 
-        if (setCode) params.set("set", setCode);
+        if (setName) params.set("set", setName);
         if (type) params.set("type", type);
         if (rarity) params.set("rarity", rarity);
 
         const res = await fetch(
           `/api/pokemon/singles/list?${params.toString()}`,
-          {
-            cache: "no-store",
-          },
         );
 
-        const data = await res.json();
+        const text = await res.text();
+
+        console.log("API RESPONSE:", text);
+
+        const data = JSON.parse(text);
+
+        console.log("ADMIN FIRST CARD:", data.data?.[0]);
 
         setPokemonSingles(data.data ?? []);
         setTotal(data.total);
@@ -54,7 +57,7 @@ export default function PokemonSinglesPage() {
         setLoading(false);
       }
     },
-    [limit, setCode, type, rarity], // ⭐ FIXED
+    [limit, setName, type, rarity], // ⭐ FIXED
   );
 
   useEffect(() => {
@@ -69,22 +72,25 @@ export default function PokemonSinglesPage() {
 
   useEffect(() => {
     const load = async () => {
-      await loadPokemonProducts(1);
+      await loadPokemonSingles(1);
     };
     load();
-  }, [loadPokemonProducts]);
+  }, [loadPokemonSingles]);
 
   return (
     <div className="p-6">
       {/* FILTERS */}
       <div className="bg-white text-black flex gap-4 mb-4">
-        <select value={setCode} onChange={(e) => setSetCode(e.target.value)}>
+        <select value={setName} onChange={(e) => setSetName(e.target.value)}>
           <option value="">All Sets</option>
-          {sets.map((s) => (
-            <option key={s.set_code} value={s.set_code}>
-              {s.set_name}
-            </option>
-          ))}
+
+          {Array.from(new Map(sets.map((s) => [s.set_name, s])).values()).map(
+            (s) => (
+              <option key={s.set_name} value={s.set_name}>
+                {s.set_name}
+              </option>
+            ),
+          )}
         </select>
 
         <select value={type} onChange={(e) => setType(e.target.value)}>
@@ -171,7 +177,7 @@ export default function PokemonSinglesPage() {
               <tr key={p.id} className="border-t">
                 <td className="px-3 py-2 text-center">
                   {p.imageSmall ? (
-                    <Image
+                    <img
                       src={p.imageSmall}
                       alt={p.name ?? "card image"}
                       width={64}
@@ -217,7 +223,7 @@ export default function PokemonSinglesPage() {
                         await fetch(`/api/pokemon/singles/${p.id}`, {
                           method: "DELETE",
                         });
-                         console.log("Pokemon Id {id}")
+                        console.log("Pokemon Id {id}");
                         location.reload();
                       }}
                     >
@@ -234,7 +240,7 @@ export default function PokemonSinglesPage() {
       {/* PAGINATION */}
       <div className="flex justify-center gap-4 mt-6">
         <button
-          onClick={() => loadPokemonProducts(page - 1)}
+          onClick={() => loadPokemonSingles(page - 1)}
           disabled={page <= 1}
           className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
         >
@@ -246,7 +252,7 @@ export default function PokemonSinglesPage() {
         </span>
 
         <button
-          onClick={() => loadPokemonProducts(page + 1)}
+          onClick={() => loadPokemonSingles(page + 1)}
           disabled={page >= totalPages}
           className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
         >

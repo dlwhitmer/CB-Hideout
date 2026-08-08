@@ -1,6 +1,6 @@
 import { db } from "../../../../lib/db/db";
 import { magicSingles } from "../../../../lib/db/schema/magic";
-import { eq, and, like } from "drizzle-orm";   // ⭐ add this
+import { eq, and, like } from "drizzle-orm"; // ⭐ add this
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -18,17 +18,15 @@ export async function GET(req: Request) {
   // ⭐ build WHERE conditions
   const conditions = [];
 
-
-
-if (type) {
-  conditions.push(like(magicSingles.type_line, `%${type}%`));
-}
+  if (type) {
+    conditions.push(like(magicSingles.typeLine, `%${type}%`));
+  }
   if (rarity) {
     conditions.push(eq(magicSingles.rarity, rarity));
   }
 
   if (set) {
-    conditions.push(eq(magicSingles.set_code, set));
+    conditions.push(eq(magicSingles.setCode, set));
   }
 
   // ⭐ apply WHERE to total count
@@ -47,6 +45,8 @@ if (type) {
     .limit(pageSize)
     .offset(offset);
 
+  console.log("ADMIN MAGIC ROW COUNT:", rows.length);
+  console.log("ADMIN MAGIC TOTAL:", total);
   return Response.json({
     rows,
     total,

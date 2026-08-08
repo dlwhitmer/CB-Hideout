@@ -4,54 +4,37 @@ import { useState } from "react";
 
 export default function AddPokemonPacksPage() {
   const [form, setForm] = useState({
-    name: "",
-    setName: "",
-    rarity: "",
-    price: 0,
+    setCode: "",
   });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    await fetch("/api/pokemon/packs", {
+    await fetch("/api/pokemon/sets/import", {
       method: "POST",
-      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        setCode: form.setCode,
+      }),
     });
 
-    window.location.href = "/admin/pokemon/packs";
+    window.location.href = "/admin/pokemon/sets";
   }
 
   return (
     <div>
-      <h1>Add pokemon Single</h1>
+      <h1>Import Pokémon Set</h1>
 
       <form onSubmit={handleSubmit}>
         <input
-          placeholder="Name"
-          value={form.name}
-          onChange={e => setForm({ ...form, name: e.target.value })}
+          placeholder="Set Code (example: sv1)"
+          value={form.setCode}
+          onChange={(e) => setForm({ ...form, setCode: e.target.value })}
         />
 
-        <input
-          placeholder="Set Name"
-          value={form.setName}
-          onChange={e => setForm({ ...form, setName: e.target.value })}
-        />
-
-        <input
-          placeholder="Rarity"
-          value={form.rarity}
-          onChange={e => setForm({ ...form, rarity: e.target.value })}
-        />
-
-        <input
-          placeholder="Price"
-          type="number"
-          value={form.price}
-          onChange={e => setForm({ ...form, price: Number(e.target.value) })}
-        />
-
-        <button type="submit">Add Card</button>
+        <button type="submit">Import Set</button>
       </form>
     </div>
   );

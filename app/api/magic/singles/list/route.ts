@@ -8,11 +8,21 @@ export async function GET(req: Request) {
   const type = searchParams.get("type") ?? "";
   const rarity = searchParams.get("rarity") ?? "";
   const set = searchParams.get("set") ?? "";
+  const colors = searchParams.get("colors") ?? "";
+  const finishes = searchParams.get("finishes") ?? "";
+  const page = Number(searchParams.get("page") ?? "1");
+  const pageSize = 20;
 
   const conditions = [];
 
   if (type) {
-    conditions.push(like(magicSingles.type_line, `%${type}%`));
+    conditions.push(like(magicSingles.frontTypeLine, `%${type}%`));
+  }
+  if (finishes) {
+    conditions.push(like(magicSingles.finishes, `%${finishes}%`));
+  }
+  if (colors) {
+    conditions.push(like(magicSingles.frontColors, `%${colors}%`));
   }
 
   if (rarity) {
@@ -20,20 +30,26 @@ export async function GET(req: Request) {
   }
 
   if (set) {
-    conditions.push(eq(magicSingles.set_code, set));
+    conditions.push(eq(magicSingles.setCode, set));
   }
+  // const test = await db.select().from(magicSingles).limit(5);
 
+  // console.log("FIRST MAGIC CARDS:", test);
   const where = conditions.length ? and(...conditions) : undefined;
 
   const rows = await db
     .select()
     .from(magicSingles)
     .where(where)
-    .orderBy(magicSingles.collector_number);
+    .orderBy(magicSingles.collectorNumber)
+    .limit(pageSize)
+    .offset((page - 1) * pageSize);
+
+  const totalCount = await db.select().from(magicSingles).where(where);
 
   return Response.json({
-    data: rows,          // ✔ matches public page
-    total: rows.length,  // ✔ matches public page
-    pageSize: rows.length // ✔ matches public page
+    data: rows,
+    total: totalCount.length,
+    pageSize,
   });
 }

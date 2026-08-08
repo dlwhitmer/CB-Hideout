@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./app.css";
 import Header from "./components/Hearder";
 
 export default function RootLayout({
@@ -9,13 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="relative min-h-screen overflow-x-hidden bg-black">
-        <div className="pt-30 fixed inset-0 flex items-center justify-center pointer-events-none z-0">
-          <img
-            src="/images/CBH_Logo.png"
-            alt="Watermark Logo"
-            className="opacity-70 w-[400px] h-auto"
-          />
-        </div>
+       
         <div className="relative">
           <Header/>
 

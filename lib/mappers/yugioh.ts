@@ -1,4 +1,4 @@
-import { NewYugiohSingle } from "../db/schema";
+import { NewYugiohSingle, NewYugiohPrinting, NewYugiohSet } from "../db/schema";
 
 /* -------------------------------------------------------
    YU‑GI‑OH — SINGLE CARD MAPPER
@@ -8,26 +8,27 @@ export function mapYugiohSingleToDB(
   printing?: any,
 ): NewYugiohSingle {
   return {
-    yugiohId: String(card.id),
     name: card.name ?? "",
-
-    typeline: card.typeline ?? "",
+    yugiohId: String(card.id),
     type: card.type ?? "",
-    humanReadableCardType: card.human_readable_card_type ?? "",
+    humanReadableCardType: card.humanReadableCardType ?? "",
+    typeline: card.typeline?.join(" / ") ?? "",
+    scale: card.scale ?? "",
     frameType: card.frameType ?? "",
 
     desc: card.desc ?? "",
     race: card.race ?? "",
     attribute: card.attribute ?? "",
     archetype: card.archetype ?? "",
-
     atk: card.atk ?? null,
     def: card.def ?? null,
     level: card.level ?? null,
-    setCode: printing?.set_code ?? "",
+
     primarySet: printing?.set_name ?? "Unknown",
-    setRarity: printing?.set_rarity,
-    marketValue: Number(printing?.set_price ?? 0),
+
+    linkval: card.linkval ?? null,
+    linkmarkers: card.linkmarkers?.join(", ") ?? "",
+
     price: Number(card.card_prices?.[0]?.cardmarket_price ?? 0),
     cardSets: JSON.stringify(card.card_sets ?? []),
     cardImages: JSON.stringify(card.card_images ?? []),
@@ -38,5 +39,28 @@ export function mapYugiohSingleToDB(
 
     quantity: 1,
     createdAt: new Date().toISOString(),
+  };
+}
+
+export function mapYugiohPrintingsToDB(
+  card: any,
+  printing?: any,
+): NewYugiohPrinting {
+  return {
+    yugiohId: String(card.id),
+    setCode: printing?.set_code ?? "",
+    setName: printing?.set_name ?? "Unknown",
+    setRarity: printing?.set_rarity,
+    marketValue: Number(printing?.set_price ?? 0),
+  };
+}
+
+export function mapYugiohSetToDB(
+  setName: string,
+  setCode: string,
+): NewYugiohSet {
+  return {
+    setName,
+    setCode,
   };
 }

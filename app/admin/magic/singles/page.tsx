@@ -86,18 +86,18 @@ export default function MagicSinglesPage() {
             <tr key={card.id} className="border-b">
               <td className="p-2">
                 <img
-                  src={card.image_small || "/placeholder.png"}
-                  alt={card.name}
+                  src={card.imageSmall || "/placeholder.png"}
+                  alt={card.frontName}
                   className="w-16 h-auto rounded shadow"
                 />
               </td>
 
-              <td className="p-2">{card.name}</td>
-              <td className="p-2">{card.set_name}</td>
+              <td className="p-2">{card.frontName}</td>
+              <td className="p-2">{card.setName}</td>
               <td className="p-2">{card.rarity}</td>
               <td className="p-2">{card.quantity}</td>
               <td className="p-2">${card.price}</td>
-              <td className="p-2">{card.scryfall_id}</td>
+              <td className="p-2">{card.scryfallId}</td>
 
               <td className="p-2 space-x-2">
                 <Link

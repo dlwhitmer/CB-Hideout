@@ -3,6 +3,38 @@ import { pokemonSingles } from "../../../../../lib/db/schema/pokemon";
 import { eq } from "drizzle-orm";
 import { mapPokemonSingleToDB } from "../../../../../lib/mappers/pokemon";
 
+async function fetchPokemonApi(
+  url: string,
+  retries = 3,
+  delayMs = 2000,
+): Promise<Response> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const response = await fetch(url, {
+      headers: {
+        "X-Api-Key": process.env.POKEMON_TCG_API_KEY!,
+      },
+    });
+
+    if (response.ok) {
+      return response;
+    }
+
+    const retryable = [500, 502, 503, 504].includes(response.status);
+
+    if (!retryable || attempt === retries) {
+      return response;
+    }
+
+    console.log(
+      `Pokemon API returned ${response.status}. Retry ${attempt}/${retries}...`,
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+
+  throw new Error("Pokemon API request failed");
+}
+
 export async function POST(req: Request) {
   try {
     const { id } = await req.json();
@@ -12,9 +44,9 @@ export async function POST(req: Request) {
     }
 
     // ⭐ Fetch ONE Pokémon card
-    const res = await fetch(`https://api.pokemontcg.io/v2/cards/${id}`, {
-      headers: { "User-Agent": "hideout-app/1.0" },
-    });
+    const res = await fetchPokemonApi(
+      `https://api.pokemontcg.io/v2/cards/${id}`,
+    );
 
     const data = await res.json();
 

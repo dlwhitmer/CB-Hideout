@@ -1,17 +1,27 @@
-// components/ThreeDCard.js
-export default function ThreeDCard() {
+export default function Home() {
   return (
-    <div className="perspective-[1000px]">
-      <div className="transform-style-preserve-3d rotate-y-12 transition-transform duration-500 hover:rotate-y-0">
-        {/* Front face */}
-        <div className="absolute backface-hidden bg-blue-500 text-white p-6 rounded-lg w-64 h-40 flex items-center justify-center">
-          Front Side
+    <div className="min-h-screen bg-gray-100 p-6">
+      {/* Grid container */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        {/* Column 1 */}
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-bold mb-2">Column 1</h2>
+          <p>This is the first column content.</p>
         </div>
 
-        {/* Back face */}
-        <div className="absolute backface-hidden rotate-y-180 bg-red-500 text-white p-6 rounded-lg w-64 h-40 flex items-center justify-center">
-          Back Side
+        {/* Column 2 */}
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-bold mb-2">Column 2</h2>
+          <p>This is the second column content.</p>
         </div>
+
+        {/* Column 3 */}
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-bold mb-2">Column 3</h2>
+          <p>This is the third column content.</p>
+        </div>
+
       </div>
     </div>
   );

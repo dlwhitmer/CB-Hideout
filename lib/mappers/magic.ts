@@ -1,66 +1,174 @@
 import { NewMagicSingle } from "../db/schema/magic";
 
-/* -------------------------------------------------------
-   MAGIC — SINGLE CARD MAPPER (snake_case)
-------------------------------------------------------- */
-export function mapMagicSingleToDB(card: any): NewMagicSingle {
-  let image_small = null;
-  let image_normal = null;
+function getFace(card: any, index: number) {
+  return card.card_faces?.[index] ?? null;
+}
 
-  // Normal single-faced card
-  if (card.image_uris) {
-    image_small = card.image_uris.small;
-    image_normal = card.image_uris.normal;
-  }
+export function mapMagicSinglesToDB(card: any): NewMagicSingle {
 
-  // Double-faced card (DFC)
-  else if (Array.isArray(card.card_faces) && card.card_faces.length > 0) {
-    const face = card.card_faces[0];
-    image_small = face.image_uris?.small ?? null;
-    image_normal = face.image_uris?.normal ?? null;
-  }
+  const front = getFace(card, 0);
+  const back = getFace(card, 1);
+
+
+  const frontImageSmall =
+    front?.image_uris?.small ??
+    card.image_uris?.small ??
+    null;
+
+  const frontImageNormal =
+    front?.image_uris?.normal ??
+    card.image_uris?.normal ??
+    null;
+
+
+  const backImageSmall =
+    back?.image_uris?.small ??
+    null;
+
+  const backImageNormal =
+    back?.image_uris?.normal ??
+    null;
+
 
   return {
-    scryfall_id: card.id,
-    name: card.name,
 
-    // ⭐ FIXED — Scryfall uses "set", not "set_code"
-    set_code: card.set,
-    set_name: card.set_name,
+    scryfallId: card.id,
+    oracleId: card.oracle_id ?? null,
 
-    mana_cost: card.mana_cost,
+
+    setCode: card.set,
+    setName: card.set_name,
+    setType: card.set_type,
+
+
+    finishes: JSON.stringify(card.finishes ?? []),
+    digital: card.digital ?? false,
+
     cmc: card.cmc,
 
-    colors: JSON.stringify(card.colors ?? []),
-    color_identity: JSON.stringify(card.color_identity ?? []),
+    colorIdentity:
+      JSON.stringify(card.color_identity ?? []),
 
-    power: card.power ?? null,
-    toughness: card.toughness ?? null,
+    keywords:
+      JSON.stringify(card.keywords ?? []),
 
-    keywords: JSON.stringify(card.keywords ?? []),
-
-    type_line: card.type_line,
-    oracle_text: card.oracle_text,
     layout: card.layout,
+    name: card.name,
 
-    // ⭐ store full card_faces JSON (snake_case)
-    card_faces: card.card_faces ? JSON.stringify(card.card_faces) : null,
 
-    collector_number: card.collector_number,
-    rarity: card.rarity,
+    card_faces:
+      card.card_faces
+        ? JSON.stringify(card.card_faces)
+        : null,
 
-    price: Number(card.prices?.usd ?? 0),
-    foil_price: Number(card.prices?.usd_foil ?? 0),
+
+    // FRONT
+
+    frontName:
+      front?.name ?? card.name ?? null,
+
+    frontManaCost:
+      front?.mana_cost ?? card.mana_cost ?? null,
+
+    frontTypeLine:
+      front?.type_line ?? card.type_line ?? null,
+
+    frontOracleText:
+      front?.oracle_text ?? card.oracle_text ?? null,
+
+    frontColors:
+      JSON.stringify(front?.colors ?? card.colors ?? []),
+
+    frontPower:
+      front?.power ?? card.power ?? null,
+
+    frontToughness:
+      front?.toughness ?? card.toughness ?? null,
+
+    frontLoyalty:
+      front?.loyalty ?? card.loyalty ?? null,
+
+    frontDefense:
+      front?.defense ?? card.defense ?? null,
+
+
+    // BACK
+
+    backName:
+      back?.name ?? null,
+
+    backManaCost:
+      back?.mana_cost ?? null,
+
+    backTypeLine:
+      back?.type_line ?? null,
+
+    backOracleText:
+      back?.oracle_text ?? null,
+
+    backColors:
+      JSON.stringify(back?.colors ?? []),
+
+    backPower:
+      back?.power ?? null,
+
+    backToughness:
+      back?.toughness ?? null,
+
+    backLoyalty:
+      back?.loyalty ?? null,
+
+    backDefense:
+      back?.defense ?? null,
+
+
+    // Images
+
+    frontImageSmall,
+    frontImageNormal,
+
+    backImageSmall,
+    backImageNormal,
+
+
+    // Keep old fields working
+
+    imageSmall: frontImageSmall,
+    imageNormal: frontImageNormal,
+
+
+    collectorNumber:
+      card.collector_number ?? null,
+
+    rarity:
+      card.rarity,
+    lang:
+    card.lang,
+
+
+    price:
+      Number(card.prices?.usd ?? 0),
+
+    foilPrice:
+      Number(card.prices?.usd_foil ?? 0),
+
 
     quantity: 1,
 
-    // ⭐ snake_case image fields
-    image_small,
-    image_normal,
+    cardCount:
+      card.card_count ?? null,
 
-    artist: card.artist,
-    released_at: card.released_at,
 
-    description: ""
+    artist:
+      card.artist ?? null,
+
+    releasedAt:
+      card.released_at ?? null,
+
+    updatedAt:
+      card.updated_at ?? null,
+
+    createdAt:
+      null,
   };
 }

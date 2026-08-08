@@ -8,7 +8,7 @@ export async function GET() {
       set_name: pokemonSingles.setName,
     })
     .from(pokemonSingles)
-    .groupBy(pokemonSingles.setCode);
+    .orderBy(pokemonSingles.setName);
 
-  return Response.json(rows);
+  return Response.json(rows);   // ⭐ MUST BE AN ARRAY
 }

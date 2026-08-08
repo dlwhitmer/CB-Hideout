@@ -1,6 +1,11 @@
 import Image from "next/image";
 import { db } from "../../../lib/db/db";
-import { yugiohSingles } from "../../../lib/db/schema/yugioh";
+import {
+  yugiohSingles,
+  yugiohSets,
+  yugiohPrintings,
+} from "../../../lib/db/schema/yugioh";
+
 import { eq, like, and, sql } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
@@ -15,6 +20,7 @@ export default async function ProductsPage({
     attribute?: string;
     set?: string;
   }>;
+  
 }) {
   const params = await searchParams;
   const page = Number(params.page ?? 1);
@@ -27,27 +33,51 @@ export default async function ProductsPage({
   const offset = (page - 1) * pageSize;
 
   // ---------------------------
-  // DATA QUERY
+  // DATA QUERY (SINGLES)
   // ---------------------------
-  console.log("SELECTED SET:", set);
+
   const rows = await db
-    .select()
-    .from(yugiohSingles)
-    .where(
-      and(
-        type ? like(yugiohSingles.type, `%${type}%`) : undefined,
-        race ? eq(yugiohSingles.race, race) : undefined,
-        set ? eq(yugiohSingles.primarySet, set) : undefined,
-      ),
-    )
-    .limit(pageSize)
-    .offset(offset);
-  const sets = await db
     .select({
-      set_name: yugiohSingles.primarySet,
+      yugioh_singles: yugiohSingles,
     })
     .from(yugiohSingles)
-    .groupBy(yugiohSingles.primarySet);
+    .leftJoin(
+      yugiohPrintings,
+      eq(yugiohSingles.yugiohId, yugiohPrintings.yugiohId),
+    )
+    .where(
+      and(
+        set ? eq(yugiohPrintings.setName, set) : undefined,
+        type ? like(yugiohSingles.type, `%${type}%`) : undefined,
+        race ? eq(yugiohSingles.race, race) : undefined,
+        attribute ? eq(yugiohSingles.attribute, attribute) : undefined,
+      ),
+    )
+    .groupBy(yugiohSingles.id) // ⭐ THIS removes duplicates
+    .limit(pageSize)
+    .offset(offset)
+    .all();
+
+  const debug = await db
+    .select({
+      code: yugiohPrintings.setCode,
+      name: yugiohPrintings.setName,
+    })
+    .from(yugiohPrintings)
+    .limit(50);
+
+  console.log(debug);
+  // ---------------------------
+  // SET LIST FOR DROPDOWN
+  // ---------------------------
+  const sets = await db
+    .select({
+      id: yugiohSets.id,
+      setName: yugiohSets.setName,
+      setCode: yugiohSets.setCode,
+    })
+    .from(yugiohSets)
+    .all();
 
   // ---------------------------
   // COUNT QUERY
@@ -73,10 +103,9 @@ export default async function ProductsPage({
           className="bg-gray-800 border border-gray-600 p-2 rounded"
         >
           <option value="">All Sets</option>
-
           {sets.map((s) => (
-            <option key={s.set_name} value={s.set_name}>
-              {s.set_name}
+            <option key={s.id} value={s.setName}>
+              {s.setName}
             </option>
           ))}
         </select>
@@ -105,14 +134,19 @@ export default async function ProductsPage({
           className="bg-gray-800 border border-gray-600 p-2 rounded"
         >
           <option value="">All Races</option>
+          <option value="Insect">Insect</option>
           <option value="Dragon">Dragon</option>
           <option value="Warrior">Warrior</option>
           <option value="Spellcaster">Spellcaster</option>
           <option value="Fiend">Fiend</option>
+          <option value="Psychic">Psychic</option>
           <option value="Fairy">Fairy</option>
           <option value="Machine">Machine</option>
+          <option value="Divine-Beast">Divine-Beast</option>
+          <option value="Creator God">Creator God</option>
           <option value="Beast">Beast</option>
           <option value="Zombie">Zombie</option>
+          <option value="Fish">Fish</option>
           <option value="Aqua">Aqua</option>
           <option value="Pyro">Pyro</option>
           <option value="Thunder">Thunder</option>
@@ -124,6 +158,13 @@ export default async function ProductsPage({
           <option value="Dinosaur">Dinosaur</option>
           <option value="Insect">Insect</option>
           <option value="Cyberse">Cyberse</option>
+          <option value="Normal">Normal</option>
+          <option value="Quick-Play">Quick-Play</option>
+          <option value="Continuous">Continuous</option>
+          <option value="Equip">Equip</option>
+          <option value="Field">Field</option>
+          <option value="Ritual">Ritual</option>
+          <option value="Counter">Counter</option>
         </select>
 
         {/* ATTRIBUTE */}
@@ -163,18 +204,21 @@ export default async function ProductsPage({
 
       {/* GRID */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-5 gap-6">
-        {rows.map((p) => {
-          const small = p.imageSmall;
+        {rows.map((row) => {
+          const single = row.yugioh_singles;
+          // const printing = row.yugioh_printings;
+
+          const small = single?.imageSmall;
 
           return (
             <a
-              key={p.id}
-              href={`/yugioh/singles/${p.id}`}
+              key={single.id}
+              href={`/yugioh/singles/${single.id}`}
               className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
             >
               <Image
                 src={small || "/placeholder.png"}
-                alt={p.name || "Yu-Gi-Oh card"}
+                alt={single.name || "Yu-Gi-Oh card"}
                 width={320}
                 height={446}
                 className="rounded shadow"
@@ -188,7 +232,7 @@ export default async function ProductsPage({
       <div className="flex justify-center gap-4 mt-8 text-white">
         {page > 1 && (
           <a
-            href={`?page=${page + 1}&type=${type}&race=${race}&attribute=${attribute}&set=${set}`}
+            href={`?page=${page - 1}&type=${type}&race=${race}&attribute=${attribute}&set=${set}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
           >
             Previous

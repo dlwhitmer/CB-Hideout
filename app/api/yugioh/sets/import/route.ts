@@ -1,7 +1,16 @@
 import { db } from "../../../../../lib/db/db";
-import { yugiohSingles } from "../../../../../lib/db/schema/yugioh";
+import {
+  yugiohSingles,
+  yugiohPrintings,
+} from "../../../../../lib/db/schema/yugioh";
 import { eq } from "drizzle-orm";
-import { mapYugiohSingleToDB } from "../../../../../lib/mappers/yugioh";
+import {
+  mapYugiohSingleToDB,
+  mapYugiohPrintingsToDB,
+} from "../../../../../lib/mappers/yugioh";
+import { yugiohSets } from "../../../../../lib/db/schema/yugioh";
+import { mapYugiohSetToDB } from "../../../../../lib/mappers/yugioh";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -9,14 +18,10 @@ export async function POST(req: Request) {
     const { setName } = body;
     console.log("SET NAME:", setName);
 
-    // const setName = setCode;
-
-    console.log("setName:", setName);
-
     if (!setName) {
       return Response.json({ error: "Missing setName" }, { status: 400 });
     }
-    // ⭐ Fetch ALL cards in the Yugioh set
+
     const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?cardset=${encodeURIComponent(setName)}`;
 
     const res = await fetch(url, {
@@ -34,15 +39,29 @@ export async function POST(req: Request) {
 
     const cards = data.data;
 
+    // Extract set code from the first printing
+    const firstPrinting = cards[0].card_sets?.find(
+      (s: any) => s.set_name === setName,
+    );
+    const setCode = firstPrinting?.set_code ?? "";
+
+    // Insert the set
+    const newSet = mapYugiohSetToDB(setName, setCode);
+    await db.insert(yugiohSets).values(newSet);
+
     let inserted = 0;
     let updated = 0;
 
     for (const c of cards) {
+      // Insert printings
+      for (const printing of c.card_sets ?? []) {
+        const printingRow = mapYugiohPrintingsToDB(c, printing);
+        await db.insert(yugiohPrintings).values(printingRow);
+      }
+
+      // Insert single
       const printing = c.card_sets?.find((s: any) => s.set_name === setName);
-
-      const mapped = mapYugiohSingleToDB(c, printing);
-
-      console.log("Mapped card:", mapped);
+      const mapped = mapYugiohSingleToDB(c);
 
       const existing = await db
         .select()
@@ -61,7 +80,6 @@ export async function POST(req: Request) {
         continue;
       }
 
-      // Insert new card
       await db.insert(yugiohSingles).values(mapped);
       inserted++;
     }

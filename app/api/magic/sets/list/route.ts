@@ -1,15 +1,18 @@
 import { db } from "../../../../../lib/db/db";
-import { magicSingles } from "../../../../../lib/db/schema";
-import { eq } from "drizzle-orm";
+import { magicSingles } from "../../../../../lib/db/schema/magic";
 
 export async function GET() {
   const rows = await db
     .select({
-      set_code: magicSingles.set_code,
-      set_name: magicSingles.set_name,
+      set_code: magicSingles.setCode,
+      set_name: magicSingles.setName,
     })
     .from(magicSingles)
-    .groupBy(magicSingles.set_code);
+    .groupBy(
+      magicSingles.setCode,
+      magicSingles.setName
+    )
+    .orderBy(magicSingles.setName);
 
   return Response.json(rows);
 }

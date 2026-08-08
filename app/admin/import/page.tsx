@@ -13,16 +13,19 @@ export default function UniversalImportPage() {
   const router = useRouter(); // ⭐ THIS FIXES THE REDLINE
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     const body =
-  type === "singles"
-    ? { id }
-    : type === "packs"
-      ? { packName }
-      : game === "yugioh"
-        ? { setName: setCode }
-        : { setCode };
-    console.log("FRONTEND BODY:", body);
+    type === "singles"
+     ? { id }
+      :type === "packs"
+        ? { packName }
+        : game === "yugioh"
+          ? { setName: setCode }
+          : { setCode };
+
+    console.log("GAME:", game);
+    console.log("TYPE:", type);
+    console.log("SET CODE:", setCode);
+    console.log("IMPORT URL:", `/api/${game}/${type}/import`);
 
     const res = await fetch(`/api/${game}/${type}/import`, {
       method: "POST",
@@ -39,18 +42,23 @@ export default function UniversalImportPage() {
   };
 
   const getPlaceholder = () => {
-    if (type !== "singles") return "";
+    console.log("Type = {type}");
+    if (type === "packs") return "Pack name";
 
-    switch (game) {
-      case "magic":
-        return "Enter Scryfall ID";
-      case "pokemon":
-        return "Enter Pokémon Card ID (sv2-123)";
-      case "yugioh":
-        return "Enter YGO Card ID";
-      default:
-        return "";
+    if (type === "sets" || type === "singles") {
+      switch (game) {
+        case "magic":
+          return "Set Code (example: mh3)";
+        case "pokemon":
+          return "Set Code (example: sv2)";
+        case "yugioh":
+          return "Set Name";
+        default:
+          return "";
+      }
     }
+
+    return "";
   };
 
   return (
@@ -73,7 +81,10 @@ export default function UniversalImportPage() {
       <label className="block mb-2">Import Type:</label>
       <select
         value={type}
-        onChange={(e) => setType(e.target.value)}
+        onChange={(e) => {
+          console.log("CHANGING TYPE TO:", e.target.value);
+          setType(e.target.value);
+        }}
         className="bg-gray-800 p-2 rounded mb-6 w-full"
       >
         <option value="singles">Singles</option>
@@ -84,15 +95,13 @@ export default function UniversalImportPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* SINGLES FORM */}
         {type === "singles" && (
-          <>
-            <input
-              type="text"
-              placeholder={getPlaceholder()}
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-              className="bg-gray-800 p-2 rounded w-full"
-            />
-          </>
+          <input
+            type="text"
+            placeholder={getPlaceholder()}
+            value={setCode}
+            onChange={(e) => setId(e.target.value)}
+            className="bg-gray-800 p-2 rounded w-full"
+          />
         )}
 
         {/* PACKS FORM */}
@@ -112,7 +121,7 @@ export default function UniversalImportPage() {
         {type === "sets" && (
           <input
             type="text"
-            placeholder="Set Code ie. mh3 or amsh"
+            placeholder={getPlaceholder()}
             value={setCode}
             onChange={(e) => setSetCode(e.target.value)}
             className="bg-gray-800 p-2 rounded w-full"

@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+:root{
+    /* Detail Page */
+    --dpm: #ffffffB3;
+    --dplbltext: #b6042a;
+    --dpvtext: #000000;
+
+}

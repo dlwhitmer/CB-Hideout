@@ -27,30 +27,26 @@ export default function Page() {
       setLoading(true);
 
       try {
-        const params = new URLSearchParams();
-
-        params.set("page", String(currentPage));
-        params.set("limit", String(limit));
-
-        if (selectedSet) params.set("set", selectedSet);
-        if (type) params.set("type", type);
-        if (race) params.set("race", race);
-        if (attribute) params.set("attribute", attribute);
+        const params = new URLSearchParams({
+          page: String(currentPage),
+          limit: String(limit),
+          set: selectedSet,
+          type,
+          race,
+          attribute,
+        });
 
         const res = await fetch(
           `/api/yugioh/singles/list?${params.toString()}`,
-          {
-            cache: "no-store",
-          },
         );
-
         const data = await res.json();
 
-        setYugiohSingles(data.data ?? []);
+        console.log("SINGLES:", data);
+
+        setYugiohSingles(data.rows ?? []);
         setTotal(data.total ?? 0);
-        setPage(currentPage);
       } catch (err) {
-        console.error("LOAD ERROR:", err);
+        console.error("SINGLES LOAD ERROR:", err);
       } finally {
         setLoading(false);
       }
@@ -96,7 +92,7 @@ export default function Page() {
         >
           <option value="">All Sets</option>
           {sets.map((set) => (
-            <option key={set.set_code} value={set.set_name}>
+            <option key={set.set_name} value={set.set_name}>
               {set.set_name}
             </option>
           ))}

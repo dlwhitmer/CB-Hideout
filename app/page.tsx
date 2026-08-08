@@ -6,7 +6,7 @@ export default function Home() {
       <main className="min-h-screen bg-[url('/images/arcane-bg.webp')] bg-no-repeat bg-[length:100%_100%]">
         {/* Your homepage content */}
         {/* Watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+      <div className="absolute inset-0 sticky top-[120px] flex items-center justify-center pointer-events-none z-10">
         <img
           src="/images/CBH_Logo.png"
           alt="Watermark Logo"

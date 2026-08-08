@@ -11,14 +11,12 @@ export async function GET(req: Request) {
     const race = searchParams.get("race");
     const attribute = searchParams.get("attribute");
 
-    console.log("FILTER SET:", set);
-
     const rows = await db
       .select()
       .from(yugiohSingles)
       .where(
         and(
-          set ? eq(yugiohSingles.setCode, set) : undefined,
+          set ? eq(yugiohSingles.primarySet, set) : undefined,
           type ? like(yugiohSingles.type, `%${type}%`) : undefined,
           race ? eq(yugiohSingles.race, race) : undefined,
           attribute ? eq(yugiohSingles.attribute, attribute) : undefined,
@@ -26,12 +24,11 @@ export async function GET(req: Request) {
       );
 
     return Response.json({
-      data: rows,
+      rows,
       total: rows.length,
     });
   } catch (err: any) {
     console.error(err);
-
     return Response.json({ error: err.message }, { status: 500 });
   }
 }

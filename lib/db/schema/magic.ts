@@ -1,48 +1,82 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 import { InferModel } from "drizzle-orm";
 
-/* -------------------------------------------------------
-   MAGIC — SINGLES (FIXED)
-------------------------------------------------------- */
 export const magicSingles = sqliteTable("magic_singles", {
   id: integer("id").primaryKey({ autoIncrement: true }),
 
-  scryfall_id: text("scryfall_id").notNull().unique(),
-  name: text("name").notNull(),
+  // Card identity
+  scryfallId: text("scryfall_id").notNull().unique(),
+  oracleId: text("oracle_id"),
 
-  set_code: text("set_code").notNull(),
-  set_name: text("set_name").notNull(),
+  // Set info
+  setCode: text("set_code").notNull(),
+  setName: text("set_name").notNull(),
+  setType: text("set_type"),
 
-  mana_cost: text("mana_cost"),
+  // Card-wide info
+  finishes: text("finishes"),
+  digital: integer("digital", { mode: "boolean" }),
   cmc: real("cmc"),
-  colors: text("colors"),
-  color_identity: text("color_identity"),
-  power: text("power"),
-  toughness: text("toughness"),
+  colorIdentity: text("color_identity"),
   keywords: text("keywords"),
-  type_line: text("type_line"),
-  oracle_text: text("oracle_text"),
   layout: text("layout"),
-  card_faces: text("card_faces"),
 
-  collector_number: text("collector_number").notNull(),
-  rarity: text("rarity").notNull(),
+  // Raw Scryfall backup
+  card_faces: text("card_faces"),
+  lang:text("lang"),
+  
+
+  // Front face
+  name: text("name"),
+  frontName: text("front_name"),
+  frontManaCost: text("front_mana_cost"),
+  frontTypeLine: text("front_type_line"),
+  frontOracleText: text("front_oracle_text"),
+  frontColors: text("front_colors"),
+  frontPower: text("front_power"),
+  frontToughness: text("front_toughness"),
+  frontLoyalty: integer("front_loyalty"),
+  frontDefense: integer("front_defense"),
+
+  // Back face
+  backName: text("back_name"),
+  backManaCost: text("back_mana_cost"),
+  backTypeLine: text("back_type_line"),
+  backOracleText: text("back_oracle_text"),
+  backColors: text("back_colors"),
+  backPower: text("back_power"),
+  backToughness: text("back_toughness"),
+  backLoyalty: integer("back_loyalty"),
+  backDefense: integer("back_defense"),
+
+  // Images
+  frontImageSmall: text("front_image_small"),
+  frontImageNormal: text("front_image_normal"),
+
+  backImageSmall: text("back_image_small"),
+  backImageNormal: text("back_image_normal"),
+
+  // Existing image fields (keep these)
+  imageSmall: text("image_small"),
+  imageNormal: text("image_normal"),
+
+  // Store info
+  collectorNumber: text("collector_number"),
+  rarity: text("rarity"),
 
   price: real("price"),
-  foil_price: real("foil_price"),
-  quantity: integer("quantity").default(0),
+  foilPrice: real("foil_price"),
 
-  // image_uris: text("image_uris"),
-  image_small: text("image_small"),
-  image_normal: text("image_normal"),
+  quantity: integer("quantity").default(0), 
+
+  cardCount: integer("card_count"),
 
   artist: text("artist"),
-  description: text("description"),
-  released_at: text("released_at"),
 
-  created_at: text("created_at").default("CURRENT_TIMESTAMP"),
+  releasedAt: text("released_at"),
+  updatedAt: text("updated_at"),
+  createdAt: text("created_at"),
 });
-
 
 export type MagicSingle = InferModel<typeof magicSingles>;
 export type NewMagicSingle = InferModel<typeof magicSingles, "insert">;

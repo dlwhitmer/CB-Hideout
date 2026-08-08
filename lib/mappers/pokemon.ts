@@ -1,4 +1,4 @@
-import { NewPokemonSingle} from "../db/schema/pokemon";
+import { NewPokemonSingle } from "../db/schema";
 
 /* -------------------------------------------------------
    POKÉMON — SINGLE CARD MAPPER
@@ -8,10 +8,34 @@ export function mapPokemonSingleToDB(card: any): NewPokemonSingle {
     throw new Error("mapPokemonSingleToDB received undefined card");
   }
 
+  const prices = card.tcgplayer?.prices;
+
+  const market =
+    prices?.normal?.market ??
+    prices?.holofoil?.market ??
+    prices?.reverseHolofoil?.market ??
+    prices?.["1stEditionHolofoil"]?.market ??
+    null;
+
+  const low =
+    prices?.normal?.low ??
+    prices?.holofoil?.low ??
+    prices?.reverseHolofoil?.low ??
+    prices?.["1stEditionHolofoil"]?.low ??
+    null;
+
+  const mid =
+    prices?.normal?.mid ??
+    prices?.holofoil?.mid ??
+    prices?.reverseHolofoil?.mid ??
+     prices?.["1stEditionHolofoil"]?.mid ??
+    null;
+
   return {
-    pokemonId: card.id ?? "",
     game: "pokemon",
-    category: card.supertype ?? "",
+    category: "Pokémon",
+
+    pokemonId: card.id ?? "",
     name: card.name ?? "",
 
     setCode: card.set?.id ?? "",
@@ -19,51 +43,48 @@ export function mapPokemonSingleToDB(card: any): NewPokemonSingle {
 
     cardNumber: card.number ?? "",
     rarity: card.rarity ?? "",
-    flavorText: card.flavorText ?? "",
 
     supertype: card.supertype ?? "",
+
     subtypes: card.subtypes?.join(", ") ?? null,
+    types: card.types?.join(", ") ?? null,
 
     hp: card.hp ?? "",
-    types: card.types?.join(", ") ?? null,
+
+    flavorText: card.flavorText ?? "",
 
     artist: card.artist ?? "",
 
     imageSmall: card.images?.small ?? "",
     imageLarge: card.images?.large ?? "",
 
-    price: parseFloat(card.cardmarket?.prices?.averageSellPrice ?? "0") || 0,
+    price: market ?? 0,
 
-    releaseDate: card.set?.releaseDate ?? "",
-    createdAt: new Date().toISOString(),
+    marketPrice: market ?? 0,
+    printedTotal: card.set?.printedTotal ?? null,
+    total: card.set?.total ?? null,
 
+    normalMarket: prices?.normal?.market ?? 0,
+
+    holofoilMarket: prices?.holofoil?.market ?? 0,
+
+    reverseHoloMarket: prices?.reverseHolofoil?.market ?? 0,
+    series: card.series ?? "",
+
+    lowPrice: low ?? 0,
+
+    midPrice: mid ?? 0,
+    weaknesses: card.weaknesses?.[0]?.type ?? null,
+    weaknessesValue: card.weaknesses?.[0]?.value ?? null,
+
+    resistances: card.resistances?.[0]?.type ?? null,
+    resistancesValue: card.resistances?.[0]?.value ?? null,
+    retreatCost: JSON.stringify(card.retreatCost ?? []),
+    convertedRetreatCost: card.convertedRetreatCost ?? 0,
+    abilities: JSON.stringify(card.abilities ?? []),
+    attacks: JSON.stringify(card.attacks ?? []),
     quantity: 1,
-  };
-}
 
-/* -------------------------------------------------------
-   POKÉMON — SET MAPPER
-------------------------------------------------------- */
-export function mapPokemonSetToDB(set: any){
-  return {
-    setCode: set.set_code,
-    setName: set.set_name ?? set.name ?? "",
-    series: set.series ?? "",
-
-    printedTotal: set.printed_total ?? null,
-    totalCards: Number(set.total_cards ?? 0),
-
-    releaseDate: set.release_date ?? "",
-
-
-    imageUrl:
-      set.image_url ??
-      set.image_uris?.normal ??
-      set.images?.logo ??
-      set.images?.symbol ??
-      null,
-
-    logoUrl: set.logo_url ?? null,
-    symbolUrl: set.symbol_url ?? null,
+    createdAt: new Date().toISOString(),
   };
 }
