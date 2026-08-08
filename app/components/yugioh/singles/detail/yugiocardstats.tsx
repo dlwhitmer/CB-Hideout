@@ -6,6 +6,7 @@ type Props = {
 
 
 export default function YugiohCardStats({ product }: Props) {
+  const isLink = product.typeline?.includes("Link");
   return (
     <section className="bg-[var(--dpm)] rounded shadow p-4">
       <div className="text-center font-bold">
