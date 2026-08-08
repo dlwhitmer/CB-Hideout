@@ -1,4 +1,4 @@
-import StatRow from "./StatRow";
+import StatRow from "../../../StatRow";
 import { PokemonSingle } from "../../../../../lib/db/schema";
 
 type Props = {
