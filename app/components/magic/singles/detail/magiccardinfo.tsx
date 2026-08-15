@@ -11,13 +11,13 @@ export default function MagicCardInformation({ product, showBack }: Props) {
   const power = showBack ? product.backPower : product.frontPower;
   return (
     <section className="bg-[var(--dpm)] rounded shadow p-4 w-full">
-      <h2 className="text-xl underline text-center font-bold mb-2">
+      <h2 className="text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] text-center font-extrabold">
         Card Stats
       </h2>
       {/* GENERAL */}
       <section className="mb-6">
-        <div className="text-lg grid grid-cols-2 gap-2">
-          <StatRow label="Set Name" value={product.setName} />
+        <div className="text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] grid grid-cols-1 sm:grid-cols-2 gap-1">
+          <StatRow label="Set" value={product.setName} />
           <StatRow label="Rarity" value={product.rarity} />
           <StatRow label="Toughness" value={toughness} />
           <StatRow label="Power" value={power} />

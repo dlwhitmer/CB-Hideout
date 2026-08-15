@@ -9,6 +9,7 @@ import MagicCardRules from "./magicCardRules";
 import MagicCardPrices from "./magiccardprices";
 import MagicCardInformation from "./magiccardinfo";
 import MagicPurchaseInfo from "./magicpurchaseinfo";
+
 type Props = {
   product: MagicSingle;
 };
@@ -17,18 +18,23 @@ export default function MagicDisplay({ product }: Props) {
   const [showBack, setShowBack] = useState(false);
 
   return (
-    <div className="flex gap-8 items-start justify-center">
-      <div className="w-[320px] sticky top-[125px] self-start">
-        <MagicCardImage product={product} setShowBack={setShowBack} />
+    <div className="flex flex-col items-center">
+      {/* IMAGE BLOCK */}
+      <div className="w-[150px] sm:w-[150px] lg:w-[300px]">
+        <MagicCardImage
+          product={product}
+          showBack={showBack}
+          setShowBack={setShowBack}
+        />
       </div>
 
-      <div className=" w-[800px] rounded shadow p-4">
+      <div className="w-[400px] sm:w-[400px] lg:w-[1200px] rounded shadow p-4">
         <MagicCardHeader product={product} showBack={showBack} />
         <MagicCardRules product={product} showBack={showBack} />
         <MagicCardInformation product={product} showBack={showBack} />
         <MagicCardCollector product={product} />
         <MagicCardPrices product={product} />
-        <MagicPurchaseInfo product={product}/>
+        <MagicPurchaseInfo product={product} />
       </div>
     </div>
   );

@@ -1,9 +1,37 @@
 @import "tailwindcss";
 
-:root{
-    /* Detail Page */
-    --dpm: #ffffffB3;
-    --dplbltext: #b6042a;
-    --dpvtext: #000000;
+:root {
+  /* Detail Page */
+  --dpm: #ffffffb3;
+  --dplbltext: #b6042a;
+  --dpvtext: #000000;
 
+  .magic-title {
+    @apply pt-5 text-[25px] sm:text-[25px] md:text-[40px] lg:text-[50px];
+  }
+  .gathering-title {
+    @apply text-[20px] sm:text-[20px] md:text-[25px] lg:text-[35px];
+  }
+  .pokemon-title {
+    @apply pt-5 h-[70px] sm:h-[70px] md:h-[80px] lg:h-[100px];
+  }
+
+  .yugioh-title {
+    @apply pt-5 h-[70px] sm:h-[70px] md:h-[80px] lg:h-[100px];
+  }
+  .card-grid {
+    @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
+  }
+  .card-size {
+    @apply w-[160px] sm:w-[160px] md:w-[225px] lg:w-[250px];
+  }
+  .filter-stack {
+    @apply flex flex-col lg:flex-row gap-3;
+  }
+  .filter-center {
+    @apply w-full bg-[#202020BE] text-center sm:w-auto;
+  }
+  .filter-button {
+   @apply block mx-auto lg:mx-0 w-[100px] bg-blue-600 px-4 py-2 rounded hover:bg-blue-700;
+  }
 }

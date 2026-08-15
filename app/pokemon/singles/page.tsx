@@ -14,6 +14,19 @@ type SearchParams = {
   series?: string;
 };
 
+function formatPrice(price: number | string | null | undefined) {
+  if (price === null || price === undefined || price === "") {
+    return "$0.00";
+  }
+
+  return Number(price).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 export default async function ProductsPage({
   searchParams,
 }: {
@@ -67,12 +80,11 @@ export default async function ProductsPage({
       <form
         method="GET"
         action="/pokemon/singles"
-        className="flex gap-4 mb-4 pt-3 text-white"
-      >
+        className="filter-stack text-white text-center">
         <select
           name="set"
           defaultValue={set}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Sets</option>
           {uniqueSets.map((s: any) => (
@@ -85,7 +97,7 @@ export default async function ProductsPage({
         <select
           name="type"
           defaultValue={type}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Types</option>
           <option value="Fire">Fire</option>
@@ -101,7 +113,7 @@ export default async function ProductsPage({
         <select
           name="rarity"
           defaultValue={rarity}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Rarities</option>
           <option value="common">Common</option>
@@ -118,7 +130,7 @@ export default async function ProductsPage({
         <select
           name="supertype"
           defaultValue={supertype}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Super Types</option>
           <option value="Pokemon">Pokemon</option>
@@ -128,7 +140,7 @@ export default async function ProductsPage({
         <select
           name="price"
           defaultValue={price}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Prices</option>
           <option value=".01to5">$.01 - $5.00</option>
@@ -139,7 +151,7 @@ export default async function ProductsPage({
         <select
           name="series"
           defaultValue={series}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Set Series</option>
           <option value="Base">Base</option>
@@ -163,7 +175,7 @@ export default async function ProductsPage({
 
         <button
           type="submit"
-          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+          className=" w-[100px] bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 mx-auto"
         >
           Filter
         </button>
@@ -171,66 +183,72 @@ export default async function ProductsPage({
 
       {/* TITLE */}
       <div className="flex justify-center">
-        <Image
+        <img
           src="/images/pokemon.webp"
           alt="Pokemon"
-          width={400}
-          height={150}
-          className="h-[80px] md:h-[90px] lg:h-[120px] object-contain"
+          className="pokemon-title object-contain"
         />
       </div>
 
       {/* GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pt-5">
+      <div className="card-grid gap-6 pt-5">
         {singles.map((p: any) => {
-          console.log("PUBLIC CARD:", p);
+          const faces = p.card_faces ? JSON.parse(p.card_faces) : null;
 
           return (
             <a
               key={p.id}
               href={`/pokemon/singles/${p.id}`}
-              className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
+              className="w-[160px] sm:w-[160px] md:w-[225px] lg:w-[250px]
+                   bg-gray-800 p-3 rounded shadow hover:scale-105 transition mx-auto"
             >
-              <Image
-                src={p.imageSmall}
-                alt={p.name}
-                width={600}
-                height={600}
-                className="rounded shadow"
-                loading="lazy"
-              />
+              <div className="bg-[url('/card-bg.png')] bg-contain bg-no-repeat bg-center rounded">
+                <img
+                  src={p.imageSmall || "/placeholder.png"}
+                  alt={p.name}
+                  className="w-full h-auto rounded shadow"
+                  loading="lazy"
+                />
+              </div>
 
-              <h2 className="font-semibold text-sm text-white text-center">
+              <h2 className=" text-[12px] sm:text-[12px] md:text-[15px] lg:text-[18px]   font-semibold  text-white text-center">
                 {p.name}
               </h2>
 
-              <p className="text-gray-400 text-sm">${p.price}</p>
+              <p className="text-white text-sm">
+                {Number(p.price).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
             </a>
           );
         })}
       </div>
 
       {/* PAGINATION */}
-      <div className="flex justify-center gap-4 mt-8 text-white">
-        <div className="flex justify-center gap-4 mt-8 text-white">
-          {page > 1 && (
-            <a
-              href={`/pokemon/singles?page=${page - 1}`}
-              className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
-            >
-              Previous
-            </a>
-          )}
+      <div className="flex justify-center items-center gap-4 mt-8 text-white">
+        {page > 1 && (
+          <a
+            href={`/pokemon/singles?page=${page - 1}&type=${type}&rarity=${rarity}&set=${set}&supertype=${supertype}&price=${price}&series=${series}`}
+            className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+          >
+            Previous
+          </a>
+        )}
 
-          {page < total && (
-            <a
-              href={`/pokemon/singles?page=${page + 1}`}
-              className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
-            >
-              Next
-            </a>
-          )}
-        </div>
+        <span className="px-4 py-2 bg-gray-800 rounded">
+          Page {page} of {totalPages}
+        </span>
+
+        {page < totalPages && (
+          <a
+            href={`/pokemon/singles?page=${page + 1}&type=${type}&rarity=${rarity}&set=${set}&supertype=${supertype}&price=${price}&series=${series}`}
+            className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+          >
+            Next
+          </a>
+        )}
       </div>
     </div>
   );

@@ -13,11 +13,11 @@ export default function MagicCardHeader({ product, showBack }: Props) {
 
   return (
     <section className="bg-[var(--dpm)] rounded shadow p-4 w-full">
-      <div className="text-xl text-center font-extrabold">
+      <div className="text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] text-center font-extrabold">
         <h2>Card Name:</h2>
-        <div className="text-lg font-semibold">{name}</div>
+        <div className="text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] text-center font-semibold">{name}</div>
       </div>
-      <div className="text-lg grid grid-cols-2 gap-1">
+      <div className="text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] grid grid-cols-1 sm:grid-cols-2 gap-1">
         <StatRow
           label="Mana Cost:"
           value={<ManaSymbols manaCost={manaCost ?? ""} />}

@@ -66,11 +66,11 @@ export default async function ProductsPage({
   return (
     <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
-      <form className="flex gap-4 mb-4 pt-3 text-white">
+      <form className="filter-stack text-white text-center">
         <select
           name="set"
           defaultValue={set}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Sets</option>
           {sets.map((s: any) => (
@@ -83,7 +83,7 @@ export default async function ProductsPage({
         <select
           name="type"
           defaultValue={type}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Types</option>
           <option value="Creature">Creature</option>
@@ -106,7 +106,7 @@ export default async function ProductsPage({
         <select
           name="rarity"
           defaultValue={rarity}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Rarities</option>
           <option value="common">Common</option>
@@ -118,7 +118,7 @@ export default async function ProductsPage({
         <select
           name="colors"
           defaultValue={colors}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Colors</option>
           <option value="W">White</option>
@@ -131,7 +131,7 @@ export default async function ProductsPage({
         <select
           name="finishes"
           defaultValue={finishes}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Finishes</option>
           <option value="normal">Nonfoil</option>
@@ -140,7 +140,7 @@ export default async function ProductsPage({
 
         <button
           type="submit"
-          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+           className="filter-button"
         >
           Filter
         </button>
@@ -151,8 +151,8 @@ export default async function ProductsPage({
         <MagicWord>
           <span
             className="
+            magic-title 
               block 
-              text-[80px] 
               font-style: italic
               text-transparent 
               bg-clip-text 
@@ -168,7 +168,7 @@ export default async function ProductsPage({
         <span
           className="
               block 
-              text-[50px] 
+              gathering-title
               text-[#f17908] 
               [text-shadow:_2px_4px_6px_#000]
             "
@@ -178,31 +178,36 @@ export default async function ProductsPage({
       </h1>
 
       {/* GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pt-5">
+      <div className="card-grid gap-6 pt-5">
         {singles.map((p: any) => {
-          console.log("CARD DATA:", p);
           const faces = p.card_faces ? JSON.parse(p.card_faces) : null;
 
           return (
             <a
               key={p.id}
               href={`/magic/singles/${p.id}`}
-              className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
+              className="card-size
+                   bg-gray-800 p-3 rounded shadow hover:scale-105 transition mx-auto"
             >
-              <img
-                src={p.imageSmall || "/placeholder.png"}
-                alt={p.name}
-                width={600}
-                height={600}
-                className="rounded shadow"
-                loading="lazy"
-              />
+              <div className="bg-[url('/card-bg.png')] bg-contain bg-no-repeat bg-center rounded">
+                <img
+                  src={p.imageSmall || "/placeholder.png"}
+                  alt={p.name}
+                  className="w-full h-auto rounded shadow"
+                  loading="lazy"
+                />
+              </div>
 
-              <h2 className="font-semibold text-sm text-white text-center">
+              <h2 className="text-[12px] sm:text-[12px] md:text-13px lg:text-[15px] font-semibold text-white text-center">
                 {p.name}
               </h2>
 
-              <p className="text-white text-sm">${p.price}</p>
+              <p className="text-white text-sm">
+                {Number(p.price).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
             </a>
           );
         })}

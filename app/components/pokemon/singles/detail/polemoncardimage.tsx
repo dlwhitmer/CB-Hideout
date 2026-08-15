@@ -13,7 +13,7 @@ export default function PokemonCardImage({ product }: Props) {
        <div className="flex justify-center ">
         <BackButton/>
       </div>
-      <Image
+      <img
         src={product.imageLarge || "/placeholder.png"}
         alt={product.name}
         width={300}

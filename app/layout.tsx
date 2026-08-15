@@ -1,6 +1,6 @@
 import "./globals.css";
 import "./app.css";
-import Header from "./components/Hearder";
+import Header from "./components/Header";
 
 export default function RootLayout({
   children,
@@ -9,13 +9,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="relative min-h-screen overflow-x-hidden bg-black">
-       
-        <div className="relative">
-          <Header/>
+      <body className="min-h-screen overflow-x-hidden bg-black">
+        <Header />
 
-          <main className="pt-0">{children}</main>
-        </div>
+        <main>{children}</main>
       </body>
     </html>
   );

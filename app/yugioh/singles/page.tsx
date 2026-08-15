@@ -20,7 +20,6 @@ export default async function ProductsPage({
     attribute?: string;
     set?: string;
   }>;
-  
 }) {
   const params = await searchParams;
   const page = Number(params.page ?? 1);
@@ -95,12 +94,12 @@ export default async function ProductsPage({
   return (
     <div className="min-h-screen bg-[url('/images/bg-28.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
-      <form className="flex gap-4 mb-4 pt-3 text-white">
+      <form className="filter-stack text-white text-center">
         {/* SETS */}
         <select
           name="set"
           defaultValue={set}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Sets</option>
           {sets.map((s) => (
@@ -114,7 +113,7 @@ export default async function ProductsPage({
         <select
           name="type"
           defaultValue={type}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Types</option>
           <option value="Effect Monster">Effect Monster</option>
@@ -131,7 +130,7 @@ export default async function ProductsPage({
         <select
           name="race"
           defaultValue={race}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Races</option>
           <option value="Insect">Insect</option>
@@ -171,7 +170,7 @@ export default async function ProductsPage({
         <select
           name="attribute"
           defaultValue={attribute}
-          className="bg-gray-800 border border-gray-600 p-2 rounded"
+          className="filter-center"
         >
           <option value="">All Attributes</option>
           <option value="LIGHT">LIGHT</option>
@@ -185,7 +184,7 @@ export default async function ProductsPage({
 
         <button
           type="submit"
-          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+              className=" w-[100px] bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 mx-auto"
         >
           Filter
         </button>
@@ -193,17 +192,15 @@ export default async function ProductsPage({
 
       {/* TITLE */}
       <div className="flex justify-center">
-        <Image
+        <img
           src="/images/yugioh_logo.webp"
           alt="Yu-Gi-Oh"
-          width={400}
-          height={150}
-          className="h-[80px] md:h-[90px] lg:h-[120px] object-contain"
+          className="yugioh-title object-contain"
         />
       </div>
 
       {/* GRID */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-5 gap-6">
+      <div className="card-grid gap-6 pt-5">
         {rows.map((row) => {
           const single = row.yugioh_singles;
           // const printing = row.yugioh_printings;
@@ -214,34 +211,51 @@ export default async function ProductsPage({
             <a
               key={single.id}
               href={`/yugioh/singles/${single.id}`}
-              className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition block"
+              className="w-[170px] sm:w-[170px] md:w-[225px] lg:w-[190px] xl:w-[250px]
+                   bg-gray-800 p-3 rounded shadow hover:scale-105 transition mx-auto"
             >
-              <Image
-                src={small || "/placeholder.png"}
-                alt={single.name || "Yu-Gi-Oh card"}
-                width={320}
-                height={446}
-                className="rounded shadow"
-              />
+              <div className="bg-[url('/card-bg.png')] bg-contain bg-no-repeat bg-center rounded">
+                <img
+                  src={small || "/placeholder.png"}
+                  alt={single.name}
+                  className="w-full h-auto rounded shadow"
+                  loading="lazy"
+                />
+              </div>
+
+              <h2 className="font-semibold text-lg text-white text-center">
+                {single.name}
+              </h2>
+
+              <p className="text-white text-sm">
+                {Number(single.price).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
             </a>
           );
         })}
       </div>
 
       {/* PAGINATION */}
-      <div className="flex justify-center gap-4 mt-8 text-white">
+      <div className="flex justify-center items-center gap-4 mt-8 text-white">
         {page > 1 && (
           <a
-            href={`?page=${page - 1}&type=${type}&race=${race}&attribute=${attribute}&set=${set}`}
+            href={`/yugioh/singles?page=${page - 1}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
           >
             Previous
           </a>
         )}
 
+        <span className="px-4 py-2 bg-gray-800 rounded">
+          Page {page} of {totalPages}
+        </span>
+
         {page < totalPages && (
           <a
-            href={`?page=${page + 1}&type=${type}&race=${race}&attribute=${attribute}&set=${set}`}
+            href={`/yugioh/singles?page=${page + 1}`}
             className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
           >
             Next
