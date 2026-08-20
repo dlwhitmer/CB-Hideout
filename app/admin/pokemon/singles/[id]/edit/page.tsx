@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import BackButton from "../../../../../backButton";
 import type { PokemonSingle } from "../../../../../../lib/db/schema/pokemon";
 
 export default function EditPokemonSinglePage() {
@@ -37,51 +38,76 @@ export default function EditPokemonSinglePage() {
   }
 
   return (
-    <div>
-      <h1>Edit Pokemon Single</h1>
+    <div className="min-h-screen bg-[#ffd380] w-full">
+      <div className="text-[30px] text-black font-bold text-center min-h-screen pt-3 mx-auto max-w-[400px]  ">
+        <h1>Edit Pokemon Single</h1>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-sm">
-  <input
-    className="border p-2 rounded"
-    value={form.name}
-    onChange={(e) => setForm({ ...form, name: e.target.value })}
-  />
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col bg-[#fbf2c4] gap-2 pt-5 max-w-sm"
+        >
+          <div className="flex justify-center pt-1">
+            <BackButton />
+          </div>
+          <div className="flex justify-center mb-1">
+            <img
+              src={form.imageSmall}
+              alt={form.name}
+              width={180}
+              height={250}
+              className="rounded shadow"
+            />
+          </div>
 
-  <input
-    className="border p-2 rounded"
-    value={form.setName}
-    onChange={(e) => setForm({ ...form, setName: e.target.value })}
-  />
+          <input
+            className=" text-[20px] border p-2 rounded"
+            value={form.name}
+            readOnly
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+          />
 
-  <input
-    className="border p-2 rounded"
-    value={form.rarity}
-    onChange={(e) => setForm({ ...form, rarity: e.target.value })}
-  />
+          <input
+            className="text-[20px] border p-2 rounded"
+            value={form.setName}
+            readOnly
+            onChange={(e) => setForm({ ...form, setName: e.target.value })}
+          />
 
-  <input
-  className="border p-2 rounded"
-  type="text"
-  value={`$${form.price.toFixed(2)}`}
-  onChange={(e) => {
-    // Remove $ and commas
-    const raw = e.target.value.replace(/[^0-9.]/g, "");
+          <input
+            className=" text-[20px] border p-2 rounded"
+            value={form.rarity}
+            readOnly
+            onChange={(e) => setForm({ ...form, rarity: e.target.value })}
+          />
 
-    // Convert to number
-    const num = parseFloat(raw);
+          <div className="relative">
+            <span className="absolute left-15 top-1/2 -translate-y-1/2 text-[20px]">
+              $
+            </span>
 
-    setForm({ ...form, price: isNaN(num) ? 0 : num });
-  }}
-/>
+            <input
+              className="text-[20px] border p-2 pl-7 rounded"
+              type="number"
+              step="0.01"
+              value={form.price}
+              onChange={(e) => {
+                const num = parseFloat(e.target.value);
+                setForm({
+                  ...form,
+                  price: isNaN(num) ? 0 : num,
+                });
+              }}
+            />
+          </div>
 
-  <button
-    type="submit"
-    className="bg-blue-600 text-white p-2 rounded"
-  >
-    Save
-  </button>
-</form>
-
+          <button
+            type="submit"
+            className="mx-auto w-[120px] h-auto text-[20px] bg-blue-600 text-white p-2 rounded"
+          >
+            Save
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
-
+import DeleteButton from "../DeleteButton";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import BackButton from "../../../backButton";
 import { MagicSingle } from "../../../../lib/db/schema";
 
 export default function MagicSinglesPage() {
@@ -11,7 +12,7 @@ export default function MagicSinglesPage() {
   const [sets, setSets] = useState([]);
 
   const [page, setPage] = useState(1);
-  const limit = 20;
+  const limit = 10;
 
   const totalPages = Math.ceil(total / limit);
 
@@ -39,114 +40,118 @@ export default function MagicSinglesPage() {
   }, [page, setFilter]);
 
   return (
-    <div>
-      <h1>Magic Singles</h1>
+    <section className=" bg-[#ffd380] p-6">
+      <div className=" min-h-screen mx-auto w-full text-black bg-[#ffd380] font-bold text-center ">
+        <div className="mb-4">
+          <label className="mr-2 text-[18px] font-semibold">
+            Filter by Set:
+          </label>
 
-      <Link href="/admin/magic/singles/add" className="btn">
-        Add New Card
-      </Link>
+          <select
+            value={setFilter}
+            onChange={(e) => {
+              setSetFilter(e.target.value);
+              setPage(1); // reset pagination when changing sets
+            }}
+            className="bg-white text-black border p-2 rounded"
+          >
+            <option value="">All Sets</option>
 
-      <div className="mb-4">
-        <label className="mr-2 font-semibold">Filter by Set:</label>
+            {sets.map((s) => (
+              <option key={s.set_code} value={s.set_code}>
+                {s.set_name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex justify-center mb-2">
+          <img
+            src="/images/Magic-Logo.webp"
+            alt="Yu-Gi-Oh Logo"
+            width={220}
+            height={70}
+            className="h-auto"
+          />
+        </div>
+        <div className="flex justify-center p-3">
+          <BackButton />
+        </div>
 
-        <select
-          value={setFilter}
-          onChange={(e) => {
-            setSetFilter(e.target.value);
-            setPage(1); // reset pagination when changing sets
-          }}
-          className="bg-white text-black border p-2 rounded"
-        >
-          <option value="">All Sets</option>
-
-          {sets.map((s) => (
-            <option key={s.set_code} value={s.set_code}>
-              {s.set_name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <table className="min-w-full border-collapse">
-        <thead>
-          <tr className="bg-white text-black">
-            <th className="p-2">Image</th>
-            <th className="p-2">Name</th>
-            <th className="p-2">Set</th>
-            <th className="p-2">Rarity</th>
-            <th className="p-2">Quantity</th>
-            <th className="p-2">Price</th>
-            <th className="p-2">Scryfall ID</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {cards.map((card) => (
-            <tr key={card.id} className="border-b">
-              <td className="p-2">
-                <img
-                  src={card.imageSmall || "/placeholder.png"}
-                  alt={card.frontName}
-                  className="w-16 h-auto rounded shadow"
-                />
-              </td>
-
-              <td className="p-2">{card.frontName}</td>
-              <td className="p-2">{card.setName}</td>
-              <td className="p-2">{card.rarity}</td>
-              <td className="p-2">{card.quantity}</td>
-              <td className="p-2">${card.price}</td>
-              <td className="p-2">{card.scryfallId}</td>
-
-              <td className="p-2 space-x-2">
-                <Link
-                  href={`/admin/magic/singles/${card.id}/edit`}
-                  className="text-blue-600 hover:underline"
-                >
-                  Edit
-                </Link>
-
-                <button
-                  className="text-red-600 hover:underline"
-                  onClick={async () => {
-                    await fetch(`/api/magic/singles/${card.id}`, {
-                      method: "DELETE",
-                    });
-                   
-                    location.reload();
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
+        <table className="admin-table">
+          <thead>
+            <tr className="bg-[#f8cc1b] text-black">
+              <th className="px-3 py-2 text-center">Image</th>
+              <th className="px-3 py-2 text-center">Scryfall ID</th>
+              <th className="px-3 py-2 text-center">Name</th>
+              <th className="px-3 py-2 text-center">Price</th>
+              <th className="px-3 py-2 text-center">Quantity</th>
+              <th className="px-3 py-2 text-center">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      {/* ⭐ PAGINATION CONTROLS */}
-      <div className="flex items-center gap-4 mt-6">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
+          <tbody>
+            {cards.map((card) => (
+              <tr key={card.id} className="admin-tbody">
+                <td className="p-2">
+                  <img
+                    src={card.imageSmall || "/placeholder.png"}
+                    alt={card.frontName}
+                    className="w-16 h-auto rounded shadow"
+                  />
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  {card.scryfallId}
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  {card.frontName}
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  ${card.price}
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  {card.quantity}
+                </td>
 
-        <span>
-          Page {page} of {totalPages}
-        </span>
+                <td className="px-3 py-2 whitespace-nowrap">
+                  <div className="flex justify-center gap-1">
+                    <Link
+                      href={`/admin/magic/singles/${card.id}/edit`}
+                      className="bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </Link>
 
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage(page + 1)}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Next
-        </button>
+                    <DeleteButton scryfallId={card.scryfallId} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* PAGINATION */}
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Previous
+          </button>
+
+          <span className="self-center">
+            Page {page} / {totalPages || 1}
+          </span>
+
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={page >= totalPages}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

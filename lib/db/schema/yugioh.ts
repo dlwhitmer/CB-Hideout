@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
-import { InferModel } from "drizzle-orm";
+import { InferModel} from "drizzle-orm";
 
 /* -------------------------------------------------------
     YU‑GI‑OH — SINGLES
@@ -25,7 +25,7 @@ export const yugiohSingles = sqliteTable("yugioh_singles", {
   primarySet: text("primary_set"),
   cardSets: text("card_sets"),
   cardImages: text("card_images"),
-  price: integer("price"),
+  price: real("price"),
   cardPrices: text("card_prices"),
   imageSmall: text("image_small"),
   imageLarge: text("image_large"),
@@ -45,7 +45,6 @@ export const yugiohPrintings = sqliteTable("yugioh_printings", {
   setCode: text("set_code").notNull(),
   setName: text("set_name").notNull(),
   setRarity: text("set_rarity"),
-  cardNumber: text("card_number"),
   marketValue: real("market_value"),
 });
 export type YugiohPrinting = InferModel<typeof yugiohPrintings>;
@@ -54,7 +53,8 @@ export type NewYugiohPrinting = InferModel<typeof yugiohPrintings, "insert">;
 export const yugiohSets = sqliteTable("yugioh_sets", {
   id: integer("id").primaryKey(),
   setName: text("set_name").notNull(),
-  setCode: text("set_code").notNull(),
+  setCode: text("set_code").notNull().unique(),
+  tcgDate: text("tcg_date").notNull(),
 });
 export type YugiohSet = InferModel<typeof yugiohSets>;
 export type NewYugiohSet = InferModel<typeof yugiohSets, "insert">;

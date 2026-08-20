@@ -2,7 +2,6 @@
 
 :root {
   /* Detail Page */
-  --dpm: #ffffffb3;
   --dplbltext: #b6042a;
   --dpvtext: #000000;
 
@@ -15,7 +14,6 @@
   .pokemon-title {
     @apply pt-5 h-[70px] sm:h-[70px] md:h-[80px] lg:h-[100px];
   }
-
   .yugioh-title {
     @apply pt-5 h-[70px] sm:h-[70px] md:h-[80px] lg:h-[100px];
   }
@@ -29,9 +27,46 @@
     @apply flex flex-col lg:flex-row gap-3;
   }
   .filter-center {
-    @apply w-full bg-[#202020BE] text-center sm:w-auto;
+    @apply mx-auto lg:mx-0 text-[13px] sm:text-[13px] md:text-[14px] lg:text-[16px]  w-[150px]   bg-[#202020BE] text-center sm:w-auto;
   }
   .filter-button {
-   @apply block mx-auto lg:mx-0 w-[100px] bg-blue-600 px-4 py-2 rounded hover:bg-blue-700;
+    @apply block mx-auto lg:mx-0 w-[70px] lg:w-[100px] h-[30px] lg:h-[50px] flex items-center bg-blue-600 px-4 py-2 rounded hover:bg-blue-700;
+  }
+  .display-image {
+    @apply w-[150px] sm:w-[150px] lg:w-[300px];
+  }
+  .display-stats {
+    @apply w-[400px] sm:w-[400px] md:w-[700px] lg:w-[1200px] rounded shadow p-4;
+  }
+  .stat-cat {
+    @apply text-[16px] sm:text-[16px] md:text-[18px] lg:text-[20px] pb-2 text-center underline font-extrabold;
+  }
+  .card-name {
+    @apply text-[13px] sm:text-[13px] md:text-[16px] lg:text-[22px] text-center pb-3 font-extrabold;
+  }
+  .stat-rows {
+    @apply text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] grid grid-cols-1 sm:grid-cols-2 gap-1;
+  }
+  .image-top {
+    @apply flex flex-col items-center;
+  }
+  .stat-section {
+    @apply bg-[#ffffffb3] border-b-3 rounded shadow p-3;
+  }
+  .desc-css {
+    @apply text-black font-extrabold text-center;
+  }
+  .attack-ability {
+    @apply col-span-1 lg:col-span-2;
+  }
+  .add-btn{
+    @apply text-black text-[15px] sm:text-[15px] md:text-[17px] lg:text-[18px]
+     font-bold bg-yellow-400 w-[125px] sm:w-[125px] md:w-[150px] lg:w-[160px] h-auto px-6 py-2 rounded shadow
+  }
+  .admin-table{
+    @apply w-full bg-[#ffd380] text-[10px] sm:text-[10px] md:text-[15px] lg:text-[18px] text-black font-bold
+  }
+  .admin-tbody{
+    @apply w-full bg-[#fbf2c4] border-b-3 border-b-blue-700  mx-auto text-[10px] sm:text-[10px] md:text-[15px] lg:text-[18px] text-black font-bold
   }
 }

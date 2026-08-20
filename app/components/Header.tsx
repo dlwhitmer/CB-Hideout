@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   return (
     <header className="relative w-full bg-black shadow-md z-[100]">
@@ -21,7 +22,7 @@ export default function Header() {
             className="h-14 w-auto"
             priority
           />
-          <span className="text-white text-[9px] sm:text-xs md:text-sm lg:text-lg font-bold whitespace-nowrap">
+          <span className="text-white text-[9px] sm:text-xs md:text-sm lg:text-xl font-bold whitespace-nowrap">
             THE CARDBOARD HIDEOUT
           </span>
         </Link>
@@ -31,6 +32,13 @@ export default function Header() {
           <input
             type="text"
             placeholder="Search cards, sets, or artists…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                window.location.href = `/search?q=${encodeURIComponent(search)}`;
+              }
+            }}
             className="w-full mt-5 px-6 py-2 rounded-lg bg-white text-gray-900 shadow focus:outline-none"
           />
         </div>
@@ -60,6 +68,13 @@ export default function Header() {
         <input
           type="text"
           placeholder="Search cards…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              window.location.href = `/search?q=${encodeURIComponent(search)}`;
+            }
+          }}
           className="w-full px-4 py-2 rounded-lg bg-white text-gray-900 shadow focus:outline-none"
         />
       </div>

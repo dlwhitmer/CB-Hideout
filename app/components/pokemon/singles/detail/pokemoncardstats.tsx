@@ -6,11 +6,11 @@ type Props = {
 
 export default function PokemonCardStats({ product }: Props) {
   return (
-    <section className="bg-[var(--dpm)] rounded shadow p-4">
-      <h2 className="text-xl underline text-center font-bold mb-2">
+    <section className="stat-section">
+      <h2 className="stat-cat">
         Card Stats
       </h2>
-      <div className="text-lg grid grid-cols-2 gap-1">
+      <div className="stat-rows">
         <StatRow label="HP" value={product.hp} />
         <StatRow label="Types" value={product.types} />
         <StatRow

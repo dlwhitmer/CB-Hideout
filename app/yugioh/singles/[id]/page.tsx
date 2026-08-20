@@ -10,7 +10,6 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
   const p = await params;
   const id = Number(p.id);
 
-  // Fetch product
   const result = await db
     .select()
     .from(yugioh.yugiohSingles)
@@ -32,12 +31,19 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
 
   const printing = printingResult[0];
 
-  if (!printing) {
-    return <p>No printing data found.</p>;
+  if (!product) {
+    return <p className="p-6 text-red-400">Product not found.</p>;
   }
 
+  const printings = await db
+    .select()
+    .from(yugioh.yugiohPrintings)
+    .where(eq(yugioh.yugiohPrintings.yugiohId, product.yugiohId));
+
   // Parse link markers
-  const markers = JSON.parse(product.linkmarkers || "[]");
+  const markers = product.linkmarkers
+    ? product.linkmarkers.split(",").map((m) => m.trim())
+    : [];
   const subtypes = product.typeline
     .split(",")
     .map((t) => t.trim().toLowerCase());
@@ -45,11 +51,11 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
   const isXYZ = subtypes.includes("xyz");
 
   return (
-       <main className="  w-max-full mx-auto space-y-10">
-          {/* Top: Image + Header + Stats */}
-          <div className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%] p-2">
-            <YugiohDisplay product={product} printing={printing}/>
-          </div>
-        </main>
+    <main className="  w-max-full mx-auto space-y-10">
+      {/* Top: Image + Header + Stats */}
+      <div className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%] p-2">
+        <YugiohDisplay product={product} printings={printings} />
+      </div>
+    </main>
   );
 }

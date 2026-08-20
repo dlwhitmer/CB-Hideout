@@ -1,27 +1,33 @@
 "use client";
 
 import { YugiohPrinting, YugiohSingle } from "../../../../../lib/db/schema";
-import CardImage from "./cardimage";
+import YugiohCardImage from "./yugiohcardimage";
 import YugiohCardStats from "./yugiocardstats";
+import YugiohCardDesctiption from "./yugiohcarddesc";
 import YugiohCardHeader from "./yugiohcardheader";
-
+import YugiohCollector from "./yugiohcollector";
+import YugiohPrices from "./yugiohcardprices";
+import YugiohPurchaseInformation from "./yugiohpurchaseinfo";
 
 type Props = {
   product: YugiohSingle;
-  printing: YugiohPrinting
-
+  printings: YugiohPrinting[];
 };
 
-export default function YugiohDisplay({ product, printing }: Props) {
+export default function YugiohDisplay({ product, printings }: Props) {
   return (
-    <div className="flex gap-8 items-start justify-center">
-      <div className="w-[320px] sticky top-[125px] self-start">
-        <CardImage product={product} />
+    <div className="image-top">
+      <div className="display-image">
+        <YugiohCardImage product={product} />
       </div>
 
-      <div className=" w-[800px] rounded shadow p-4">
+      <div className=" display-stats">
         <YugiohCardHeader product={product} />
         <YugiohCardStats product={product}/>
+        <YugiohCardDesctiption product={product}/>
+        <YugiohCollector product={product} printings={printings}/>
+        <YugiohPrices product={product}/>
+        <YugiohPurchaseInformation product={product}/>
         
       </div>
     </div>

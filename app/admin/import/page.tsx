@@ -9,23 +9,23 @@ export default function UniversalImportPage() {
   const [id, setId] = useState("");
   const [packName, setPackName] = useState("");
   const [setCode, setSetCode] = useState("");
-
   const router = useRouter(); // ⭐ THIS FIXES THE REDLINE
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const body =
-    type === "singles"
-     ? { id }
-      :type === "packs"
-        ? { packName }
-        : game === "yugioh"
-          ? { setName: setCode }
-          : { setCode };
+      type === "singles"
+        ? { id }
+        : type === "packs"
+          ? { packName }
+          : game === "yugioh"
+            ? { setName: setCode }
+            : { setCode };
 
-    console.log("GAME:", game);
-    console.log("TYPE:", type);
-    console.log("SET CODE:", setCode);
-    console.log("IMPORT URL:", `/api/${game}/${type}/import`);
+    // console.log("GAME:", game);
+    // console.log("TYPE:", type);
+    // console.log("SET CODE:", setCode);
+    // console.log("IMPORT URL:", `/api/${game}/${type}/import`);
 
     const res = await fetch(`/api/${game}/${type}/import`, {
       method: "POST",
@@ -62,15 +62,17 @@ export default function UniversalImportPage() {
   };
 
   return (
-    <div className="text-white max-w-xl">
-      <h1 className="text-3xl font-bold mb-6">Universal Import</h1>
+    <div className="text-black bg-[#fbf2c4] min-h-screen text-center w-full mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Universal Importer</h1>
 
       {/* GAME SELECT */}
-      <label className="block mb-2">Select Game:</label>
+      <label className=" text-[20px] text-center font-bold block ">
+        Select Game:
+      </label>
       <select
         value={game}
         onChange={(e) => setGame(e.target.value)}
-        className="bg-gray-800 p-2 rounded mb-4 w-full"
+        className="text-white bg-gray-800 p-2 text-center rounded w-[250px]"
       >
         <option value="magic">Magic</option>
         <option value="pokemon">Pokémon</option>
@@ -78,21 +80,23 @@ export default function UniversalImportPage() {
       </select>
 
       {/* IMPORT TYPE SELECT */}
-      <label className="block mb-2">Import Type:</label>
+      <label className=" text-[20px] text-black font-bold block">
+        Import Type:
+      </label>
       <select
         value={type}
         onChange={(e) => {
           console.log("CHANGING TYPE TO:", e.target.value);
           setType(e.target.value);
         }}
-        className="bg-gray-800 p-2 rounded mb-6 w-full"
+        className=" text-white text-center bg-gray-800 p-2 rounded mb-6 w-[250px]"
       >
         <option value="singles">Singles</option>
         <option value="packs">Packs</option>
         <option value="sets">Sets</option>
       </select>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className=" space-y-4">
         {/* SINGLES FORM */}
         {type === "singles" && (
           <input
@@ -100,7 +104,7 @@ export default function UniversalImportPage() {
             placeholder={getPlaceholder()}
             value={setCode}
             onChange={(e) => setId(e.target.value)}
-            className="bg-gray-800 p-2 rounded w-full"
+            className="text-white bg-gray-800 p-2  text-center rounded w-[250px] placeholder:text-white placeholder:font-medium"
           />
         )}
 
@@ -112,7 +116,7 @@ export default function UniversalImportPage() {
               placeholder="Pack Name"
               value={packName}
               onChange={(e) => setPackName(e.target.value)}
-              className="bg-gray-800 p-2 rounded w-full"
+              className="text-white bg-gray-800 p-2  text-center rounded w-[250px] placeholder:text-white placeholder:font-medium"
             />
           </>
         )}
@@ -124,16 +128,18 @@ export default function UniversalImportPage() {
             placeholder={getPlaceholder()}
             value={setCode}
             onChange={(e) => setSetCode(e.target.value)}
-            className="bg-gray-800 p-2 rounded w-full"
+            className="text-white bg-gray-800 p-2  text-center rounded w-[250px] placeholder:text-white placeholder:font-medium"
           />
         )}
-
-        <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
-        >
-          Import
-        </button>
+        <div>
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+          >
+            Import
+          </button>
+          
+        </div>
       </form>
     </div>
   );

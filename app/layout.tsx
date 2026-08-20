@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-screen overflow-x-hidden bg-black">
+      <body className="min-h-screen overflow-x-hidden">
         <Header />
 
         <main>{children}</main>

@@ -96,11 +96,7 @@ export default async function ProductsPage({
       {/* FILTER BAR */}
       <form className="filter-stack text-white text-center">
         {/* SETS */}
-        <select
-          name="set"
-          defaultValue={set}
-          className="filter-center"
-        >
+        <select name="set" defaultValue={set} className="filter-center">
           <option value="">All Sets</option>
           {sets.map((s) => (
             <option key={s.id} value={s.setName}>
@@ -110,11 +106,7 @@ export default async function ProductsPage({
         </select>
 
         {/* TYPE */}
-        <select
-          name="type"
-          defaultValue={type}
-          className="filter-center"
-        >
+        <select name="type" defaultValue={type} className="filter-center">
           <option value="">All Types</option>
           <option value="Effect Monster">Effect Monster</option>
           <option value="Normal Monster">Normal Monster</option>
@@ -127,11 +119,7 @@ export default async function ProductsPage({
         </select>
 
         {/* RACE */}
-        <select
-          name="race"
-          defaultValue={race}
-          className="filter-center"
-        >
+        <select name="race" defaultValue={race} className="filter-center">
           <option value="">All Races</option>
           <option value="Insect">Insect</option>
           <option value="Dragon">Dragon</option>
@@ -182,10 +170,7 @@ export default async function ProductsPage({
           <option value="DIVINE">DIVINE</option>
         </select>
 
-        <button
-          type="submit"
-              className=" w-[100px] bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 mx-auto"
-        >
+        <button type="submit" className=" filter-button">
           Filter
         </button>
       </form>
@@ -200,18 +185,25 @@ export default async function ProductsPage({
       </div>
 
       {/* GRID */}
-      <div className="card-grid gap-6 pt-5">
+      <div className=" card-grid gap-6 pt-5">
         {rows.map((row) => {
           const single = row.yugioh_singles;
           // const printing = row.yugioh_printings;
 
           const small = single?.imageSmall;
-
+          console.log(
+            "CARD:",
+            single.name,
+            "DB ID:",
+            single.id,
+            "YuGiOh ID:",
+            single.yugiohId,
+          );
           return (
             <a
               key={single.id}
               href={`/yugioh/singles/${single.id}`}
-              className="w-[170px] sm:w-[170px] md:w-[225px] lg:w-[190px] xl:w-[250px]
+              className="w-[170px] sm:w-[170px] md:w-[225px] lg:w-[250px]
                    bg-gray-800 p-3 rounded shadow hover:scale-105 transition mx-auto"
             >
               <div className="bg-[url('/card-bg.png')] bg-contain bg-no-repeat bg-center rounded">

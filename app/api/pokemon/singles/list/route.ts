@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const price = searchParams.get("price") ?? "";
 
   const page = Number(searchParams.get("page") ?? "1");
-  const pageSize = 20;
+  const pageSize = 10;
   const offset = (page - 1) * pageSize;
 
   const conditions: SQL[] = [];

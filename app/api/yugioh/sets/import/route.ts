@@ -29,6 +29,7 @@ export async function POST(req: Request) {
     });
 
     const data = await res.json();
+
     console.log("URL:", url);
     console.log("Status:", res.status);
     console.log("Response:", data);
@@ -39,15 +40,30 @@ export async function POST(req: Request) {
 
     const cards = data.data;
 
-    // Extract set code from the first printing
-    const firstPrinting = cards[0].card_sets?.find(
-      (s: any) => s.set_name === setName,
+    const setsRes = await fetch(
+      "https://db.ygoprodeck.com/api/v7/cardsets.php",
+      {
+        headers: { "User-Agent": "hideout-app/1.0" },
+      },
     );
-    const setCode = firstPrinting?.set_code ?? "";
+
+    const setsData = await setsRes.json();
+
+    const setInfo = setsData.find((s: any) => s.set_name === setName);
+
+    if (!setInfo) {
+      return Response.json(
+        { error: `Set not found: ${setName}` },
+        { status: 400 },
+      );
+    }
+
+    const setCode = setInfo.set_code;
+    const tcgDate = setInfo.tcg_date;
 
     // Insert the set
-    const newSet = mapYugiohSetToDB(setName, setCode);
-    await db.insert(yugiohSets).values(newSet);
+    const newSet = mapYugiohSetToDB(setName, setCode, tcgDate);
+    await db.insert(yugiohSets).values(newSet).onConflictDoNothing();
 
     let inserted = 0;
     let updated = 0;
@@ -60,7 +76,6 @@ export async function POST(req: Request) {
       }
 
       // Insert single
-      const printing = c.card_sets?.find((s: any) => s.set_name === setName);
       const mapped = mapYugiohSingleToDB(c);
 
       const existing = await db
@@ -73,7 +88,11 @@ export async function POST(req: Request) {
 
         await db
           .update(yugiohSingles)
-          .set({ quantity: newQty })
+          .set({
+            quantity: newQty,
+            price: mapped.price,
+            cardPrices: mapped.cardPrices,
+          })
           .where(eq(yugiohSingles.yugiohId, mapped.yugiohId));
 
         updated++;

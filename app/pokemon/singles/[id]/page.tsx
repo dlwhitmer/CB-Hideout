@@ -22,9 +22,9 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
   
 
   return (
-    <main className="  w-max-full mx-auto space-y-10">
+    <main className="  w-max-full mx-auto">
       {/* Top: Image + Header + Stats */}
-      <div className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%] p-2">
+      <div className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%]">
         <PokemonDisplay product={product}/>
       </div>
     </main>

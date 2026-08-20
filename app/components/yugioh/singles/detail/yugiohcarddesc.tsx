@@ -4,14 +4,13 @@ type Props = {
   product: YugiohSingle;
 };
 
-export default function CardDesctiption({ product }: Props) {
+export default function YugiohCardDesctiption({ product }: Props) {
   return (
-    <section className="bg-[var(--dpm)] rounded shadow p-4">
+    <section className="stat-section">
       <h2 className="text-lg underline text-center font-extrabold mb-2">
         Card Description
       </h2>
-
-      <div className="font-arial-black text-extrabold text-center">
+      <div className="text-extrabold text-center">
         <PerfectText>
           <p className="whitespace-pre-line text-black">{product.desc}</p>
         </PerfectText>

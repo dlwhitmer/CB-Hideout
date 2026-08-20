@@ -2,9 +2,9 @@
 
 export default function DeleteButton({ scryfallId }: { scryfallId: string | null }) {
   async function handleDelete() {
-    console.log("Sending DELETE to:", `/api/magic/${scryfallId}`);
+    console.log("Sending DELETE to:", `/api/magic/singles/${scryfallId}`);
 
-    await fetch(`/api/magic/${scryfallId}`, {
+    await fetch(`/api/magic/singles/${scryfallId}`, {
       method: "DELETE",
     });
 
@@ -12,10 +12,10 @@ export default function DeleteButton({ scryfallId }: { scryfallId: string | null
   }
 
   return (
-    <button
+     <button
       type="button"
       onClick={handleDelete}
-      className="w-full bg-red-600 hover:bg-red-500 text-white py-1 rounded"
+      className=" bg-red-600 hover:bg-red-500 text-white py-1 rounded"
     >
       Delete
     </button>

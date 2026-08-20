@@ -58,9 +58,11 @@ export function mapYugiohPrintingsToDB(
 export function mapYugiohSetToDB(
   setName: string,
   setCode: string,
+  tcgDate: string,
 ): NewYugiohSet {
   return {
     setName,
     setCode,
+    tcgDate,
   };
 }

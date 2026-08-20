@@ -11,7 +11,7 @@ export async function GET(req: Request) {
   const colors = searchParams.get("colors") ?? "";
   const finishes = searchParams.get("finishes") ?? "";
   const page = Number(searchParams.get("page") ?? "1");
-  const pageSize = 20;
+  const pageSize = 10;
 
   const conditions = [];
 

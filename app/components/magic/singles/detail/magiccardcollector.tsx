@@ -17,9 +17,9 @@ export default function MagicCardCollector({ product }: Props) {
       });
 
   return (
-    <section className="bg-[var(--dpm)] rounded shadow p-4 w-full">
-      <h2 className="text-[14px] sm:text-[14px] md:text-[14px] lg:text-[16px] underline text-center font-bold mb-2">
-        Collecting Information
+    <section className="stat-section">
+      <h2 className="stat-cat">
+        Collecting Information:
       </h2>
       <div
         className=" text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] grid grid-cols-1 sm:grid-cols-2

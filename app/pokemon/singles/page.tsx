@@ -175,7 +175,7 @@ export default async function ProductsPage({
 
         <button
           type="submit"
-          className=" w-[100px] bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 mx-auto"
+          className=" filter-button"
         >
           Filter
         </button>

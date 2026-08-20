@@ -9,18 +9,18 @@ export default function PokemonCardAbilities({ abilities }: Props) {
     return null;
   }
   return (
-    <section className="bg-[var(--dpm)] rounded shadow p-4">
-      <h2 className="text-xl underline text-center font-bold mb-2">
+    <section className="stat-section">
+      <h2 className="stat-cat">
         Abilities
       </h2>
 
       {abilities.map((ability, index) => (
         <div
           key={index}
-          className="text-lg grid grid-cols-2 gap-1">
+          className="stat-rows">
           <StatRow label="Name" value={ability.name} />
           <StatRow label="Type" value={ability.type} />
-          <div className="col-span-2">
+          <div className="attack-ability">
             <StatRow label="" value={ability.text} align="center" />
           </div>
         </div>

@@ -2,9 +2,9 @@
 
 export default function DeleteButton({ yugiohId }: { yugiohId: string | null }) {
   async function handleDelete() {
-    console.log("Sending DELETE to:", `/api/yugioh/${yugiohId}`);
+    console.log("Sending DELETE to:", `/api/yugioh/singles${yugiohId}`);
 
-    await fetch(`/api/yugioh/${yugiohId}`, {
+    await fetch(`/api/yugioh/singles${yugiohId}`, {
       method: "DELETE",
     });
 
@@ -15,7 +15,7 @@ export default function DeleteButton({ yugiohId }: { yugiohId: string | null }) 
     <button
       type="button"
       onClick={handleDelete}
-      className="w-full bg-red-600 hover:bg-red-500 text-white py-1 rounded"
+      className=" bg-red-600 hover:bg-red-500 text-white py-1 rounded"
     >
       Delete
     </button>

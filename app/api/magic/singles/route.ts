@@ -5,10 +5,9 @@ import { eq, and, like } from "drizzle-orm"; // ⭐ add this
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
-  const page = parseInt(searchParams.get("page") ?? "1");
-  const pageSize = 20;
-
-  const offset = (page - 1) * pageSize;
+  const page = Number(searchParams.get("page") ?? "1");
+  const limit = Number(searchParams.get("limit") ?? "10");
+  const offset = (page - 1) * limit;
 
   // ⭐ read filters
   const type = searchParams.get("type") ?? "";
@@ -45,14 +44,14 @@ export async function GET(req: Request) {
     .select()
     .from(magicSingles)
     .where(conditions.length ? and(...conditions) : undefined)
-    .limit(pageSize)
+    .limit(limit)
     .offset(offset);
 
   console.log("ADMIN MAGIC ROW COUNT:", rows.length);
   console.log("ADMIN MAGIC TOTAL:", total);
   return Response.json({
-    rows,
-    total,
-    pageSize,
-  });
+  rows,
+  total,
+  pageSize: limit,
+});
 }

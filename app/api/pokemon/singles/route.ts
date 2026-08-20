@@ -22,9 +22,6 @@ export async function GET(req: Request) {
     .from(pokemonSingles)
     .limit(pageSize)
     .offset(offset);
-  console.log("PAGE:", page);
-  console.log("PAGE SIZE:", pageSize);
-  console.log("ROWS RETURNED:", rows.length);
   return Response.json({
     data: rows,
     total,

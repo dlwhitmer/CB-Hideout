@@ -7,11 +7,11 @@ type Props = {
 
 export default function PokemonCollector({ product}: Props) {
   return (
-    <section className="bg-[var(--dpm)] rounded shadow p-4">
-      <h2 className="text-xl underline text-center font-bold mb-2">
+    <section className="stat-section">
+      <h2 className="stat-cat">
         Collecting Information
       </h2>
-      <div className="text-lg grid grid-cols-2 gap-1">
+      <div className="stat-rows">
         <StatRow label="Set" value={product.setName} />
         <StatRow
           label="Number of Total"

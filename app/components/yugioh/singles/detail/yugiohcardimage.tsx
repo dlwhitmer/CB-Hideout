@@ -7,10 +7,10 @@ type Props = {
   printing?: YugiohPrinting;
 };
 
-export default function CardImage({ product }: Props) {
+export default function YugiohCardImage({ product }: Props) {
   return (
     <section className="bg-transparent rounded shadow">
-       <div className="flex justify-center ">
+       <div className="flex justify-center p-3 ">
         <BackButton/>
       </div>
       <Image

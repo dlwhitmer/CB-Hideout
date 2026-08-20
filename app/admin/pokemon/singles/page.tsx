@@ -2,6 +2,8 @@
 
 import { cardboard } from "../../../../lib/fonts";
 import Link from "next/link";
+import BackButton from "../../../backButton";
+import DeleteButton from "../../pokemon/DeleteButton";
 import { useEffect, useState, useCallback } from "react";
 import { PokemonSingle } from "../../../../lib/db/schema";
 
@@ -17,7 +19,7 @@ export default function PokemonSinglesPage() {
 
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const limit = 20;
+  const limit = 10;
   const totalPages = Math.ceil(total / limit);
 
   const loadPokemonSingles = useCallback(
@@ -78,187 +80,162 @@ export default function PokemonSinglesPage() {
   }, [loadPokemonSingles]);
 
   return (
-    <div className="p-6">
-      {/* FILTERS */}
-      <div className="bg-white text-black flex gap-4 mb-4">
-        <select value={setName} onChange={(e) => setSetName(e.target.value)}>
-          <option value="">All Sets</option>
+    <section className=" bg-[#ffd380] p-6">
+      <div className="">
+        {/* FILTERS */}
+        <div className="text-black bg-white flex gap-5 mb-4">
+          <select value={setName} onChange={(e) => setSetName(e.target.value)}>
+            <option value="">All Sets</option>
 
-          {Array.from(new Map(sets.map((s) => [s.set_name, s])).values()).map(
-            (s) => (
-              <option key={s.set_name} value={s.set_name}>
-                {s.set_name}
-              </option>
-            ),
-          )}
-        </select>
+            {Array.from(new Map(sets.map((s) => [s.set_name, s])).values()).map(
+              (s) => (
+                <option key={s.set_name} value={s.set_name}>
+                  {s.set_name}
+                </option>
+              ),
+            )}
+          </select>
 
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="">All Types</option>
-          <option value="Creature">Creature</option>
-          <option value="Instant">Instant</option>
-          <option value="Sorcery">Sorcery</option>
-          <option value="Artifact">Artifact</option>
-          <option value="Enchantment">Enchantment</option>
-          <option value="Planeswalker">Planeswalker</option>
-          <option value="Land">Land</option>
-        </select>
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="">All Types</option>
+            <option value="Creature">Creature</option>
+            <option value="Instant">Instant</option>
+            <option value="Sorcery">Sorcery</option>
+            <option value="Artifact">Artifact</option>
+            <option value="Enchantment">Enchantment</option>
+            <option value="Planeswalker">Planeswalker</option>
+            <option value="Land">Land</option>
+          </select>
 
-        <select value={rarity} onChange={(e) => setRarity(e.target.value)}>
-          <option value="">All Rarities</option>
-          <option value="common">Common</option>
-          <option value="uncommon">Uncommon</option>
-          <option value="rare">Rare</option>
-          <option value="mythic">Mythic</option>
-        </select>
+          <select value={rarity} onChange={(e) => setRarity(e.target.value)}>
+            <option value="">All Rarities</option>
+            <option value="common">Common</option>
+            <option value="uncommon">Uncommon</option>
+            <option value="rare">Rare</option>
+            <option value="mythic">Mythic</option>
+          </select>
 
-        <button
-          onClick={() => {
-            setType("");
-            setRarity("");
-          }}
-        >
-          Reset
-        </button>
-      </div>
-
-      {/* HEADER */}
-      <div className="flex justify-center items-center mb-6">
-        <h1 className={`${cardboard.className} text-center leading-[1.1]`}>
-          {/* Pokemon — gradient */}
-          <span
-            className="
-              block
-              text-[60px]
-              italic
-              text-transparent
-              bg-clip-text
-              bg-gradient-to-b
-              from-[#cc3300]
-              to-[#ff9900]
-            "
+          <button
+            onClick={() => {
+              setType("");
+              setRarity("");
+            }}
           >
-            Pokemon
-          </span>
-        </h1>
+            Reset
+          </button>
+        </div>
 
-        {/* <Link
-          href="/admin/pokemon/add"
-          className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Add Product
-        </Link> */}
-      </div>
+        {/* HEADER */}
+        <div className="flex justify-center mb-2">
+          <img
+            src="/images/pokemon.webp"
+            alt="Yu-Gi-Oh Logo"
+            width={220}
+            height={70}
+            className="h-auto"
+          />
+        </div>
 
-      {/* TABLE */}
-      <div className="relative overflow-x-auto rounded-lg border bg-white shadow">
-        {loading && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
-            <div className="text-black font-bold">Loading...</div>
+        {/* TABLE */}
+        <div className="">
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <div className="text-black font-bold">Loading...</div>
+            </div>
+          )}
+          <div className="flex justify-center p-3">
+            <BackButton />
           </div>
-        )}
-
-        <table className="min-w-full text-sm text-black">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="px-3 py-2 text-center">Image</th>
-              <th className="px-3 py-2 text-center">In-Stock</th>
-              <th className="px-3 py-2 text-center">Pokemon ID</th>
-              <th className="px-3 py-2 text-center">Name</th>
-              <th className="px-3 py-2 text-center">Set</th>
-              <th className="px-3 py-2 text-center">Rarity</th>
-              <th className="px-3 py-2 text-center">Price</th>
-              <th className="px-3 py-2 text-right">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {pokemonSingles.map((p) => (
-              <tr key={p.id} className="border-t">
-                <td className="px-3 py-2 text-center">
-                  {p.imageSmall ? (
-                    <img
-                      src={p.imageSmall}
-                      alt={p.name ?? "card image"}
-                      width={64}
-                      height={88}
-                    />
-                  ) : (
-                    <div className="w-[64px] h-[88px] bg-gray-200" />
-                  )}
-                </td>
-
-                <td className="px-3 py-2 text-center font-bold">
-                  {p.quantity}
-                </td>
-
-                <td className="px-3 py-2 text-center font-bold">
-                  {p.pokemonId}
-                </td>
-
-                <td className="px-3 py-2 text-center font-bold">{p.name}</td>
-
-                <td className="px-3 py-2 text-center font-bold">
-                  {p.setCode?.toUpperCase() ?? ""}
-                </td>
-
-                <td className="px-3 py-2 text-center font-bold">{p.rarity}</td>
-
-                <td className="px-3 py-2 text-center font-bold">
-                  ${Number(p.price || 0).toFixed(2)}
-                </td>
-
-                <td className="px-3 py-2">
-                  <div className="flex justify-end gap-2">
-                    <Link
-                      href={`/admin/pokemon/singles/${p.id}/edit`}
-                      className="bg-blue-600 text-white px-3 py-1 rounded"
-                    >
-                      Edit
-                    </Link>
-
-                    <button
-                      className="text-red-600 hover:underline"
-                      onClick={async () => {
-                        await fetch(`/api/pokemon/singles/${p.id}`, {
-                          method: "DELETE",
-                        });
-                        console.log("Pokemon Id {id}");
-                        location.reload();
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
+          <table className="admin-table">
+            <thead className=" text-gray-700">
+              <tr className="bg-[#f8cc1b] text-black">
+                <th className="px-3 py-2 text-center">Image</th>
+                <th className="px-3 py-2 text-center">Pokemon ID</th>
+                <th className="px-3 py-2 text-center">Name</th>
+                <th className="px-3 py-2 text-center">Price</th>
+                <th className="px-3 py-2 text-center">In-Stock</th>
+                <th className="px-3 py-2 text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {pokemonSingles.map((p) => (
+                <tr key={p.id} className="admin-tbody">
+                  <td className="px-3 py-2 text-center">
+                    {p.imageSmall ? (
+                      <img
+                        src={p.imageSmall}
+                        alt={p.name ?? "card image"}
+                        width={64}
+                        height={88}
+                      />
+                    ) : (
+                      <div className="w-[64px] h-[88px] bg-gray-200" />
+                    )}
+                  </td>
+                  <td className="px-3 py-2 text-center font-bold">
+                    {p.pokemonId}
+                  </td>
+
+                  <td className="px-3 py-2 text-center font-bold">{p.name}</td>
+
+                  <td className="px-3 py-2 text-center font-bold">
+                    ${Number(p.price || 0).toFixed(2)}
+                  </td>
+
+                  <td className="px-3 py-2 text-center font-bold">
+                    {p.quantity}
+                  </td>
+
+                  <td className="px-3 py-2">
+                    <div className="flex flex-wrap justify-center gap-1">
+                      <Link
+                        href={`/admin/pokemon/singles/${p.id}/edit`}
+                        className="bg-blue-600 text-white px-3 py-1 rounded"
+                      >
+                        Edit
+                      </Link>
+
+                      <DeleteButton pokemon_id={p.pokemonId} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* PAGINATION */}
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={() => {
+              const newPage = page - 1;
+              setPage(newPage);
+              loadPokemonSingles(newPage);
+            }}
+            disabled={page <= 1}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Previous
+          </button>
+
+          <span className="self-center">
+            Page {page} / {totalPages || 1}
+          </span>
+
+          <button
+            onClick={() => {
+              const newPage = page + 1;
+              setPage(newPage);
+              loadPokemonSingles(newPage);
+            }}
+            disabled={page >= totalPages}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
       </div>
-
-      {/* PAGINATION */}
-      <div className="flex justify-center gap-4 mt-6">
-        <button
-          onClick={() => loadPokemonSingles(page - 1)}
-          disabled={page <= 1}
-          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
-        >
-          Previous
-        </button>
-
-        <span className="self-center">
-          Page {page} / {totalPages || 1}
-        </span>
-
-        <button
-          onClick={() => loadPokemonSingles(page + 1)}
-          disabled={page >= totalPages}
-          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
-        >
-          Next
-        </button>
-      </div>
-    </div>
+    </section>
   );
 }

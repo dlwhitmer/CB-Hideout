@@ -18,9 +18,9 @@ export default function MagicDisplay({ product }: Props) {
   const [showBack, setShowBack] = useState(false);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="image-top">
       {/* IMAGE BLOCK */}
-      <div className="w-[150px] sm:w-[150px] lg:w-[300px]">
+      <div className="display-image">
         <MagicCardImage
           product={product}
           showBack={showBack}
@@ -28,7 +28,7 @@ export default function MagicDisplay({ product }: Props) {
         />
       </div>
 
-      <div className="w-[400px] sm:w-[400px] lg:w-[1200px] rounded shadow p-4">
+      <div className="display-stats">
         <MagicCardHeader product={product} showBack={showBack} />
         <MagicCardRules product={product} showBack={showBack} />
         <MagicCardInformation product={product} showBack={showBack} />

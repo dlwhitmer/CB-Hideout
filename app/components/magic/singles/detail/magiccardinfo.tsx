@@ -10,9 +10,9 @@ export default function MagicCardInformation({ product, showBack }: Props) {
   const toughness = showBack ? product.backToughness : product.frontToughness;
   const power = showBack ? product.backPower : product.frontPower;
   return (
-    <section className="bg-[var(--dpm)] rounded shadow p-4 w-full">
-      <h2 className="text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] text-center font-extrabold">
-        Card Stats
+    <section className="stat-section">
+      <h2 className="stat-cat">
+        Card Stats:
       </h2>
       {/* GENERAL */}
       <section className="mb-6">

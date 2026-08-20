@@ -18,12 +18,12 @@ export default function YugiohCardHeader({ product }: Props) {
   const isTrap = type.includes("trap");
 
   return (
-    <section className="bg-[var(--dpm)] rounded shadow p-4">
-      <div className="text-center font-bold">
-        <h2 className="text-xl">Card Stats:</h2>
+    <section className="stat-section">
+      <div>
+        <h2 className="stat-cat">Card Stats:</h2>
        
       </div>
-      <div className="text-lg grid grid-cols-2 gap-1">
+      <div className="stat-rows">
         {isMonster && (
           <>
             <StatRow label="Pendulum Scale" value={product.scale} />

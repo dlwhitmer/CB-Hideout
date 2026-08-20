@@ -1,8 +1,8 @@
 import StatRow from "../../../StatRow";
-import { PokemonSingle } from "../../../../../lib/db/schema";
+import { YugiohSingle } from "../../../../../lib/db/schema";
 
 type Props = {
-  product: PokemonSingle;
+  product: YugiohSingle;
 };
 
 function formatPrice(price: number | string | null | undefined) {
@@ -18,22 +18,29 @@ function formatPrice(price: number | string | null | undefined) {
   });
 }
 
-export default function PokemonPurchaseInfo({ product }: Props) {
+export default function YugiohPurchaseInformation({ product }: Props) {
   return (
     <section className="stat-section">
       <h2 className="stat-cat">
         Purchase Information
       </h2>
+
+      {/* GENERAL */}
         <div className="stat-rows">
-          <StatRow label="Our Price" value={`${" "}${formatPrice(product.price)}`} />
+            <StatRow
+                     label="Our Price"
+                     value={`${" "}${formatPrice(
+                       JSON.parse(product.cardPrices ?? "[]")[0]?.cardmarket_price,
+                     )}`}
+                   />
           <StatRow label="In Stock" value={product.quantity} />
-          <div className="col-span-2 pt-4 border-t-3 flex justify-center">
+        </div>
+        <div className="pt-8 col-span-3  flex justify-center">
             <button className="add-btn">
               Add To Cart
             </button>
           </div>
-        </div>
       </section>
-  
+
   );
 }
