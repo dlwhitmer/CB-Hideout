@@ -8,8 +8,8 @@ import {
   mapYugiohSingleToDB,
   mapYugiohPrintingsToDB,
 } from "../../../../../lib/mappers/yugioh_singles";
-import { yugiohSets } from "../../../../../lib/db/schema/yugioh_singles";
-import { mapYugiohSetToDB } from "../../../../../lib/mappers/yugioh_singles";
+import { yugiohSets } from "../../../../../lib/db/schema";
+import {mapYugiohSetToDB} from "../../../../../lib/mappers/yugioh_sets"
 
 export async function POST(req: Request) {
   try {
@@ -57,13 +57,6 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-
-    const setCode = setInfo.set_code;
-    const tcgDate = setInfo.tcg_date;
-
-    // Insert the set
-    const newSet = mapYugiohSetToDB(setName, setCode, tcgDate);
-    await db.insert(yugiohSets).values(newSet).onConflictDoNothing();
 
     let inserted = 0;
     let updated = 0;

@@ -1,5 +1,5 @@
 import { db } from "../../../../../lib/db/db";
-import { yugiohSets } from "../../../../../lib/db/schema/yugioh_singles";
+import { yugiohSets } from "../../../../../lib/db/schema";
 import { sql } from "drizzle-orm";
 
 export async function GET() {
