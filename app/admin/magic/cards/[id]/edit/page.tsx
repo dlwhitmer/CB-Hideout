@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MagicCard } from "../../../../../../lib/db/schema";
 
-export default function EditMagicSinglePage() {
+export default function EditMagicCardsPage() {
   const { id } = useParams();
   const [form, setForm] = useState<MagicCard | null>(null);
 
