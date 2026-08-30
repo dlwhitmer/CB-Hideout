@@ -51,5 +51,5 @@ export const pokemonSingles = sqliteTable("pokemon_singles", {
   quantity: integer("quantity").notNull().default(1),
 });
 
-export type PokemonSingles = InferSelectModel<typeof pokemonSingles>;
+export type PokemonSingle = InferSelectModel<typeof pokemonSingles>;
 export type NewPokemonSingle = InferInsertModel<typeof pokemonSingles>;
