@@ -196,7 +196,7 @@ export default function PokemonSinglesPage() {
                         Edit
                       </Link>
 
-                      <DeleteButton pokemon_id={p.pokemonId} />
+                      <DeleteButton id={p.id} />
                     </div>
                   </td>
                 </tr>
