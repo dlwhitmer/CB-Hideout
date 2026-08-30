@@ -2,9 +2,9 @@ import Image from "next/image";
 import { db } from "../../../lib/db/db";
 import {
   yugiohSingles,
-  yugiohSets,
   yugiohPrintings,
 } from "../../../lib/db/schema/yugioh_singles";
+import { yugiohSets } from "../../../lib/db/schema";
 
 import { eq, like, and, sql } from "drizzle-orm";
 
