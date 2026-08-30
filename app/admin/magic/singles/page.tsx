@@ -121,7 +121,7 @@ export default function MagicSinglesPage() {
                       Edit
                     </Link>
 
-                    <DeleteButton scryfallId={card.scryfallId} />
+                    <DeleteButton id={card.id} />
                   </div>
                 </td>
               </tr>
