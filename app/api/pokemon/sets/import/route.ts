@@ -1,8 +1,7 @@
 import { db } from "../../../../../lib/db/db";
 import { eq } from "drizzle-orm";
 import { pokemonSingles } from "../../../../../lib/db/schema/pokemon_singles";
-
-import { mapPokemonSingleToDB } from "../../../../../lib/mappers/pokemon";
+import { mapPokemonSingleToDB } from "../../../../../lib/mappers/pokemon_singles";
 
 async function fetchPokemonApi(
   url: string,
