@@ -1,6 +1,6 @@
 "use client";
 
-import { PokemonSingle } from "../../../../../lib/db/schema/pokemon";
+import { PokemonSingle } from "../../../../../lib/db/schema/pokemon_singles";
 import PokemonCardHeader from "./pokemoncardheader";
 import PokemonCardImage from "./polemoncardimage";
 import PokemonCardStats from "./pokemoncardstats";
@@ -28,9 +28,9 @@ export default function PokemonDisplay({ product }: Props) {
         <PokemonCardStats product={product} />
         <PokemonCardAbilities abilities={abilities} />
         <PokemonCardAttacks attacks={attacks} />
-        <PokemonCardPrices product={product}/>
-        <PokemonCollector product={product}/>
-        <PokemonPurchaseInfo product={product}/>
+        <PokemonCardPrices product={product} />
+        <PokemonCollector product={product} />
+        <PokemonPurchaseInfo product={product} />
       </div>
     </div>
   );

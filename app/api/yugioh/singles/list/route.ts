@@ -2,7 +2,7 @@ import { db } from "../../../../../lib/db/db";
 import {
   yugiohSingles,
   yugiohPrintings,
-} from "../../../../../lib/db/schema/yugioh";
+} from "../../../../../lib/db/schema/yugioh_singles";
 import { eq, and, sql } from "drizzle-orm";
 
 export async function GET(req: Request) {

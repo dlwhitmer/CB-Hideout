@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
-import { InferModel} from "drizzle-orm";
+import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
 /* -------------------------------------------------------
     YU‑GI‑OH — SINGLES
@@ -33,8 +33,8 @@ export const yugiohSingles = sqliteTable("yugioh_singles", {
 
   createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
 });
-export type YugiohSingle = InferModel<typeof yugiohSingles>;
-export type NewYugiohSingle = InferModel<typeof yugiohSingles, "insert">;
+export type YugiohSingle = InferSelectModel<typeof yugiohSingles>;
+export type NewYugiohSingle = InferInsertModel<typeof yugiohSingles>;
 
 // Printing-level mapper
 
@@ -47,15 +47,8 @@ export const yugiohPrintings = sqliteTable("yugioh_printings", {
   setRarity: text("set_rarity"),
   marketValue: real("market_value"),
 });
-export type YugiohPrinting = InferModel<typeof yugiohPrintings>;
-export type NewYugiohPrinting = InferModel<typeof yugiohPrintings, "insert">;
+export type YugiohPrinting = InferSelectModel<typeof yugiohPrintings>;
+export type NewYugiohPrinting = InferInsertModel<typeof yugiohPrintings>;
 
-export const yugiohSets = sqliteTable("yugioh_sets", {
-  id: integer("id").primaryKey(),
-  setName: text("set_name").notNull(),
-  setCode: text("set_code").notNull().unique(),
-  tcgDate: text("tcg_date").notNull(),
-});
-export type YugiohSet = InferModel<typeof yugiohSets>;
-export type NewYugiohSet = InferModel<typeof yugiohSets, "insert">;
+
 

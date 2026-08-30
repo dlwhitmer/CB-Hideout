@@ -1,92 +1,52 @@
+import { NextResponse } from "next/server";
 import { db } from "../../../../../lib/db/db";
-import { magicSingles } from "../../../../../lib/db/schema/magic";
-import { eq } from "drizzle-orm";
-import { mapMagicSinglesToDB } from "../../../../../lib/mappers/magic";
+import { magicSets } from "../../../../../lib/db/schema/magic_sets";
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    const { setCode } = await req.json();
-
-    let inserted = 0;
-    let updated = 0;
-
-    // Get set information
-    const setResponse = await fetch(
-      `https://api.scryfall.com/sets/${setCode}`,
-      {
-        headers: {
-          "User-Agent": "card-hideout/1.0",
-          Accept: "application/json",
-        },
+    // 1. Fetch Scryfall set list
+    const res = await fetch("https://api.scryfall.com/sets", {
+      headers: {
+        "User-Agent": "MagicTCG-Admin-Importer/1.0 (dan@example.com)",
       },
-    );
+    });
 
-    const set = await setResponse.json();
+    const json = await res.json();
+    console.log("SCRYFALL RESPONSE:", json);
 
-    const totalCards = set.card_count;
-
-    // Get cards from set
-    const res = await fetch(
-      `https://api.scryfall.com/cards/search?q=e:${setCode}`,
-      {
-        headers: {
-          "User-Agent": "card-hideout/1.0",
-          Accept: "application/json",
-        },
-      },
-    );
-
-    const data = await res.json();
-
-    console.log("SCRYFALL RESPONSE:", data);
-
-    let cards = data.data ?? [];
-
-    // Handle multi-page Scryfall results
-    while (data.has_more) {
-      const next = await fetch(data.next_page);
-      const nextData = await next.json();
-
-      cards = [...cards, ...(nextData.data ?? [])];
-
-      data.has_more = nextData.has_more;
-      data.next_page = nextData.next_page;
+    if (!json.data) {
+      return NextResponse.json({ error: "No sets returned from Scryfall" });
     }
 
-    for (const card of cards) {
-      const mapped = mapMagicSinglesToDB(card);
-         console.log("IMPORT CARD:", card.name, card.id);
+    // 2. Clear old MTGJSON/WotC codes
 
-      const existing = await db
-        .select()
-        .from(magicSingles)
-        .where(eq(magicSingles.scryfallId, card.id));
+    let imported = 0;
 
-      if (existing.length > 0) {
-        await db
-          .update(magicSingles)
-          .set({
-            quantity: existing[0].quantity + 1,
-          })
-          .where(eq(magicSingles.scryfallId, card.id));
-     
-        updated++;
-      } else {
-        await db.insert(magicSingles).values(mapped);
+    // 3. Insert only real Scryfall sets
+    for (const set of json.data) {
+      // Skip funny sets, tokens, promos, etc
+      if (set.set_type === "token") continue;
+      if (set.set_type === "memorabilia") continue;
+      if (set.set_type === "promo") continue;
+      if (set.set_type === "funny") continue;
 
-        inserted++;
-      }
+      await db.insert(magicSets).values({
+        setCode: set.code, // ⭐ REAL Scryfall code
+        setName: set.name,
+        setType: set.set_type,
+        releasedAt: set.released_at,
+        totalCards: set.card_count ?? 0,
+      });
+
+      imported++;
     }
 
-    return Response.json({
+    return NextResponse.json({
       success: true,
-      inserted,
-      updated,
-      totalCards,
+      imported,
     });
   } catch (err: any) {
-    console.error("MAGIC SET IMPORT ERROR:", err);
-
-    return Response.json({ error: err.message }, { status: 500 });
+    console.error("SET IMPORT ERROR:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

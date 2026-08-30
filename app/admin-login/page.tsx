@@ -17,13 +17,15 @@ export default function AdminLogin() {
       body: JSON.stringify({ username, password }),
     });
 
-    if (res.redirected) {
-      window.location.href = res.url;
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error || "Login failed");
       return;
     }
 
-    const data = await res.json();
-    setError(data.error || "Login failed");
+    // success → redirect manually
+    window.location.href = "/admin";
   }
 
   return (
@@ -45,9 +47,7 @@ export default function AdminLogin() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          {error && (
-            <p className="text-red-400 text-sm text-center">{error}</p>
-          )}
+          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
           <button
             type="submit"

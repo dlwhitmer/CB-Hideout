@@ -1,7 +1,7 @@
 // ❌ REMOVE "use client"
 import { DetailPageParams } from "../../../../types/route-params";
 import { db } from "../../../../lib/db/db";
-import { magicSingles } from "../../../../lib/db/schema/magic";
+import { magicSingles } from "../../../../lib/db/schema/magic_singles";
 import { eq } from "drizzle-orm";
 import MagicDisplay from "../../../components/magic/singles/detail/magicdisplay";
 

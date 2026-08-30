@@ -1,6 +1,6 @@
 import { db } from "../../../../../lib/db/db";
 import { eq } from "drizzle-orm";
-import { pokemonSingles } from "../../../../../lib/db/schema/pokemon";
+import { pokemonSingles } from "../../../../../lib/db/schema/pokemon_singles";
 
 import { mapPokemonSingleToDB } from "../../../../../lib/mappers/pokemon";
 
@@ -48,11 +48,9 @@ export async function POST(req: Request) {
     console.log("POKEMON KEY LENGTH:", process.env.POKEMON_TCG_API_KEY?.length);
     console.log("SET CODE RECEIVED:", setCode);
     // console.log("SET URL:", `https://api.pokemontcg.io/v2/sets/${setCode}`);
-    
 
     // const setText = await set.text();
 
-    
     // if (!set.ok) {
     //   return Response.json(
     //     {

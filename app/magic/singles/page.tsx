@@ -45,8 +45,9 @@ export default async function ProductsPage({
 
   const sets = await setsResponse.json();
 
+  const base = process.env.NEXT_PUBLIC_BASE_URL;
   const response = await fetch(
-    `${protocol}://${host}/api/magic/singles/list?page=${page}&type=${type}&rarity=${rarity}&set=${set}&colors=${colors}&finishes=${finishes}`,
+    `${base}/api/magic/singles/list?page=${page}&type=${type}&rarity=${rarity}&set=${set}&colors=${colors}&finishes=${finishes}`,
     { cache: "no-store" },
   );
 
@@ -67,11 +68,7 @@ export default async function ProductsPage({
     <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
       {/* FILTER BAR */}
       <form className="filter-stack text-white text-center">
-        <select
-          name="set"
-          defaultValue={set}
-          className="filter-center"
-        >
+        <select name="set" defaultValue={set} className="filter-center">
           <option value="">All Sets</option>
           {sets.map((s: any) => (
             <option key={s.set_code} value={s.set_code}>
@@ -80,11 +77,7 @@ export default async function ProductsPage({
           ))}
         </select>
 
-        <select
-          name="type"
-          defaultValue={type}
-          className="filter-center"
-        >
+        <select name="type" defaultValue={type} className="filter-center">
           <option value="">All Types</option>
           <option value="Creature">Creature</option>
           <option value="Instant">Instant</option>
@@ -103,11 +96,7 @@ export default async function ProductsPage({
           <option value="kindred">Kindred </option>
         </select>
 
-        <select
-          name="rarity"
-          defaultValue={rarity}
-          className="filter-center"
-        >
+        <select name="rarity" defaultValue={rarity} className="filter-center">
           <option value="">All Rarities</option>
           <option value="common">Common</option>
           <option value="uncommon">Uncommon</option>
@@ -115,11 +104,7 @@ export default async function ProductsPage({
           <option value="mythic rare">Mythic Rare</option>
           <option value="basic lands">Basic Lands</option>
         </select>
-        <select
-          name="colors"
-          defaultValue={colors}
-          className="filter-center"
-        >
+        <select name="colors" defaultValue={colors} className="filter-center">
           <option value="">All Colors</option>
           <option value="W">White</option>
           <option value="U">Blue</option>
@@ -138,10 +123,7 @@ export default async function ProductsPage({
           <option value="foil">Foil</option>
         </select>
 
-        <button
-          type="submit"
-           className="filter-button"
-        >
+        <button type="submit" className="filter-button">
           Filter
         </button>
       </form>

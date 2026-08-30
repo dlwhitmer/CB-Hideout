@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import BackButton from "../../../../../backButton";
-import type { PokemonSingle } from "../../../../../../lib/db/schema/pokemon";
+import type { PokemonSingle } from "../../../../../../lib/db/schema/pokemon_singles";
 
 export default function EditPokemonSinglePage() {
   const { id } = useParams();

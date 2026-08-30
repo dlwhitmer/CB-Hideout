@@ -1,6 +1,6 @@
 // cardFaces.ts
 
-import { MagicSingle } from "../db/schema/magic";
+import { MagicSingle } from "../db/schema/magic_singles";
 
 export function getFaces(product: MagicSingle) {
   if (!product.card_faces) {
@@ -9,7 +9,6 @@ export function getFaces(product: MagicSingle) {
 
   return JSON.parse(product.card_faces);
 }
-
 
 export function getFrontFace(product: MagicSingle) {
   const faces = getFaces(product);
@@ -23,7 +22,6 @@ export function getFrontFace(product: MagicSingle) {
   return faces[0];
 }
 
-
 export function getBackFace(product: MagicSingle) {
   const faces = getFaces(product);
 
@@ -34,16 +32,12 @@ export function getBackFace(product: MagicSingle) {
   return faces[1];
 }
 
-
 export function isDoubleFaced(product: MagicSingle) {
   const faces = getFaces(product);
 
   return faces?.length === 2;
 }
 
-export function getActiveFace(
-  product: MagicSingle,
-  showBack: boolean
-) {
+export function getActiveFace(product: MagicSingle, showBack: boolean) {
   return showBack;
 }

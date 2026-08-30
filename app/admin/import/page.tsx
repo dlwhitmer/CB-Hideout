@@ -11,44 +11,42 @@ export default function UniversalImportPage() {
   const [setCode, setSetCode] = useState("");
   const router = useRouter(); // ⭐ THIS FIXES THE REDLINE
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    const url =
+      type === "cards"
+        ? "/api/magic/cards/import-all"
+        : `/api/${game}/${type}/import`;
+
     const body =
       type === "singles"
         ? { id }
         : type === "packs"
           ? { packName }
-          : game === "yugioh"
-            ? { setName: setCode }
-            : { setCode };
+          : type === "cards"
+            ? {} // no body needed
+            : game === "yugioh"
+              ? { setName: setCode }
+              : { setCode };
 
-    // console.log("GAME:", game);
-    // console.log("TYPE:", type);
-    // console.log("SET CODE:", setCode);
-    // console.log("IMPORT URL:", `/api/${game}/${type}/import`);
-
-    const res = await fetch(`/api/${game}/${type}/import`, {
+    const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+
     const data = await res.json();
-    if (data.success) {
-      // ⭐ THIS IS WHERE router.push GOES
-      if (data.success) {
-        router.push(`/admin/${game}/singles`);
-      }
-    }
+    alert(data.message || "Import complete");
   };
 
   const getPlaceholder = () => {
-    console.log("Type = {type}");
+    if (type === "cards") return ""; // no input needed
+
     if (type === "packs") return "Pack name";
 
     if (type === "sets" || type === "singles") {
       switch (game) {
         case "magic":
-          return "Set Code (example: mh3)";
+          return "Set Name (example: Modern Horizons 3)";
         case "pokemon":
           return "Set Code (example: sv2)";
         case "yugioh":
@@ -92,11 +90,11 @@ export default function UniversalImportPage() {
         className=" text-white text-center bg-gray-800 p-2 rounded mb-6 w-[250px]"
       >
         <option value="singles">Singles</option>
-        <option value="packs">Packs</option>
+        <option value="cards">Cards</option>
         <option value="sets">Sets</option>
       </select>
 
-      <form onSubmit={handleSubmit} className=" space-y-4">
+      <div className="space-y-4">
         {/* SINGLES FORM */}
         {type === "singles" && (
           <input
@@ -123,24 +121,29 @@ export default function UniversalImportPage() {
 
         {/* SETS FORM */}
         {type === "sets" && (
-          <input
-            type="text"
-            placeholder={getPlaceholder()}
-            value={setCode}
-            onChange={(e) => setSetCode(e.target.value)}
-            className="text-white bg-gray-800 p-2  text-center rounded w-[250px] placeholder:text-white placeholder:font-medium"
-          />
+          <div className="text-white mb-4">
+            <p className="mb-2 font-medium">
+              Import all{" "}
+              {game === "magic"
+                ? "Magic: The Gathering"
+                : game === "pokemon"
+                  ? "Pokémon"
+                  : "Yu‑Gi‑Oh"}{" "}
+              sets
+            </p>
+          </div>
         )}
+
         <div>
           <button
-            type="submit"
+            type="button"
+            onClick={handleSubmit}
             className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
           >
             Import
           </button>
-          
         </div>
-      </form>
+      </div>
     </div>
   );
 }

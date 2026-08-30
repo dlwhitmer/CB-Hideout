@@ -1,0 +1,14 @@
+import{NewPokemonSet} from "../db/schema/pokemon_sets";
+
+export function mapPokemonSetToDB(set: any): NewPokemonSet {
+  return {
+    setCode: set.id,
+    setName: set.name,
+    series: set.series,
+    setType: set.set_type,
+    releaseDate: set.released_at,
+    updatedAt: set.updated_at,
+    cardCount: set.total_cards,
+    logoUrl: set.images?.logo,
+  };
+}

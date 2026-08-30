@@ -1,7 +1,7 @@
 import { db } from "../../../../../lib/db/db";
-import { yugiohSingles } from "../../../../../lib/db/schema/yugioh";
+import { yugiohSingles } from "../../../../../lib/db/schema/yugioh_singles";
 import { eq } from "drizzle-orm";
-import { mapYugiohSingleToDB } from "../../../../../lib/mappers/yugioh";
+import { mapYugiohSingleToDB } from "../../../../../lib/mappers/yugioh_singles";
 
 export async function POST(req: Request) {
   try {

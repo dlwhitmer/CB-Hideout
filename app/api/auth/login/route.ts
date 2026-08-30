@@ -1,18 +1,26 @@
 import { db } from "../../../../lib/db/db";
 import { Admins } from "../../../../lib/db/schema/admins";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { username, password } = await request.json();
+  console.log("LOGIN ROUTE HIT");
 
-  // 1. Find admin
+  const { username, password } = await request.json();
+  console.log("INPUT:", username);
+
+  console.log("QUERY START");
+
+  const tableInfo = await db.run(sql`PRAGMA table_info(admins)`);
+  console.log("ADMINS TABLE:", tableInfo);
+
   const admins = await db
     .select()
     .from(Admins)
     .where(eq(Admins.username, username))
     .limit(1);
+  console.log("QUERY RESULT:", admins);
 
   if (admins.length === 0) {
     return NextResponse.json({ error: "Invalid username" }, { status: 401 });
@@ -28,9 +36,8 @@ export async function POST(request: Request) {
   }
 
   // 3. Create redirect response
-  const response = NextResponse.redirect(new URL("/admin", request.url));
+  const response = NextResponse.json({ success: true });
 
-  // 4. Set cookies
   response.cookies.set("role", "admin", {
     httpOnly: true,
     path: "/",

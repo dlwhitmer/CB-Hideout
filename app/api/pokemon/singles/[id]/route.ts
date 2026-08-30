@@ -1,5 +1,5 @@
 import { db } from "../../../../../lib/db/db";
-import { pokemonSingles } from "../../../../../lib/db/schema/pokemon";
+import { pokemonSingles } from "../../../../../lib/db/schema/pokemon_singles";
 import { eq } from "drizzle-orm";
 
 export async function GET(

@@ -1,8 +1,8 @@
-import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
-import { InferModel } from "drizzle-orm";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
-export const magicSingles = sqliteTable("magic_singles", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const magicCards = sqliteTable("magic_cards", {
+  id: integer().primaryKey({ autoIncrement: true }),
 
   // Card identity
   scryfallId: text("scryfall_id").notNull().unique(),
@@ -11,30 +11,31 @@ export const magicSingles = sqliteTable("magic_singles", {
   // Set info
   setCode: text("set_code").notNull(),
   setName: text("set_name").notNull(),
-  setType: text("set_type"),
+  setType: text("set_type").notNull(),
 
   // Card-wide info
-  finishes: text("finishes"),
-  digital: integer("digital", { mode: "boolean" }),
-  cmc: real("cmc"),
-  colorIdentity: text("color_identity"),
-  keywords: text("keywords"),
-  layout: text("layout"),
+  finishes: text("finishes").notNull(),
+  digital: integer("digital").notNull(),
+
+  cmc: integer("cmc"),
+
+  colorIdentity: text("color_identity").notNull(),
+  keywords: text("keywords").notNull(),
+  layout: text("layout").notNull(),
 
   // Raw Scryfall backup
   card_faces: text("card_faces"),
-  lang:text("lang"),
-  
+  lang: text("lang"),
 
   // Front face
-  name: text("name"),
+  name: text("name").notNull(),
   frontName: text("front_name"),
   frontManaCost: text("front_mana_cost"),
   frontTypeLine: text("front_type_line"),
   frontOracleText: text("front_oracle_text"),
   frontColors: text("front_colors"),
-  frontPower: text("front_power"),
-  frontToughness: text("front_toughness"),
+  frontPower: integer("front_power"),
+  frontToughness: integer("front_toughness"),
   frontLoyalty: integer("front_loyalty"),
   frontDefense: integer("front_defense"),
 
@@ -44,8 +45,8 @@ export const magicSingles = sqliteTable("magic_singles", {
   backTypeLine: text("back_type_line"),
   backOracleText: text("back_oracle_text"),
   backColors: text("back_colors"),
-  backPower: text("back_power"),
-  backToughness: text("back_toughness"),
+  backPower: integer("back_power"),
+  backToughness: integer("back_toughness"),
   backLoyalty: integer("back_loyalty"),
   backDefense: integer("back_defense"),
 
@@ -64,19 +65,12 @@ export const magicSingles = sqliteTable("magic_singles", {
   collectorNumber: text("collector_number"),
   rarity: text("rarity"),
 
-  price: real("price"),
-  foilPrice: real("foil_price"),
-
-  quantity: integer("quantity").default(0), 
-
-  cardCount: integer("card_count"),
-
-  artist: text("artist"),
+  totalCards: integer("total_cards"),
+  artist: text("artist").notNull(),
 
   releasedAt: text("released_at"),
-  updatedAt: text("updated_at"),
-  createdAt: text("created_at"),
+  createdAt: text("created_at").notNull().default(`CURRENT_TIMESTAMP`),
 });
 
-export type MagicSingle = InferModel<typeof magicSingles>;
-export type NewMagicSingle = InferModel<typeof magicSingles, "insert">;
+export type MagicCard = InferSelectModel<typeof magicCards>;
+export type NewMagicCard = InferInsertModel<typeof magicCards>;

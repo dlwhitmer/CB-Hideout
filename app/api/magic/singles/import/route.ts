@@ -1,6 +1,6 @@
 import { db } from "../../../../../lib/db/db";
-import { magicSingles } from "../../../../../lib/db/schema/magic";
-import { mapMagicSinglesToDB } from "../../../../../lib/mappers/magic";
+import { magicSingles } from "../../../../../lib/db/schema/magic_singles";
+import { mapMagicSinglesToDB } from "../../../../../lib/mappers/magic_singles";
 import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
@@ -37,8 +37,6 @@ export async function POST(req: Request) {
       });
 
       const mapped = mapMagicSinglesToDB(card);
-
-  
 
       const existing = await db
         .select()

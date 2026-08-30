@@ -1,6 +1,6 @@
 import { DetailPageParams } from "../../../../types/route-params";
 import { db } from "../../../../lib/db/db";
-import * as yugioh from "../../../../lib/db/schema/yugioh";
+import * as yugioh from "../../../../lib/db/schema/yugioh_singles";
 import { eq } from "drizzle-orm";
 import YugiohDisplay from "../../../components/yugioh/singles/detail/yugiohdisplay";
 

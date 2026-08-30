@@ -1,10 +1,10 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
-import { InferModel } from "drizzle-orm";
+import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
 /* -------------------------------------------------------
-   POKÉMON — SINGLES
+   POKÉMON — Cards
 ------------------------------------------------------- */
-export const pokemonSingles = sqliteTable("pokemon_singles", {
+export const pokemonCards = sqliteTable("pokemon_cards", {
   id: integer("id").primaryKey(),
   game: text("game"),
   category: text("category"),
@@ -22,10 +22,10 @@ export const pokemonSingles = sqliteTable("pokemon_singles", {
   artist: text("artist"),
   imageSmall: text("image_small"),
   imageLarge: text("image_large"),
-  weaknesses: text("weakness"),
-  weaknessesValue: text("weakness_value"),
+  weaknesses: text("weaknesses"),
+  weaknessesValue: text("weaknesses_value"),
   resistances: text("resistances"),
-  resistancesValue: text("resistance_value"),
+  resistancesValue: text("resistances_value"),
   retreatCost: text("retreat_cost"),
   convertedRetreatCost: integer("converted_retreat_cost"),
   abilities: text("abilities"),
@@ -35,7 +35,7 @@ export const pokemonSingles = sqliteTable("pokemon_singles", {
   marketPrice: real("market_price"),
   normalMarket: real("normal_market"),
   holofoilMarket: real("holofoil_market"),
-  reverseHoloMarket: real("reversehalo_market"),
+  reverseHoloMarket: real("reverse_holo_market"),
   releaseDate: text("release_date"),
 
   printedTotal: integer("printed_total"),
@@ -48,8 +48,10 @@ export const pokemonSingles = sqliteTable("pokemon_singles", {
   lowPrice: real("low_price"),
   midPrice: real("mid_price"),
   createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
-  quantity: integer("quantity").notNull().default(1),
+  quantity: integer("quantity"
+    
+  ).notNull().default(1),
 });
 
-export type PokemonSingle = InferModel<typeof pokemonSingles>;
-export type NewPokemonSingle = InferModel<typeof pokemonSingles, "insert">;
+export type PokemonCard = InferSelectModel<typeof pokemonCards>;
+export type NewPokemonCard = InferInsertModel<typeof pokemonCards>;

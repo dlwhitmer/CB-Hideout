@@ -1,5 +1,5 @@
 import { db } from "../../../../lib/db/db";
-import { magicSingles } from "../../../../lib/db/schema/magic";
+import { magicSingles } from "../../../../lib/db/schema/magic_singles";
 import { eq, and, like } from "drizzle-orm"; // ⭐ add this
 
 export async function GET(req: Request) {
@@ -50,8 +50,8 @@ export async function GET(req: Request) {
   console.log("ADMIN MAGIC ROW COUNT:", rows.length);
   console.log("ADMIN MAGIC TOTAL:", total);
   return Response.json({
-  rows,
-  total,
-  pageSize: limit,
-});
+    rows,
+    total,
+    pageSize: limit,
+  });
 }

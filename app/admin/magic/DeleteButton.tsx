@@ -1,10 +1,13 @@
 "use client";
 
-export default function DeleteButton({ scryfallId }: { scryfallId: string | null }) {
+type DeleteButtonProps = {
+  id: number;
+};
+export default function DeleteButton({ id }: DeleteButtonProps) {
   async function handleDelete() {
-    console.log("Sending DELETE to:", `/api/magic/singles/${scryfallId}`);
+    console.log("Sending DELETE to:", `/api/magic/products/${id}`);
 
-    await fetch(`/api/magic/singles/${scryfallId}`, {
+    await fetch(`/api/magic/products/${id}`, {
       method: "DELETE",
     });
 

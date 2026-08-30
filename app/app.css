@@ -69,4 +69,10 @@
   .admin-tbody{
     @apply w-full bg-[#fbf2c4] border-b-3 border-b-blue-700  mx-auto text-[10px] sm:text-[10px] md:text-[15px] lg:text-[18px] text-black font-bold
   }
+  .prod-in{
+    @apply w-full max-w-sm text-center border-2 text-black placeholder:text-black placeholder:font-medium mx-auto;
+  }
+  .add-div{
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-2xl mx-auto;
+  }
 }

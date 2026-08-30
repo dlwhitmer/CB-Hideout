@@ -3,7 +3,7 @@
 import { useState } from "react";
 import MagicCardImage from "./magiccardimage";
 import MagicCardHeader from "./magiccardheader";
-import { MagicSingle } from "../../../../../lib/db/schema/magic";
+import { MagicSingle } from "../../../../../lib/db/schema/magic_singles";
 import MagicCardCollector from "./magiccardcollector";
 import MagicCardRules from "./magicCardRules";
 import MagicCardPrices from "./magiccardprices";

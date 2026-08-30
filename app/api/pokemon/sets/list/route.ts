@@ -1,5 +1,5 @@
 import { db } from "../../../../../lib/db/db";
-import { pokemonSingles } from "../../../../../lib/db/schema/pokemon";
+import { pokemonSingles } from "../../../../../lib/db/schema/pokemon_singles";
 
 export async function GET() {
   const rows = await db
@@ -10,5 +10,5 @@ export async function GET() {
     .from(pokemonSingles)
     .orderBy(pokemonSingles.setName);
 
-  return Response.json(rows);   // ⭐ MUST BE AN ARRAY
+  return Response.json(rows); // ⭐ MUST BE AN ARRAY
 }

@@ -4,7 +4,7 @@ import {
   yugiohSingles,
   yugiohSets,
   yugiohPrintings,
-} from "../../../lib/db/schema/yugioh";
+} from "../../../lib/db/schema/yugioh_singles";
 
 import { eq, like, and, sql } from "drizzle-orm";
 

@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { PokemonSingle } from "../../../../../lib/db/schema/pokemon";
+import type { PokemonSingle } from "../../../../../lib/db/schema/pokemon_singles";
 
 export default function PokemonSingleDetail() {
   const { id } = useParams(); // ⭐ FIXED

@@ -1,7 +1,11 @@
 import { db } from "../../lib/db/db";
-import { magicSingles } from "../../lib/db/schema/magic";
-import { pokemonSingles } from "../../lib/db/schema/pokemon";
-import { yugiohSingles, yugiohPrintings } from "../../lib/db/schema/yugioh";
+import { magicCards } from "../../lib/db/schema/magic_cards";
+import { magicSingles } from "../../lib/db/schema/magic_singles";
+import { pokemonSingles } from "../../lib/db/schema/pokemon_singles";
+import {
+  yugiohSingles,
+  yugiohPrintings,
+} from "../../lib/db/schema/yugioh_singles";
 import { eq, or, sql } from "drizzle-orm";
 import BackButton from "../backButton";
 
@@ -25,17 +29,15 @@ export default async function SearchPage({
   const search = `%${q}%`;
 
   const lowerQ = q.toLowerCase();
-  let magicSearch = search;
 
-  if (
+  const isDFC =
     lowerQ === "dfc" ||
     lowerQ === "dfk" ||
     lowerQ === "double faced" ||
     lowerQ === "double-faced" ||
-    lowerQ === "double face"
-  ) {
-    magicSearch = "%card_face%";
-  }
+    lowerQ === "double face" ||
+    lowerQ === "transform" ||
+    lowerQ === "flip card";
 
   const magicResults = await db
     .select()
@@ -45,7 +47,7 @@ export default async function SearchPage({
         sql`lower(${magicSingles.frontName}) LIKE lower(${search})`,
         sql`lower(${magicSingles.scryfallId}) LIKE lower(${search})`,
         sql`lower(${magicSingles.rarity}) LIKE lower(${search})`,
-        sql`lower(${magicSingles.card_faces}) LIKE lower(${magicSearch})`,
+        sql`lower(${magicSingles.card_faces}) LIKE lower(${search})`,
         sql`lower(${magicSingles.setCode}) LIKE lower(${search})`,
         sql`lower(${magicSingles.setName}) LIKE lower(${search})`,
         sql`lower(${magicSingles.backColors}) LIKE lower(${search})`,
@@ -61,6 +63,38 @@ export default async function SearchPage({
         sql`lower(${magicSingles.backOracleText}) LIKE lower(${search})`,
         sql`lower(${magicSingles.artist}) LIKE lower(${search})`,
         sql`lower(${magicSingles.layout}) LIKE lower(${search})`,
+      ),
+    );
+
+  const magicCardsResults = await db
+    .select()
+    .from(magicCards)
+    .where(
+      or(
+        sql`lower(${magicCards.frontName}) LIKE lower(${search})`,
+        sql`lower(${magicCards.scryfallId}) LIKE lower(${search})`,
+        sql`lower(${magicCards.rarity}) LIKE lower(${search})`,
+
+        // ⭐ REAL DFC DETECTION
+        isDFC
+          ? sql`${magicCards.backImageSmall} IS NOT NULL`
+          : sql`lower(${magicCards.card_faces}) LIKE lower(${search})`,
+
+        sql`lower(${magicCards.setCode}) LIKE lower(${search})`,
+        sql`lower(${magicCards.setName}) LIKE lower(${search})`,
+        sql`lower(${magicCards.backColors}) LIKE lower(${search})`,
+        sql`lower(${magicCards.colorIdentity}) LIKE lower(${search})`,
+        sql`lower(${magicCards.frontManaCost}) LIKE lower(${search})`,
+        sql`lower(${magicCards.backManaCost}) LIKE lower(${search})`,
+        sql`lower(${magicCards.cmc}) LIKE lower(${search})`,
+        sql`lower(${magicCards.frontPower}) LIKE lower(${search})`,
+        sql`lower(${magicCards.backPower}) LIKE lower(${search})`,
+        sql`lower(${magicCards.frontToughness}) LIKE lower(${search})`,
+        sql`lower(${magicCards.backToughness}) LIKE lower(${search})`,
+        sql`lower(${magicCards.frontOracleText}) LIKE lower(${search})`,
+        sql`lower(${magicCards.backOracleText}) LIKE lower(${search})`,
+        sql`lower(${magicCards.artist}) LIKE lower(${search})`,
+        sql`lower(${magicCards.layout}) LIKE lower(${search})`,
       ),
     );
 
@@ -112,7 +146,7 @@ export default async function SearchPage({
       ),
     );
   const total =
-    magicResults.length + pokemonResults.length + yugiohResults.length;
+    magicResults.length + magicCardsResults.length + pokemonResults.length + yugiohResults.length;
 
   return (
     <div className="min-h-screen bg-[#ffd380] p-4">
@@ -123,16 +157,16 @@ export default async function SearchPage({
         Search Results for {q}
       </h1>
 
-      <p className="text-center mb-6">
-        {total} result{total !== 1 ? "s" : ""}
-      </p>
+        <p className="text-center mb-6">
+          {total} result{total !== 1 ? "s" : ""}
+        </p>
 
       {magicResults.length > 0 && (
         <section className=" bg-[#fbf2c4] mb-8">
-         <div className="bg-black flex justify-center mb-2">
+          <div className="bg-black flex justify-center mb-2">
             <img
               src="/images/Magic-Logo.webp"
-              alt="Yu-Gi-Oh Logo"
+              alt="Magic Logo"
               width={220}
               height={70}
               className="h-auto"
@@ -146,7 +180,7 @@ export default async function SearchPage({
                 className="bg-gray-800 p-3 rounded shadow"
               >
                 <img
-                  src={card.imageSmall || "/placeholder.png"}
+                  src={card.frontImageSmall || "/placeholder.png"}
                   alt={card.frontName}
                   className="w-full rounded"
                 />
@@ -158,13 +192,44 @@ export default async function SearchPage({
           </div>
         </section>
       )}
+      {magicCardsResults.length > 0 && (
+        <section className=" bg-[#fbf2c4] mb-8">
+          <div className="bg-black flex justify-center mb-2">
+            <img
+              src="/images/Magic-Logo.webp"
+              alt="magic Logo"
+              width={220}
+              height={70}
+              className="h-auto"
+            />
+          </div>
+          <div className="card-grid gap-6">
+            {magicCardsResults.map((card) => (
+              <a
+                key={card.id}
+                href={`/magic/cards/${card.id}`}
+                className="bg-gray-800 p-3 rounded shadow"
+              >
+                <img
+                  src={card.frontImageSmall || "/placeholder.png"}
+                  alt={card.frontName}
+                  className="w-full rounded"
+                />
+                <h3 className="text-white text-center font-bold">
+                  {card.frontName}
+                </h3>
+              </a>
+            ))}
+          </div>
+        </section> 
+      )}
 
       {pokemonResults.length > 0 && (
         <section className="mb-8">
           <div className="bg-black flex justify-center mb-2">
             <img
               src="/images/pokemon.webp"
-              alt="Yu-Gi-Oh Logo"
+              alt="Pokemon Logo"
               width={220}
               height={70}
               className="h-auto"

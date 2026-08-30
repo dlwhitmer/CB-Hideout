@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MagicSingle } from "../../../../../lib/db/schema/magic";
+import { MagicSingle } from "../../../../../lib/db/schema/magic_singles";
 import BackButton from "../../../../backButton";
 
 type Props = {

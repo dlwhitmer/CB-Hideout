@@ -2,14 +2,14 @@ import { db } from "../../../../../lib/db/db";
 import {
   yugiohSingles,
   yugiohPrintings,
-} from "../../../../../lib/db/schema/yugioh";
+} from "../../../../../lib/db/schema/yugioh_singles";
 import { eq } from "drizzle-orm";
 import {
   mapYugiohSingleToDB,
   mapYugiohPrintingsToDB,
-} from "../../../../../lib/mappers/yugioh";
-import { yugiohSets } from "../../../../../lib/db/schema/yugioh";
-import { mapYugiohSetToDB } from "../../../../../lib/mappers/yugioh";
+} from "../../../../../lib/mappers/yugioh_singles";
+import { yugiohSets } from "../../../../../lib/db/schema/yugioh_singles";
+import { mapYugiohSetToDB } from "../../../../../lib/mappers/yugioh_singles";
 
 export async function POST(req: Request) {
   try {

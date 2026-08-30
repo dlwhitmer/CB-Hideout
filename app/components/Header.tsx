@@ -81,7 +81,7 @@ export default function Header() {
 
       {/* SECOND ROW: Horizontal Navbar */}
       {/* SECOND ROW: Horizontal Navbar */}
-      <div className="hidden lg:block w-full bg-black/80 border-t border-white/10">
+      <div className="hidden lg:block w-full bg-black/80 border-t  border-white/10">
         <nav className="max-w-7xl mx-auto flex items-center gap-8 px-4 py-2 text-white text-sm font-medium overflow-visible whitespace-nowrap">
           {/* MAGIC DROPDOWN */}
           <div className="relative group inline-block">
@@ -93,11 +93,11 @@ export default function Header() {
             {/* Dropdown */}
             <div className="absolute left-0 hidden group-hover:block bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg z-[9999] w-48">
               <Link
-                href="/magic/singles"
+                href="/magic/cards"
                 onClick={() => setMobileOpen(false)}
                 className="block px-4 py-2 hover:bg-white/10"
               >
-                Single Cards
+              Cards
               </Link>
               <Link
                 href="/magic/packs"
@@ -126,7 +126,7 @@ export default function Header() {
             {/* Dropdown */}
             <div className="absolute left-0 hidden group-hover:block bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg z-[9999] w-48">
               <Link
-                href="/pokemon/singles"
+                href="/pokemon/cards"
                 className="block px-4 py-2 hover:bg-white/10"
               >
                 Single Cards
@@ -202,10 +202,10 @@ export default function Header() {
 
               <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
                 <Link
-                  href="/magic/singles"
+                  href="/magic/cards"
                   onClick={() => setMobileOpen(false)}
                 >
-                  Single Cards
+                  Cards
                 </Link>
                 <Link href="/magic/packs" onClick={() => setMobileOpen(false)}>
                   Packs
@@ -225,7 +225,7 @@ export default function Header() {
                   href="/pokemon/singles"
                   onClick={() => setMobileOpen(false)}
                 >
-                  Single Cards
+                  Cards
                 </Link>
                 <Link
                   href="/pokemon/packs"

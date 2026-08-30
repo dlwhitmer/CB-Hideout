@@ -1,10 +1,13 @@
 import { db } from "../../../../../lib/db/db";
-import { magicSingles } from "../../../../../lib/db/schema/magic";
+import { magicSingles } from "../../../../../lib/db/schema/magic_singles";
 import { eq } from "drizzle-orm";
 
-export async function GET(_: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _: Request,
+  ctx: { params: Promise<{ id: string }> },
+) {
   const { id } = await ctx.params;
-  console.log("Pokemon Id {id}")
+  console.log("Pokemon Id {id}");
 
   const row = await db
     .select()
@@ -42,10 +45,7 @@ export async function DELETE(req, ctx) {
   }
 
   // If quantity is 1, delete the row
-  await db
-    .delete(magicSingles)
-    .where(eq(magicSingles.id, Number(id)));
+  await db.delete(magicSingles).where(eq(magicSingles.id, Number(id)));
 
   return Response.json({ success: true });
 }
-

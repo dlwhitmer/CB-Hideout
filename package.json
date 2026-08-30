@@ -1,21 +1,25 @@
 {
   "name": "hideout",
   "version": "0.1.0",
+
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
-    "@tursodatabase/database": "^0.6.1",
+    "@tursodatabase/database": "^0.7.2",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.10.0",
     "dotenv": "^17.4.2",
-    "drizzle-orm": "^0.45.2",
+    "drizzle-orm": "^1.0.0-rc.4",
     "next": "16.2.6",
     "postcss-nesting": "^14.0.1",
     "react": "19.2.4",
@@ -35,7 +39,7 @@
     "@types/sqlite3": "^3.1.11",
     "autoprefixer": "^10.5.2",
     "babel-plugin-react-compiler": "1.0.0",
-    "drizzle-kit": "^0.31.10",
+    "drizzle-kit": "^1.0.0-rc.5-ab785fc",
     "eslint": "^9.39.4",
     "eslint-config-next": "16.2.6",
     "postcss": "^8.5.17",

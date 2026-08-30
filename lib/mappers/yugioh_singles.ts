@@ -1,4 +1,4 @@
-import { NewYugiohSingle, NewYugiohPrinting, NewYugiohSet } from "../db/schema";
+import { NewYugiohSingle,NewYugiohPrinting } from "../db/schema";
 
 /* -------------------------------------------------------
    YU‑GI‑OH — SINGLE CARD MAPPER
@@ -52,17 +52,5 @@ export function mapYugiohPrintingsToDB(
     setName: printing?.set_name ?? "Unknown",
     setRarity: printing?.set_rarity,
     marketValue: Number(printing?.set_price ?? 0),
-  };
-}
-
-export function mapYugiohSetToDB(
-  setName: string,
-  setCode: string,
-  tcgDate: string,
-): NewYugiohSet {
-  return {
-    setName,
-    setCode,
-    tcgDate,
   };
 }

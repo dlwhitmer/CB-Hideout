@@ -7,6 +7,14 @@ export const cardboard = localFont({
 
 export const Perfect = localFont({
   src: "../app/fonts/KGPerfectPenmanship.ttf",
-  variable: "--font-cardboard",
+  variable: "--font-perfect",
+});
+export const Squealer = localFont({
+  src: "../app/fonts/Squealer-p3zZ.ttf",
+  variable: "--font-squealer",
+});
+export const SquealerEmbossed = localFont({
+  src: "../app/fonts/SquealerEmbossed-ng64.ttf",
+  variable: "--font-squealerembossed",
 });
 

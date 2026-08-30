@@ -1,18 +1,14 @@
 import { db } from "../../../../../lib/db/db";
-import { magicSingles } from "../../../../../lib/db/schema/magic";
+import { magicCards } from "../../../../../lib/db/schema/magic_cards";
 
 export async function GET() {
   const rows = await db
-    .select({
-      set_code: magicSingles.setCode,
-      set_name: magicSingles.setName,
+    .selectDistinct({
+      setCode: magicCards.setCode,
+      setName: magicCards.setName,
     })
-    .from(magicSingles)
-    .groupBy(
-      magicSingles.setCode,
-      magicSingles.setName
-    )
-    .orderBy(magicSingles.setName);
+    .from(magicCards)
+    .orderBy(magicCards.setName);
 
   return Response.json(rows);
 }
