@@ -238,7 +238,7 @@ export default function Page() {
                         Edit
                       </Link>
 
-                      <DeleteButton yugiohId={p.yugiohId} />
+                      <DeleteButton id={p.id} />
                     </div>
                   </td>
                 </tr>
