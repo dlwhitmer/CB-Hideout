@@ -1,7 +1,7 @@
 import { DetailPageParams } from "../../../../types/route-params";
 import { db } from "../../../../lib/db/db";
 import { eq } from "drizzle-orm";
-import { riftboundCards } from "../../../../lib/db/schema";
+import { riftBoundCards } from "../../../../lib/db/schema";
 import RiftBoundCardDisplayPage from "../../../components/riftbound/detail/riftbounddisplaypage";
 export const dynamic = "force-dynamic";
 export default async function RiftBoundCardsDetailPage({
@@ -12,8 +12,8 @@ export default async function RiftBoundCardsDetailPage({
 
    const result = await db
       .select()
-      .from(riftboundCards)
-      .where(eq(riftboundCards.id, id));
+      .from(riftBoundCards)
+      .where(eq(riftBoundCards.id, id));
   
     const product = result[0];
 

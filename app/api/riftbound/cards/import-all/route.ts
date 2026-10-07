@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../../../lib/db/db";
-import { riftboundCards } from "../../../../../lib/db/schema";
+import { riftBoundCards } from "../../../../../lib/db/schema";
 import { mapRiftBoundCardToDB } from "../../../../../lib/mappers/riftbound_cards";
 
 export async function POST() {
@@ -72,7 +72,7 @@ export async function POST() {
         )} of ${mapped.length}...`
       );
 
-      await db.insert(riftboundCards).values(batch);
+      await db.insert(riftBoundCards).values(batch);
     }
 
     console.log("Riftbound database import complete.");

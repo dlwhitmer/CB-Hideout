@@ -1,5 +1,5 @@
 import { db } from "../../../../../lib/db/db";
-import { riftboundCards } from "../../../../../lib/db/schema";
+import { riftBoundCards } from "../../../../../lib/db/schema";
 import { eq, sql } from "drizzle-orm";
 
 export async function GET(req) {
@@ -17,8 +17,8 @@ export async function GET(req) {
   // Correct COUNT(*) query
   const totalRow = await db
     .select({ count: sql<number>`COUNT(*)` })
-    .from(riftboundCards)
-    .where(eq(riftboundCards.set, setCode))
+    .from(riftBoundCards)
+    .where(eq(riftBoundCards.set, setCode))
     .get();
 
   const total = totalRow.count;
@@ -26,8 +26,8 @@ export async function GET(req) {
   // Fetch paginated cards
   const cards = await db
     .select()
-    .from(riftboundCards)
-    .where(eq(riftboundCards.set, setCode))
+    .from(riftBoundCards)
+    .where(eq(riftBoundCards.set, setCode))
     .limit(pageSize)
     .offset(offset);
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../../../lib/db/db";
-import { riftboundCards } from "../../../../../lib/db/schema";
+import { riftBoundCards } from "../../../../../lib/db/schema";
 import { mapRiftBoundCardToDB } from "../../../../../lib/mappers/riftbound_cards";
 
 export async function POST(_: Request, ctx: { params: Promise<{ id: string }> }) {
@@ -24,7 +24,7 @@ export async function POST(_: Request, ctx: { params: Promise<{ id: string }> })
   const mapped = mapRiftBoundCardToDB(card);
 
   // Insert into DB
-  const inserted = await db.insert(riftboundCards).values(mapped).returning();
+  const inserted = await db.insert(riftBoundCards).values(mapped).returning();
 
   return NextResponse.json({ data: inserted[0] });
 }

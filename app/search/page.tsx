@@ -1,9 +1,9 @@
 import { db } from "../../lib/db/db";
 import { magicCards } from "../../lib/db/schema/magic_cards";
 import { magicSingles } from "../../lib/db/schema/magic_singles";
-import { gundamCards, riftBoundCards } from "../../lib/db/schema";
-import { lorcanaCards } from "../../lib/db/schema";
-import { onePieceCards } from "../../lib/db/schema";
+// import { gundamCards } from "../../lib/db/schema";
+// import { lorcanaCards } from "../../lib/db/schema";
+// import { onePieceCards } from "../../lib/db/schema";
 import { riftBoundCards } from "../../lib/db/schema";
 import { eq, or, sql } from "drizzle-orm";
 import BackButton from "../backButton";
@@ -97,7 +97,7 @@ export default async function SearchPage({
       ),
     );
 
-  const riftboundResults = await db
+  const riftBoundResults = await db
     .select()
     .from(riftBoundCards)
     .where(
@@ -117,7 +117,7 @@ export default async function SearchPage({
 
   
   const total =
-    magicResults.length + magicCardsResults.length + riftboundResults.length;
+    magicResults.length + magicCardsResults.length + riftBoundResults.length;
 
   return (
     <div className="min-h-screen bg-[#ffd380] p-4">
@@ -163,7 +163,7 @@ export default async function SearchPage({
           </div>
         </section>
       )}
-      {riftboundResults.length > 0 && (
+      {riftBoundResults.length > 0 && (
         <section className=" bg-[#fbf2c4] mb-8">
           <div className="bg-black flex justify-center mb-2">
             <img
@@ -175,7 +175,7 @@ export default async function SearchPage({
             />
           </div>
           <div className="card-grid gap-6">
-            {riftboundResults.map((card) => (
+            {riftBoundResults.map((card) => (
               <a
                 key={card.id}
                 href={`/magic/singles/${card.id}`}

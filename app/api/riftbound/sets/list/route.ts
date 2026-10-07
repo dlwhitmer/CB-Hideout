@@ -1,13 +1,13 @@
 import { db } from "../../../../../lib/db/db";
-import{riftboundCards} from "../../../../../lib/db/schema";
+import{riftBoundCards} from "../../../../../lib/db/schema";
 export async function GET() {
   const rows = await db
     .selectDistinct({
-      setCode: riftboundCards.set,
-      setName: riftboundCards.setName,
+      setCode: riftBoundCards.set,
+      setName: riftBoundCards.setName,
     })
-    .from(riftboundCards)
-    .orderBy(riftboundCards.setName);
+    .from(riftBoundCards)
+    .orderBy(riftBoundCards.setName);
 
   return Response.json(rows);
 }
