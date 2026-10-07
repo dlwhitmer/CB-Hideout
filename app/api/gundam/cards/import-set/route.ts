@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       const existing = await db
         .select()
         .from(gundamCards)
-        .where(eq(gundamCards.productId, card.id));
+        .where(eq(gundamCards.id, card.id));
 
       if (existing.length > 0) {
         await db
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     setCode:mapped.setCode,
     setName: mapped.setName,
   })
-  .where(eq(gundamCards.productId, mapped.productId));
+  .where(eq(gundamCards.id, mapped.id));
 
 
         updated++;
