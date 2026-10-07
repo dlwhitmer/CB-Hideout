@@ -23,7 +23,7 @@ export function mapOnePieceCardToDB(
     counterAmount: card.counter_amount,
     attribute: card.attribute,
     dateScraped: card.date_scraped,
-    cardSetImageId: card.card_set_image_id,
+    cardImageId: card.card_image_id,
     cardImage: card.card_image,
   };
 }

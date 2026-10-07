@@ -15,6 +15,7 @@ export * from "./onepiece_singles";
 export * from "./riftbound_singles";
 export * from "./riftbound_sets";
 export * from "./riftbound_cards";
+export * from "./riftbound_prices";
 export * from "./accessory";
 export * from "./cart";
 export * from "./admins";
