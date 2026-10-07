@@ -1,10 +1,10 @@
 import { db } from "../../lib/db/db";
 import { magicCards } from "../../lib/db/schema/magic_cards";
 import { magicSingles } from "../../lib/db/schema/magic_singles";
-import { gundamCards } from "../../lib/db/schema";
+import { gundamCards, riftBoundCards } from "../../lib/db/schema";
 import { lorcanaCards } from "../../lib/db/schema";
 import { onePieceCards } from "../../lib/db/schema";
-import { riftboundCards } from "../../lib/db/schema";
+import { riftBoundCards } from "../../lib/db/schema";
 import { eq, or, sql } from "drizzle-orm";
 import BackButton from "../backButton";
 
@@ -99,19 +99,19 @@ export default async function SearchPage({
 
   const riftboundResults = await db
     .select()
-    .from(riftboundCards)
+    .from(riftBoundCards)
     .where(
       or(
-        sql`lower(${riftboundCards.name}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.riftboundId}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.rarity}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.type}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.energy}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.might}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.power}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.setName}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.supertype}) LIKE lower(${search})`,
-        sql`lower(${riftboundCards.artist}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.name}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.riftboundId}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.rarity}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.type}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.energy}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.might}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.power}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.setName}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.supertype}) LIKE lower(${search})`,
+        sql`lower(${riftBoundCards.artist}) LIKE lower(${search})`,
       ),
     );
 
