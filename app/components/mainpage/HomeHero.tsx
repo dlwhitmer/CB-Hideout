@@ -22,7 +22,7 @@ export default function HomeHero() {
       <img
         src="/images/CBH_Logo.png"
         alt="Card Hideout"
-        className="h-[300px] sm:h-[300px] md:h-[350px] lg:h-[500px] w-auto"
+        className="h-[300px] sm:h-[300px] md:h-[350px] lg:h-[375px] w-auto"
       />
     </div>
   );

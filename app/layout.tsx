@@ -1,6 +1,6 @@
 import "./globals.css";
 import "./app.css";
-import Header from "./components/Header";
+import HeaderServer from "./components/HeaderServer";
 
 export default function RootLayout({
   children,
@@ -10,8 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-screen overflow-x-hidden">
-        <Header />
-
+        <HeaderServer />
         <main>{children}</main>
       </body>
     </html>

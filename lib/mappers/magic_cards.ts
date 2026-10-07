@@ -1,4 +1,4 @@
-import { NewMagicCard } from "../db/schema/magic_cards";
+import { InsertMagicCard} from "../db/schema/magic_cards";
 function parseStat(value: any): number | null {
   if (!value) return null;
   if (typeof value !== "string") return null;
@@ -6,7 +6,7 @@ function parseStat(value: any): number | null {
   return parseInt(value);
 }
 
-export function mapMagicCardsToDB(card: any): NewMagicCard {
+export function mapMagicCardsToDB(card: any): InsertMagicCard {
   const front = card.card_faces?.[0] ?? null;
   const back = card.card_faces?.[1] ?? null;
 
@@ -75,7 +75,6 @@ export function mapMagicCardsToDB(card: any): NewMagicCard {
     imageSmall: frontImageSmall,
     imageNormal: frontImageNormal,
 
-    collectorNumber: card.collector_number ?? null,
     rarity: card.rarity ?? null,
     lang: card.lang ?? null,
 

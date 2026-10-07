@@ -9,17 +9,18 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "images.pokemontcg.io",
+        hostname: "www.optcgapi.com",
         pathname: "/**",
       },
+
       {
         protocol: "https",
-        hostname: "images.ygoprodeck.com",
+        hostname: "www.gundam-gcg.com",
         pathname: "/**",
       },
     ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
 

@@ -1,6 +1,6 @@
 import { db } from "../../../../../lib/db/db";
 import { magicCards } from "../../../../../lib/db/schema/magic_cards";
-import { and, eq, like, sql } from "drizzle-orm";
+import { and, eq, like } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -35,18 +35,18 @@ export async function GET(req: Request) {
 
   // ⭐ ADD THIS — bucket filtering by setCode first letter
 
-
   const where = conditions.length ? and(...conditions) : undefined;
 
   const rows = await db
     .select()
     .from(magicCards)
     .where(where)
-    .orderBy(magicCards.collectorNumber)
+    .orderBy(magicCards.setName)
     .limit(pageSize)
     .offset((page - 1) * pageSize);
 
   const totalCount = await db.select().from(magicCards).where(where);
+  console.log("SET PARAM:", set);
 
   return NextResponse.json({
     data: rows,

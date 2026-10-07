@@ -3,10 +3,10 @@ import DeleteButton from "../DeleteButton";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import BackButton from "../../../backButton";
-import { MagicSingle } from "../../../../lib/db/schema";
+import { InsertMagicSingle } from "../../../../lib/db/schema";
 
 export default function MagicSinglesPage() {
-  const [cards, setCards] = useState<MagicSingle[]>([]);
+  const [cards, setCards] = useState<InsertMagicSingle[]>([]);
   const [total, setTotal] = useState(0);
   const [setFilter, setSetFilter] = useState("");
   const [sets, setSets] = useState([]);
@@ -47,27 +47,12 @@ export default function MagicSinglesPage() {
             Filter by Set:
           </label>
 
-          <select
-            value={setFilter}
-            onChange={(e) => {
-              setSetFilter(e.target.value);
-              setPage(1); // reset pagination when changing sets
-            }}
-            className="bg-white text-black border p-2 rounded"
-          >
-            <option value="">All Sets</option>
-
-            {sets.map((s) => (
-              <option key={s.set_code} value={s.set_code}>
-                {s.set_name}
-              </option>
-            ))}
-          </select>
+    
         </div>
         <div className="flex justify-center mb-2">
           <img
             src="/images/Magic-Logo.webp"
-            alt="Yu-Gi-Oh Logo"
+            alt="Magic Logo"
             width={220}
             height={70}
             className="h-auto"
@@ -94,7 +79,7 @@ export default function MagicSinglesPage() {
               <tr key={card.id} className="admin-tbody">
                 <td className="p-2">
                   <img
-                    src={card.imageSmall || "/placeholder.png"}
+                    src={card.frontImageNormal || "/placeholder.png"}
                     alt={card.frontName}
                     className="w-16 h-auto rounded shadow"
                   />

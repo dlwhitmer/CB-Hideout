@@ -24,7 +24,7 @@ export default function MagicCardImage({
   return (
     <section className="bg-transparent rounded shadow">
       <div className="flex justify-center p-6">
-        <BackButton />
+       <BackButton/>
       </div>
 
       {backImage ? (

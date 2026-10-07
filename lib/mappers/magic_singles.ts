@@ -1,5 +1,6 @@
 import {NewMagicSingle} from "../db/schema/magic_singles";
 
+
 function getFace(card: any, index: number) {
   return card.card_faces?.[index] ?? null;
 }
@@ -104,14 +105,9 @@ export function mapMagicSingleToDB(card: any): NewMagicSingle {
 
     quantity: 1,
 
-    cardCount: card.card_count ?? null,
-
     artist: card.artist ?? null,
 
     releasedAt: card.released_at ?? null,
 
-    updatedAt: card.updated_at ?? null,
-
-    createdAt: null,
   };
 }

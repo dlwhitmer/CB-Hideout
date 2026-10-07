@@ -1,8 +1,8 @@
-import { MagicSingle } from "../../../../../lib/db/schema";
+import { InsertMagicSingle } from "../../../../../lib/db/schema";
 import StatRow from "../../../StatRow";
 
 type Props = {
-  product: MagicSingle;
+  product: InsertMagicSingle;
 };
 
 export default function MagicCardCollector({ product }: Props) {
@@ -17,16 +17,13 @@ export default function MagicCardCollector({ product }: Props) {
       });
 
   return (
-    <section className="stat-section">
-      <h2 className="stat-cat">
+    <section className="bg-[#ffffff]">
+      <h2 className="">
         Collecting Information:
       </h2>
       <div
-        className=" text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] grid grid-cols-1 sm:grid-cols-2
->
-
- gap-1"
-      >
+        className=" bg-[#ffffff] text-[13px] sm:text-[13px] md:text-[16px] lg:text-[18px] grid grid-cols-1 sm:grid-cols-2">
+      
         <StatRow label="Set" value={product.setName} />
         <StatRow label="Set Code" value={product.setCode} />
         <StatRow label="Collector Number" value={product.collectorNumber} />

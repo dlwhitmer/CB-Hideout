@@ -1,8 +1,9 @@
-import { MagicCard} from "../../../../../lib/db/schema/magic_cards";
+import { InsertMagicCard } from "../../../../../lib/db/schema";
 import StatRow from "../../../StatRow";
-import ManaSymbols from "../detail/ManaSymbols";
+import ManaSymbols from "./ManaSymbols";
+
 type Props = {
-  product: MagicCard;
+  product: InsertMagicCard;
   showBack: boolean;
 };
 
@@ -12,19 +13,21 @@ export default function MagicCardsHeader({ product, showBack }: Props) {
   const typeLine = showBack ? product.backTypeLine : product.frontTypeLine;
 
   return (
-    <section className="stat-section">
+    <section className="pb-3">
       <div className="stat-cat">
-        <h2>Card Name:</h2>
-        <div className="card-name">{name}</div>
+        <span>
+          <h2 className="stat-h2">Card Name</h2>
+        </span>
+        <span>
+          <p className="card-name">{name}</p>
+        </span>
       </div>
       <div className="stat-rows">
         <StatRow
-          label="Mana Cost:"
+          label="Mana Cost"
           value={<ManaSymbols manaCost={manaCost ?? ""} />}
         />
-
         <StatRow label="Type Line" value={typeLine} />
-
         <StatRow
           label="Color Identity"
           value={

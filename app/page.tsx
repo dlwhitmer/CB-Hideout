@@ -31,16 +31,30 @@ export default function HomePage() {
 
           <div>
             <img
-              src="/images/pokemon_banner_2.webp"
-              alt="Pokémon"
+              src="/images/lorcana-banner4.webp"
+              alt="Lorcana"
               className="w-full h-auto object-contain"
             />
           </div>
 
           <div>
             <img
-              src="/images/yugioh_banner_2.webp"
-              alt="Yu-Gi-Oh!"
+              src="/images/gundam-banner1.webp"
+              alt="Gundam"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+          <div>
+            <img
+              src="/images/one-piece-banner2.webp"
+              alt="One Piece"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+          <div>
+            <img
+              src="/images/riftbound-banner1.webp"
+              alt="Rift Bound"
               className="w-full h-auto object-contain"
             />
           </div>

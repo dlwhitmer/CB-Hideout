@@ -85,7 +85,16 @@ export default async function MagicCardsPage({ searchParams }) {
   }
 
   return (
-    <div className="min-h-screen bg-[url('/images/bg-23.webp')] bg-no-repeat bg-[length:100%_100%]">
+    <div className="min-h-screen pt-3 bg-[url('/images/bg-13.webp')] bg-no-repeat bg-[length:100%_100%]">
+       <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-[300px] mt-5 mx-auto">
+        <img
+          src="/images/Magic-Logo2.webp"
+          alt="Lorcana Logo"
+          width={220}
+          height={70}
+          className="h-auto"
+        />
+      </div>
       {/* Bucket Buttons */}
       <div className="flex flex-wrap gap-3 justify-center pt-4 ">
         <Link
@@ -126,18 +135,24 @@ export default async function MagicCardsPage({ searchParams }) {
         </Link>
       </div>
 
-      <form className="mb-6 text-center">
-        <div className="w-64 mx-auto">
+      <form className="mb-6 pt-5 text-center">
+        <div className="text-[#ffffff] bg-[#03045e] w-94 mx-auto">
           <select
             name="set"
             defaultValue={set}
-            className=" text-white bg-black border-2 p-2 border-white rounded w-full"
+            className="bg-[#03045e] border-2 p-2  border-white rounded"
           >
-            <option value="">Select a Set</option>
+            <option value=""
+            className="bg-[#03045e] text-[#ffffff] hover:bg-gray-700 hover:text-white"
+            >Select a Set</option>
             {filteredSets.map((s) => (
-              <option key={s.setCode} value={s.setCode}>
+              <option 
+              key={s.setCode} 
+              value={s.setCode}
+              className="bg-[#03045e] text-[#ffffff] hover:bg-gray-700 hover:text-black"
+              >
                 {s.setName}
-              </option>
+              </option> 
             ))}
           </select>
         </div>
@@ -159,7 +174,7 @@ export default async function MagicCardsPage({ searchParams }) {
       {/* Cards Grid */}
       {selectedSetName && (
         <MagicWord>
-          <h2 className="text-[30px] sm:text-[30px] md:text-[40px] lg:text-[50px] text-white  text-center">
+          <h2 className="text-[30px] sm:text-[30px] md:text-[40px] lg:text-[50px] text-white text-center">
             {selectedSetName}
           </h2>
         </MagicWord>

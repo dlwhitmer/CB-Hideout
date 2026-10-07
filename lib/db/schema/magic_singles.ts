@@ -69,15 +69,11 @@ export const magicSingles = sqliteTable("magic_singles", {
 
   quantity: integer("quantity").default(0), 
 
-  cardCount: integer("card_count").notNull(),
-
   artist: text("artist").notNull(),
 
   releasedAt: text("released_at"),
-  updatedAt: text("updated_at"),
-  createdAt: text("created_at").notNull().default(`CURRENT_TIMESTAMP`),
+ 
 });
 
-
-export type MagicSingle = InferSelectModel<typeof magicSingles>;
-export type NewMagicSingle = InferInsertModel<typeof magicSingles>;
+export type SelectMagicSingle = InferSelectModel<typeof magicSingles>;
+export type InsertMagicSingle = InferInsertModel<typeof magicSingles>;

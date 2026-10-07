@@ -9,12 +9,9 @@ type Props = {
 export default function StatRow({
   label,
   value,
-  align = "left",
+  align = "center",
 }: Props) {
-
-  if (value === null || value === undefined || value === "") {
-    return null;
-  }
+  if (!value) return null;
 
   const alignment = {
     left: "text-left",
@@ -23,13 +20,14 @@ export default function StatRow({
   };
 
   return (
-    <p className={alignment[align]}>
-      <span className="text-[var(--dplbltext)] pl-10 font-semibold">
+    <div className={`grid grid-cols-[1fr_3fr] gap-x-20 ${alignment[align]}`}>
+      <div className="text-[var(--dplbltext)] font-semibold">
         {label}
-      </span>{" "}
-      <span className="text-[var(--dpvtext)] font-semibold">
+      </div>
+
+      <div className="text-[var(--dpvtext)] font-semibold leading-relaxed">
         {value}
-      </span>
-    </p>
+      </div>
+    </div>
   );
 }

@@ -62,7 +62,7 @@ export const magicCards = sqliteTable("magic_cards", {
   imageNormal: text("image_normal"),
 
   // Store info
-  collectorNumber: text("collector_number"),
+
   rarity: text("rarity"),
 
   totalCards: integer("total_cards"),
@@ -72,5 +72,5 @@ export const magicCards = sqliteTable("magic_cards", {
   createdAt: text("created_at").notNull().default(`CURRENT_TIMESTAMP`),
 });
 
-export type MagicCard = InferSelectModel<typeof magicCards>;
-export type NewMagicCard = InferInsertModel<typeof magicCards>;
+export type SelectMagicCard = InferSelectModel<typeof magicCards>;
+export type InsertMagicCard = InferInsertModel<typeof magicCards>;

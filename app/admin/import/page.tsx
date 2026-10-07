@@ -7,26 +7,49 @@ export default function UniversalImportPage() {
   const [game, setGame] = useState("magic");
   const [type, setType] = useState("singles");
   const [id, setId] = useState("");
-  const [packName, setPackName] = useState("");
   const [setCode, setSetCode] = useState("");
   const router = useRouter(); // ⭐ THIS FIXES THE REDLINE
 
   const handleSubmit = async () => {
-    const url =
-      type === "cards"
-        ? "/api/magic/cards/import-all"
-        : `/api/${game}/${type}/import`;
+    let url = "";
 
-    const body =
-      type === "singles"
-        ? { id }
-        : type === "packs"
-          ? { packName }
-          : type === "cards"
-            ? {} // no body needed
-            : game === "yugioh"
-              ? { setName: setCode }
-              : { setCode };
+    if (type === "cards") {
+      url = `/api/${game}/cards/import-all`;
+    } else if (type === "import-set") {
+      url = `/api/${game}/cards/import-set`;
+    } else if (type === "booster") {
+      url = `/api/${game}/cards/import-all`;
+    } else if (type === "promos") {
+      url = `/api/${game}/cards/promos`;
+    } else if (type === "don") {
+      url = `/api/${game}/cards/don`;
+    } else if (type === "st") {
+      url = `/api/${game}/cards/starter`;
+    } else if (type === "sets") {
+      url = `/api/${game}/sets/import`;
+    } else {
+      url = `/api/${game}/${type}/import`;
+    }
+
+    let body = {};
+
+    if (type === "singles") {
+      body = { id };
+    } else if (type === "cards") {
+      body = {}; // no body needed
+    } else if (type === "import-set") {
+      if (game === "gundam") {
+        body = { setName: id };
+      } else if (game === "lorcana") {
+        body = { setId: setCode };
+      } else if (game === "onepiece") {
+        body = { setId: setCode };
+      } else if (game === "riftbound") {
+        body = { setId: setCode }; // ✔ FIXED
+      } else {
+        body = { setCode: setCode };
+      }
+    }
 
     const res = await fetch(url, {
       method: "POST",
@@ -41,21 +64,24 @@ export default function UniversalImportPage() {
   const getPlaceholder = () => {
     if (type === "cards") return ""; // no input needed
 
-    if (type === "packs") return "Pack name";
-
     if (type === "sets" || type === "singles") {
       switch (game) {
         case "magic":
-          return "Set Name (example: Modern Horizons 3)";
+          return "Scryfall Id";
         case "pokemon":
           return "Set Code (example: sv2)";
-        case "yugioh":
-          return "Set Name";
+        case "gundam":
+          return "Set Code";
+        case "lorcana":
+          return "SetId";
+        case "onepiece":
+          return "SetId";
+        case "riftbound":
+          return "SetId";
         default:
           return "";
       }
     }
-
     return "";
   };
 
@@ -73,8 +99,10 @@ export default function UniversalImportPage() {
         className="text-white bg-gray-800 p-2 text-center rounded w-[250px]"
       >
         <option value="magic">Magic</option>
-        <option value="pokemon">Pokémon</option>
-        <option value="yugioh">Yu‑Gi‑Oh</option>
+        <option value="lorcana">Lorcana</option>
+        <option value="gundam">Gundam</option>
+        <option value="onepiece">Onepiece</option>
+        <option value="riftbound">RiftBound</option>
       </select>
 
       {/* IMPORT TYPE SELECT */}
@@ -92,6 +120,11 @@ export default function UniversalImportPage() {
         <option value="singles">Singles</option>
         <option value="cards">Cards</option>
         <option value="sets">Sets</option>
+        <option value="import-set">One Set</option>
+        <option value="booster">Booster Cards</option>
+        <option value="st">Starter Deck Cards</option>
+        <option value="promos">One Piece Promo Cards</option>
+        <option value="don">Don!! Cards</option>
       </select>
 
       <div className="space-y-4">
@@ -100,37 +133,35 @@ export default function UniversalImportPage() {
           <input
             type="text"
             placeholder={getPlaceholder()}
-            value={setCode}
+            value={id}
             onChange={(e) => setId(e.target.value)}
             className="text-white bg-gray-800 p-2  text-center rounded w-[250px] placeholder:text-white placeholder:font-medium"
           />
         )}
 
-        {/* PACKS FORM */}
-        {type === "packs" && (
-          <>
-            <input
-              type="text"
-              placeholder="Pack Name"
-              value={packName}
-              onChange={(e) => setPackName(e.target.value)}
-              className="text-white bg-gray-800 p-2  text-center rounded w-[250px] placeholder:text-white placeholder:font-medium"
-            />
-          </>
+        {/* ONE SET IMPORT */}
+        {type === "import-set" && (
+          <input
+            type="text"
+            placeholder={getPlaceholder()} // optional, if you want dynamic text
+            value={setCode}
+            onChange={(e) => setSetCode(e.target.value)}
+            className="text-white bg-gray-800 p-2  text-center rounded w-[250px] placeholder:text-white placeholder:font-medium"
+          />
         )}
 
         {/* SETS FORM */}
-        {type === "sets" && (
-          <div className="text-white mb-4">
-            <p className="mb-2 font-medium">
-              Import all{" "}
-              {game === "magic"
-                ? "Magic: The Gathering"
-                : game === "pokemon"
-                  ? "Pokémon"
-                  : "Yu‑Gi‑Oh"}{" "}
-              sets
-            </p>
+        {type === "sets" && game !== "lorcana" && game !== "onepiece" && game !== "riftbound" &&(
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-black">
+              Enter set code
+            </label>
+            <input
+              type="text"
+              value={setCode}
+              onChange={(e) => setSetCode(e.target.value)}
+              className="w-full p-2 border rounded"
+            />
           </div>
         )}
 

@@ -30,7 +30,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
-      <div className="w-[300px] bg-gray-900 p-8 rounded-lg shadow-lg">
+      <div className="w-75 bg-gray-900 p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">

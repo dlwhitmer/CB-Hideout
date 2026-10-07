@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "moduleResolution": "bundler",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -10,10 +13,10 @@
     "incremental": true,
     "module": "esnext",
     "esModuleInterop": true,
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-
     "plugins": [
       {
         "name": "next"
@@ -26,8 +29,9 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "**/*.ts",
-    "**/*.tsx",
-    "next.config.js"
+    "**/*.tsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

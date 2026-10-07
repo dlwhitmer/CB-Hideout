@@ -1,58 +1,142 @@
 "use client";
+import DeleteButton from "../DeleteButton";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import BackButton from "../../../backButton";
+import { MagicCard } from "../../../../lib/db/schema";
 
-import { useState } from "react";
+export default function MagicCardsPage() {
+  const [cards, setCards] = useState<MagicCard[]>([]);
+  const [total, setTotal] = useState(0);
+  const [setFilter, setSetFilter] = useState("");
+  const [sets, setSets] = useState([]);
 
-export default function AddMagicCardsPage() {
-  const [form, setForm] = useState({
-    name: "",
-    setName: "",
-    rarity: "",
-    price: 0,
-  });
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const totalPages = Math.ceil(total / limit);
 
-    await fetch("/api/magic/cards", {
-      method: "POST",
-      body: JSON.stringify(form),
-    });
+  useEffect(() => {
+    async function loadSets() {
+      const res = await fetch("/api/magic/sets/list");
+      const data = await res.json();
+      setSets(data);
+    }
+    loadSets();
+  }, []);
 
-    window.location.href = "/admin/magic/cards";
-  }
+  useEffect(() => {
+    async function load() {
+      const res = await fetch(
+        `/api/magic/cards?page=${page}&limit=${limit}&set=${setFilter}`,
+      );
+      const data = await res.json();
+
+      setCards(data.rows);
+      setTotal(data.total);
+    }
+
+    load();
+  }, [page, setFilter]);
 
   return (
-    <div>
-      <h1>Add Magic Single</h1>
+    <section className=" bg-[#ffd380] p-6">
+      <div className=" min-h-screen mx-auto w-full text-black bg-[#ffd380] font-bold text-center ">
+        <div className="mb-4">
+          <label className="mr-2 text-[18px] font-semibold">
+            Filter by Set:
+          </label>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Name"
-          value={form.name}
-          onChange={e => setForm({ ...form, name: e.target.value })}
-        />
+    
+        </div>
+        <div className="flex justify-center mb-2">
+          <img
+            src="/images/Magic-Logo.webp"
+            alt="Magic Logo"
+            width={220}
+            height={70}
+            className="h-auto"
+          />
+        </div>
+        <div className="flex justify-center p-3">
+          <BackButton />
+        </div>
 
-        <input
-          placeholder="Set Name"
-          value={form.setName}
-          onChange={e => setForm({ ...form, setName: e.target.value })}
-        />
+        <table className="admin-table">
+          <thead>
+            <tr className="bg-[#f8cc1b] text-black">
+              <th className="px-3 py-2 text-center">Image</th>
+              <th className="px-3 py-2 text-center">Scryfall ID</th>
+              <th className="px-3 py-2 text-center">Name</th>
+              <th className="px-3 py-2 text-center">Price</th>
+              <th className="px-3 py-2 text-center">Quantity</th>
+              <th className="px-3 py-2 text-center">Actions</th>
+            </tr>
+          </thead>
 
-        <input
-          placeholder="Rarity"
-          value={form.rarity}
-          onChange={e => setForm({ ...form, rarity: e.target.value })}
-        />
+          <tbody>
+            {cards.map((card) => (
+              <tr key={card.id} className="admin-tbody">
+                <td className="p-2">
+                  <img
+                    src={card.frontImageNormal || "/placeholder.png"}
+                    alt={card.frontName}
+                    className="w-16 h-auto rounded shadow"
+                  />
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  {card.scryfallId}
+                </td>
+                {/* <td className="px-3 py-2 text-center font-bold">
+                  {card.frontName}
+                </td> */}
+                {/* <td className="px-3 py-2 text-center font-bold">
+                  ${card.price}
+                </td> */}
+                {/* <td className="px-3 py-2 text-center font-bold">
+                  {card.quantity}
+                </td> */}
 
-        <input
-          placeholder="Price"
-          type="number"
-          value={form.price}
-          onChange={e => setForm({ ...form, price: Number(e.target.value) })}
-        />
+                <td className="px-3 py-2 whitespace-nowrap">
+                  <div className="flex justify-center gap-1">
+                    <Link
+                      href={`/admin/magic/cards/${card.id}/edit`}
+                      className="bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </Link>
 
-        <button type="submit">Add Card</button>
-      </form>
-    </div>
+                    <DeleteButton id={card.id} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* PAGINATION */}
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Previous
+          </button>
+
+          <span className="self-center">
+            Page {page} / {totalPages || 1}
+          </span>
+
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={page >= totalPages}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }

@@ -1,17 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import MagicCardImage from "./magiccardimage";
+import MagicCardsImage from "./magiccardsimage";
 import MagicCardsHeader from "./magiccardsheader";
-import { MagicCard } from "../../../../../lib/db/schema/magic_cards";
+import { InsertMagicCard } from "../../../../../lib/db/schema";
 import MagicCardsRules from "./magiccardsrules";
-import MagicCardsInformation from "./magicCardsInformation"
+import MagicCardsInformation from "./magicCardsInformation";
 import MagicCardsCollector from "./magiccardscollector";
 
-
-
 type Props = {
-  product: MagicCard;
+  product: InsertMagicCard;
 };
 
 export default function MagicCardsDisplay({ product }: Props) {
@@ -19,9 +17,8 @@ export default function MagicCardsDisplay({ product }: Props) {
 
   return (
     <div className="image-top">
-      {/* IMAGE BLOCK */}
       <div className="display-image">
-        <MagicCardImage
+        <MagicCardsImage
           product={product}
           showBack={showBack}
           setShowBack={setShowBack}
@@ -30,11 +27,9 @@ export default function MagicCardsDisplay({ product }: Props) {
 
       <div className="display-stats">
         <MagicCardsHeader product={product} showBack={showBack} />
-       <MagicCardsRules product={product} showBack={showBack} />
+        <MagicCardsRules product={product} showBack={showBack} />
         <MagicCardsInformation product={product} showBack={showBack} />
         <MagicCardsCollector product={product} />
-   
- 
       </div>
     </div>
   );

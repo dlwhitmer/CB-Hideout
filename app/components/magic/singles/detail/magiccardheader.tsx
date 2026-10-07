@@ -1,8 +1,8 @@
-import { MagicSingle } from "../../../../../lib/db/schema";
+import { InsertMagicSingle } from "../../../../../lib/db/schema";
 import StatRow from "../../../StatRow";
 import ManaSymbols from "./ManaSymbols";
 type Props = {
-  product: MagicSingle;
+  product: InsertMagicSingle;
   showBack: boolean;
 };
 

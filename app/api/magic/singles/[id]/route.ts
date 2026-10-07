@@ -7,7 +7,7 @@ export async function GET(
   ctx: { params: Promise<{ id: string }> },
 ) {
   const { id } = await ctx.params;
-  console.log("Pokemon Id {id}");
+  console.log("Scryfall Id {id}");
 
   const row = await db
     .select()
@@ -16,6 +16,18 @@ export async function GET(
 
   return Response.json({ data: row[0] });
 }
+
+export async function POST(req: Request) {
+  const body = await req.json();
+
+  const inserted = await db
+    .insert(magicSingles)
+    .values(body)
+    .returning();
+
+  return Response.json({ data: inserted[0] });
+}
+
 
 export async function DELETE(req, ctx) {
   const { id } = await ctx.params;

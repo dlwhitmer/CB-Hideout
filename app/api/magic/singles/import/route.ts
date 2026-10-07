@@ -5,68 +5,51 @@ import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
   try {
-    const { setCode } = await req.json();
+    const { id } = await req.json();
 
-    const res = await fetch(
-      `https://api.scryfall.com/cards/search?q=e:${setCode}`,
-      {
-        headers: {
-          "User-Agent": "hideout-app/1.0",
-        },
-      },
-    );
+    const res = await fetch(`https://api.scryfall.com/cards/${id}`, {
+      headers: { "User-Agent": "hideout-app/1.0" },
+    });
 
-    const data = await res.json();
-    console.log("MAGIC IMPORT SET:", setCode);
-    console.log("SCRYFALL OBJECT:", data.object);
-    console.log("NUMBER OF CARDS:", data.data?.length);
 
-    if (data.object === "error") {
-      return Response.json({ error: data.details }, { status: 400 });
+
+    const card = await res.json();
+    console.log("SCRYFALL RAW RESPONSE:", card); // ← ADD THIS
+
+    if (card.object === "error") {
+      return Response.json({ error: card.details }, { status: 400 });
     }
 
-    const cards = data.data;
+    const mapped = mapMagicSingleToDB(card);
+    console.log("MAPPED SINGLE:", mapped);
 
-    let inserted = 0;
-    let updated = 0;
+    const existing = await db
+      .select()
+      .from(magicSingles)
+      .where(eq(magicSingles.scryfallId, card.id));
 
-    for (const card of cards) {
-      console.log("CARD BEFORE MAP:", {
-        name: card.name,
-        loyalty: card.loyalty,
-      });
-
-      const mapped = mapMagicSingleToDB(card);
-
-      const existing = await db
-        .select()
-        .from(magicSingles)
+    if (existing.length > 0) {
+      await db
+        .update(magicSingles)
+        .set({ quantity: existing[0].quantity + 1 })
         .where(eq(magicSingles.scryfallId, card.id));
-      if (existing.length > 0) {
-        await db
-          .update(magicSingles)
-          .set({
-            quantity: existing[0].quantity + 1,
-          })
-          .where(eq(magicSingles.scryfallId, card.id));
 
-        updated++;
-        continue;
-      }
-
-      await db.insert(magicSingles).values(mapped);
-
-      inserted++;
+      return Response.json({
+        success: true,
+        inserted: 0,
+        updated: 1,
+      });
     }
+
+    await db.insert(magicSingles).values(mapped);
 
     return Response.json({
       success: true,
-      inserted,
-      updated,
+      inserted: 1,
+      updated: 0,
     });
   } catch (err: any) {
     console.error("MAGIC SINGLE IMPORT ERROR:", err);
-
     return Response.json({ error: err.message }, { status: 500 });
   }
 }

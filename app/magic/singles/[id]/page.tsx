@@ -1,4 +1,3 @@
-// ❌ REMOVE "use client"
 import { DetailPageParams } from "../../../../types/route-params";
 import { db } from "../../../../lib/db/db";
 import { magicSingles } from "../../../../lib/db/schema/magic_singles";
@@ -16,7 +15,7 @@ export default async function ProductDetailPage({ params }: DetailPageParams) {
     .from(magicSingles)
     .where(eq(magicSingles.id, id));
 
-  const product = result[0];
+  const product = JSON.parse(JSON.stringify(result[0])); // ⭐ FIX
 
   return (
     <main className="w-max-full mx-auto space-y-10">

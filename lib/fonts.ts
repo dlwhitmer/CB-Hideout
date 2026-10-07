@@ -4,6 +4,15 @@ export const cardboard = localFont({
   src: "../app/fonts/MagicTheGathering.ttf",
   variable: "--font-cardboard",
 });
+export const MedIeval = localFont({
+  src: "../app/fonts/MedievalSharp-BoldOblique.ttf",
+  variable: "--font-medieval",
+});
+
+export const Alice = localFont({
+  src: "../app/fonts/Aliciawonderland-ZoM8.ttf",
+  variable: "--font-alice",
+});
 
 export const Perfect = localFont({
   src: "../app/fonts/KGPerfectPenmanship.ttf",
