@@ -2,11 +2,11 @@
 import BackButton from "../../../../../backButton";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { MagicSingle } from "../../../../../../lib/db/schema/magic_singles";
+import { InsertMagicSingle } from "../../../../../../lib/db/schema";
 
 export default function EditMagicSinglePage() {
   const { id } = useParams();
-  const [form, setForm] = useState<MagicSingle | null>(null);
+  const [form, setForm] = useState<InsertMagicSingle | null>(null);
 
   console.log("EDIT PAGE PARAM ID:", id);
 
