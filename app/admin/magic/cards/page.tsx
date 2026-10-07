@@ -3,10 +3,10 @@ import DeleteButton from "../DeleteButton";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import BackButton from "../../../backButton";
-import { MagicCard } from "../../../../lib/db/schema";
+import { InsertMagicCard} from "../../../../lib/db/schema";
 
 export default function MagicCardsPage() {
-  const [cards, setCards] = useState<MagicCard[]>([]);
+  const [cards, setCards] = useState<InsertMagicCard[]>([]);
   const [total, setTotal] = useState(0);
   const [setFilter, setSetFilter] = useState("");
   const [sets, setSets] = useState([]);
