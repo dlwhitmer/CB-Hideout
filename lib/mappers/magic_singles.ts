@@ -1,11 +1,11 @@
-import {NewMagicSingle} from "../db/schema/magic_singles";
+import {InsertMagicSingle} from "../db/schema/magic_singles";
 
 
 function getFace(card: any, index: number) {
   return card.card_faces?.[index] ?? null;
 }
 
-export function mapMagicSingleToDB(card: any): NewMagicSingle {
+export function mapMagicSingleToDB(card: any): InsertMagicSingle {
   const front = getFace(card, 0);
   const back = getFace(card, 1);
 
