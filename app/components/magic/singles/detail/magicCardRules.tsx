@@ -1,10 +1,11 @@
-import { MagicSingle } from "../../../../../lib/db/schema";
+import { InsertMagicSingle } from "../../../../../lib/db/schema";
 import { getActiveFace } from "../../../../../lib/magic/cardfaces";
 import StatRow from "../../../StatRow";
 
 type Props = {
-  product: MagicSingle;
-  showBack: boolean;
+  product: InsertMagicSingle;
+  showBack:boolean
+  
 };
 
 export default function MagicCardRules({ product, showBack }: Props) {

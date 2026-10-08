@@ -1,16 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
+import { getCardsActiveFace } from "../../../../../lib/magic/cardscardfaces";
 import { InsertMagicCard } from "../../../../../lib/db/schema";
 import BackButton from "../../../../backButton";
 
 type Props = {
   product: InsertMagicCard;
+  showBack: boolean;
+  setShowBack: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function MagicCardsImage({ product }: Props) {
+export default function MagicCardsImage({
+  product,
+  // showBack,
+  // setShowBack,
+}: Props) {
   const [isZoomed, setIsZoomed] = useState(false);
-
   const frontImage =
     product.frontImageNormal || product.imageNormal || "/placeholder.png";
 

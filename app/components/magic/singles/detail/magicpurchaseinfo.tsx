@@ -1,8 +1,8 @@
 import StatRow from "../../../StatRow";
-import { MagicSingle } from "../../../../../lib/db/schema";
+import { InsertMagicSingle } from "../../../../../lib/db/schema";
 
 type Props = {
-  product: MagicSingle;
+  product: InsertMagicSingle;
 };
 
 function formatPrice(price: number | string | null | undefined) {

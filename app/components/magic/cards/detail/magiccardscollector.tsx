@@ -1,5 +1,6 @@
 import { InsertMagicCard } from "../../../../../lib/db/schema";
 import StatRow from "../../../StatRow";
+import { getCardsActiveFace } from "../../../../../lib/magic/cardscardfaces";
 
 type Props = {
   product: InsertMagicCard;

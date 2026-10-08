@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import MagicCardImage from "./magiccardimage";
 import MagicCardHeader from "./magiccardheader";
-import { MagicSingle } from "../../../../../lib/db/schema/magic_singles";
+import { InsertMagicSingle } from "../../../../../lib/db/schema";
 import MagicCardCollector from "./magiccardcollector";
 import MagicCardRules from "./magicCardRules";
 import MagicCardPrices from "./magiccardprices";
@@ -11,7 +11,9 @@ import MagicCardInformation from "./magiccardinfo";
 import MagicPurchaseInfo from "./magicpurchaseinfo";
 
 type Props = {
-  product: MagicSingle;
+  product: InsertMagicSingle;
+  showBack:boolean
+  
 };
 
 export default function MagicDisplay({ product }: Props) {

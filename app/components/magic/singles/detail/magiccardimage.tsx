@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { MagicSingle } from "../../../../../lib/db/schema/magic_singles";
+import { InsertMagicSingle } from "../../../../../lib/db/schema/magic_singles";
 import BackButton from "../../../../backButton";
 
 type Props = {
-  product: MagicSingle;
+  product: InsertMagicSingle;
   showBack: boolean;
   setShowBack: (value: boolean) => void;
 };

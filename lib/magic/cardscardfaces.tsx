@@ -1,8 +1,8 @@
 // cardFaces.ts
 
-import { MagicCard } from "../db/schema/magic_cards";
+import { InsertMagicCard } from "../db/schema/magic_cards";
 
-export function getFaces(product: MagicCard) {
+export function getFaces(product: InsertMagicCard) {
   if (!product.card_faces) {
     return null;
   }
@@ -10,7 +10,7 @@ export function getFaces(product: MagicCard) {
   return JSON.parse(product.card_faces);
 }
 
-export function getFrontFace(product: MagicCard) {
+export function getFrontFace(product: InsertMagicCard) {
   const faces = getFaces(product);
 
   // Normal card
@@ -22,7 +22,7 @@ export function getFrontFace(product: MagicCard) {
   return faces[0];
 }
 
-export function getCardsBackFace(product: MagicCard) {
+export function getCardsBackFace(product: InsertMagicCard) {
   const faces = getFaces(product);
 
   if (!faces || faces.length < 2) {
@@ -32,12 +32,12 @@ export function getCardsBackFace(product: MagicCard) {
   return faces[1];
 }
 
-export function isDoubleFaced(product: MagicCard) {
+export function isDoubleFaced(product: InsertMagicCard) {
   const faces = getFaces(product);
 
   return faces?.length === 2;
 }
 
-export function getCardsActiveFace(product: MagicCard, showBack: boolean) {
+export function getCardsActiveFace(product: InsertMagicCard, showBack: boolean) {
   return showBack;
 }

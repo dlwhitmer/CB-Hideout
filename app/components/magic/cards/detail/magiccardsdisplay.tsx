@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import MagicCardsImage from "./magiccardsimage";
+
+import MagicCardsImage from "../../cards/detail/magiccardsimage";
 import MagicCardsHeader from "./magiccardsheader";
 import { InsertMagicCard } from "../../../../../lib/db/schema";
 import MagicCardsRules from "./magiccardsrules";
@@ -10,9 +11,12 @@ import MagicCardsCollector from "./magiccardscollector";
 
 type Props = {
   product: InsertMagicCard;
+  showBack:boolean
+  setShowBack: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MagicCardsDisplay({ product }: Props) {
+
   const [showBack, setShowBack] = useState(false);
 
   return (
