@@ -5,6 +5,7 @@ import { mapOnePieceCardToDB } from "../../../../../lib/mappers/onepiece_cards";
 
 export async function POST(_: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;   // id = "ST01-016"
+ 
 
   // Fetch ALL cards
   const res = await fetch("https://www.optcgapi.com/api/allSTCards/", {
@@ -31,7 +32,7 @@ export async function POST(_: Request, ctx: { params: Promise<{ id: string }> })
   }
 
   // Map card to DB format
-  const mapped = mapOnePieceCardToDB(card);
+  const mapped = mapOnePieceCardToDB(card, "ST");
 
   // Insert into DB
   const inserted = await db.insert(onePieceCards).values(mapped).returning();
