@@ -1,6 +1,6 @@
-import { InsertOnePieceSingle } from "../db/schema/onepiece_singles";
+import { InsertonePieceSingle } from "../db/schema/onepiece_singles";
 
-export function mapOnePieceSingleToDB(single: any): InsertOnePieceSingle {
+export function mapOnePieceSingleToDB(single: any): InsertonePieceSingle {
   return {
     inventoryPrice: single.inventory_price,
     marketPrice: single.market_price,
@@ -9,7 +9,7 @@ export function mapOnePieceSingleToDB(single: any): InsertOnePieceSingle {
     cardText: single.card_text,
     setId: single.set_id,
     rarity: single.rarity,
-    cardSingleId: single.card_single_id,
+    cardSetId: single.card_set_id,
     cardColor: single.card_color,
     cardType: single.card_type,
     life: single.life,
