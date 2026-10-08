@@ -16,9 +16,10 @@ export default function HomePage() {
   };
 
   return (
-    <main>
-      <div className="relative min-h-screen bg-[url('/images/arcane-bg.webp')] bg-cover bg-center bg-no-repeat">
-        <HomeHero />
+    <main className="relative min-h-screen bg-[url('/images/arcane-bg.webp')] bg-cover bg-center bg-no-repeat p-2 sm:p-4 md:p-6">
+       <HomeHero />
+      <div className="max-w-[95%] sm:max-w-[600px] md:max-w-[900px] mx-auto space-y-8">
+       
 
         <Slider {...settings}>
           <div>

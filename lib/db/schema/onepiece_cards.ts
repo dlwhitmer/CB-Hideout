@@ -7,7 +7,7 @@ export const onePieceCards = sqliteTable("onepiece_cards", {
   marketPrice: real("market_price").notNull(),
   cardName: text("card_name").notNull(),
   setName: text("set_name").notNull(),
-  cardText: text("card_text").notNull(),
+  cardText: text("card_text"),
   setId: text("set_id").notNull(),
   rarity: text("rarity").notNull(),
   cardSetId: text("card_set_id").notNull(),

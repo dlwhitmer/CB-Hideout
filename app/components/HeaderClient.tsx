@@ -250,8 +250,73 @@ export default function HeaderClient() {
               </div>
             </div>
 
-            {/* Pokémon */}
+            {/* Gundam */}
             <div>
+              <div className="font-medium mb-2">Gundam</div>
+
+              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
+                <Link href="/gundam/cards" onClick={() => setMobileOpen(false)}>
+                  Cards
+                </Link>
+                <Link href="/gundam/packs" onClick={() => setMobileOpen(false)}>
+                  Packs
+                </Link>
+                <Link href="/gundam/sets" onClick={() => setMobileOpen(false)}>
+                  Sets
+                </Link>
+              </div>
+            </div>
+            {/* Lorcana */}
+            <div>
+              <div className="font-medium mb-2">Lorcana</div>
+
+              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
+                <Link href="/lorcana/cards" onClick={() => setMobileOpen(false)}>
+                  Cards
+                </Link>
+                <Link href="/lorcana/packs" onClick={() => setMobileOpen(false)}>
+                  Packs
+                </Link>
+                <Link href="/lorcana/sets" onClick={() => setMobileOpen(false)}>
+                  Sets
+                </Link>
+              </div>
+            </div>
+            {/* One Piece */}
+            <div>
+              <div className="font-medium mb-2">One Piece</div>
+
+              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
+                <Link href="/onepiece/cards" onClick={() => setMobileOpen(false)}>
+                  Cards
+                </Link>
+                <Link href="/onepiece/packs" onClick={() => setMobileOpen(false)}>
+                  Packs
+                </Link>
+                <Link href="/onepiece/sets" onClick={() => setMobileOpen(false)}>
+                  Sets
+                </Link>
+              </div>
+            </div>
+            {/* RiftBound */}
+            <div>
+              <div className="font-medium mb-2">Rift Bound</div>
+
+              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
+                <Link href="/riftbound/cards" onClick={() => setMobileOpen(false)}>
+                  Cards
+                </Link>
+                <Link href="/riftbound/packs" onClick={() => setMobileOpen(false)}>
+                  Packs
+                </Link>
+                <Link href="/riftbound/sets" onClick={() => setMobileOpen(false)}>
+                  Sets
+                </Link>
+              </div>
+            </div>
+
+            {/* Pokémon */}
+            {/* <div>
               <div className="font-medium mb-2">Pokémon</div>
 
               <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
@@ -271,29 +336,11 @@ export default function HeaderClient() {
                   Sets
                 </Link>
               </div>
-            </div>
+            </div> */}
 
-            {/* Yu-Gi-Oh */}
-            <div>
-              <div className="font-medium mb-2">Yu-Gi-Oh</div>
+          
 
-              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
-                <Link
-                  href="/yugioh/singles"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Single Cards
-                </Link>
-                <Link href="/yugioh/packs" onClick={() => setMobileOpen(false)}>
-                  Packs
-                </Link>
-                <Link href="/yugioh/sets" onClick={() => setMobileOpen(false)}>
-                  Sets
-                </Link>
-              </div>
-            </div>
-
-            <Link href="/flesh-and-blood" onClick={() => setMobileOpen(false)}>
+            {/* <Link href="/flesh-and-blood" onClick={() => setMobileOpen(false)}>
               Flesh and Blood
             </Link>
 
@@ -303,7 +350,7 @@ export default function HeaderClient() {
 
             <Link href="/deals" onClick={() => setMobileOpen(false)}>
               Deals
-            </Link>
+            </Link> */}
 
             <Link href="/login" onClick={() => setMobileOpen(false)}>
               Login

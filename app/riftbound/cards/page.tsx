@@ -4,7 +4,6 @@ import MagicWord from "../../components/MagicWord";
 export default async function RiftBoundCardsPage({ searchParams }) {
   // Next.js 16: searchParams is a Promise
   const params = await searchParams;
-
   const setApiId = params?.set || "";
   const page = Number(params?.page ?? "1");
 
@@ -14,6 +13,7 @@ export default async function RiftBoundCardsPage({ searchParams }) {
     { cache: "no-store" },
   );
   const sets = await setsRes.json();
+  console.log("RiftBound sets:", sets);
 
   // Find the selected set object
   const selectedSet = sets.find((s) => s.setCode === setApiId) ?? null;
@@ -63,7 +63,11 @@ export default async function RiftBoundCardsPage({ searchParams }) {
           className="h-auto"
         />
       </div>
-      <form method="GET" action="/riftbound/cards">
+      <form
+  method="GET"
+  action="/riftbound/cards"
+  className="relative z-50"
+>
         <div className="text-blue-900 pt-7 text-center  mx-auto">
           <select
             name="set"

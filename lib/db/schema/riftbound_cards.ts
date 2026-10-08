@@ -4,10 +4,10 @@ import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 export const riftBoundCards = sqliteTable("riftbound_cards", {
   id: integer().primaryKey({ autoIncrement: true }),
   apiId: text("api_id"), // "6a517603ad64d2d80a4f0371"
-  riftboundId: text("riftbound_id").notNull(), // "jdg-059-221"
+  riftboundId: text("riftboundId").notNull(), // "jdg-059-221"
 
   name: text("name").notNull(), // "Svellsongur"
-  cleanName: text("clean_name").notNull(), // "Svellsongur"
+  cleanName: text("cleanName"), // "Svellsongur"
   num: integer("num").notNull(), // 59
 
   energy: integer("energy"), // 3
@@ -25,14 +25,14 @@ export const riftBoundCards = sqliteTable("riftbound_cards", {
   flavour: text("flavour"), // flavor text
 
   set: text("set").notNull(), // "JDG"
-  setName: text("set_name").notNull(), // "Riftbound Judge Promotional Cardss"
+  setName: text("setName").notNull(), // "Riftbound Judge Promotional Cardss"
 
   tags: text("tags"), // JSON array ["Equipment"]
 
   artist: text("artist"), // "Envar Studio"
-  tcgId: text("tcg_id"), // "692372"
+  tcgId: text("tcgId"), // "692372"
 
-  imgUrl: text("img_url"), // full image URL
+  imgUrl: text("imgUrl"), // full image URL
   img: text("img"), // local image path
 
   orientation: text("orientation"), // "portrait"
