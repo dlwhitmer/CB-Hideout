@@ -20,7 +20,7 @@ export default async function MagicCardsDetailPage({ params }: DetailPageParams)
   return (
     <main className="w-max-full mx-auto space-y-10">
       <div className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%] p-2">
-        <MagicCardsDisplay product={product} />
+        <MagicCardsDisplay product={product}/>
       </div>
     </main>
   );

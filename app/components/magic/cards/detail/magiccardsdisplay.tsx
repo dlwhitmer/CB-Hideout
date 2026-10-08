@@ -11,8 +11,8 @@ import MagicCardsCollector from "./magiccardscollector";
 
 type Props = {
   product: InsertMagicCard;
-  showBack:boolean
-  setShowBack: React.Dispatch<React.SetStateAction<boolean>>;
+  // showBack:boolean
+  // setShowBack: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MagicCardsDisplay({ product }: Props) {
