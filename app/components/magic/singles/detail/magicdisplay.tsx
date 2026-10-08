@@ -12,7 +12,7 @@ import MagicPurchaseInfo from "./magicpurchaseinfo";
 
 type Props = {
   product: InsertMagicSingle;
-  showBack:boolean
+  // showBack:boolean
   
 };
 
