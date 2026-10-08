@@ -239,7 +239,7 @@ No need to import `ManaSymbols` here.
 import ManaSymbols from "../ManaSymbols";
 
 type Props = {
-  product: MagicSingle;
+  product: InsertMagicSingle;
 };
 
 export default function CardHeader({ product }: Props) {

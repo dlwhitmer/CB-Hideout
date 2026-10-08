@@ -262,7 +262,7 @@ Change:
 
 ```tsx
 type Props = {
-  product: MagicSingle;
+  product: InsertMagicSingle;
 };
 ```
 
