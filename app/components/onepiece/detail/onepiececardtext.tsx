@@ -6,12 +6,12 @@ type Props={
 };
 
 function extractMain(text: string) {
-  const match = text.match(/\[Main\]\s*(.*)/s);
+  const match = text.match(/\[Main\]\s*(.*)/);
   return match ? match[1].trim() : null;
 }
 
 function extractTrigger(text: string) {
-  const match = text.match(/\[Trigger\]\s*(.*)/s);
+  const match = text.match(/\[Trigger\]\s*(.*)/);
   return match ? match[1].trim() : null;
 }
 
