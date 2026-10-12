@@ -96,10 +96,10 @@ export default async function MagicCardsPage({ searchParams }) {
         />
       </div>
       {/* Bucket Buttons */}
-      <div className="flex flex-wrap gap-3 justify-center pt-4 ">
+      <div className=" text-[10px] sm:text-[10px] md:text-[14px] lg:text-[14px] flex flex-wrap gap-1 justify-center pt-4 ">
         <Link
           href="/magic/cards?bucket=A-D"
-          className="px-3 py-2 bg-gray-700 rounded text-white"
+          className="px-3 py-2 bg-gray-700 rounded  text-white"
         >
           A–D
         </Link>
@@ -136,11 +136,11 @@ export default async function MagicCardsPage({ searchParams }) {
       </div>
 
       <form className="mb-6 pt-5 text-center">
-        <div className="text-[#ffffff] bg-[#03045e] w-94 mx-auto">
+        <div className="card-drop-size">
           <select
             name="set"
             defaultValue={set}
-            className="bg-[#03045e] border-2 p-2  border-white rounded"
+            className="drop-text"
           >
             <option value=""
             className="bg-[#03045e] text-[#ffffff] hover:bg-gray-700 hover:text-white"

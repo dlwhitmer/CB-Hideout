@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../../../lib/db/db";
 import { onePieceCards } from "../../../../../lib/db/schema";
-import { mapOnePieceCardToDB } from "../../../../../lib/mappers/onepiece_cards";
+import { mapOnePiecePromoCardToDB } from "./mapper";
 
 export async function POST() {
   try {
@@ -49,7 +49,7 @@ export async function POST() {
         const category = determineCategory(card.set_name);
         console.log("CATEGORY:", category);
 
-        const mapped = mapOnePieceCardToDB(card, category);
+        const mapped = mapOnePiecePromoCardToDB(card, category);
         console.log("MAPPED:", mapped);
 
         await db.insert(onePieceCards).values(mapped);

@@ -19,8 +19,6 @@ export async function GET(request: Request) {
     // ⭐ FILTER BY set_id (snake_case)
     if (set) {
       conditions.push(eq(onePieceCards.setId, set));
-
-
     }
 
     // ⭐ MAIN QUERY

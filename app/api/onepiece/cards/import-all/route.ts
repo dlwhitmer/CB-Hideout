@@ -33,7 +33,7 @@ export async function POST() {
 
     const allCards = await res.json();
 
-    console.log(`API returned ${allCards.length} cards`);
+    // console.log(`API returned ${allCards.length} cards`);
     if (!Array.isArray(allCards) || allCards.length === 0) {
       console.warn("No OnePiece  cards found.");
       return NextResponse.json({ success: true, imported: 0 });
@@ -42,13 +42,13 @@ export async function POST() {
     // Insert cards
     for (const card of allCards) {
       try {
-        console.log("IMPORTING CARD:", card);
+        // console.log("IMPORTING CARD:", card);
 
         const category = determineCategory(card.set_name);
-        console.log("CATEGORY:", category);
+        // console.log("CATEGORY:", category);
 
         const mapped = mapOnePieceCardToDB(card, category);
-        console.log("MAPPED:", mapped);
+        // console.log("MAPPED:", mapped);
 
         await db.insert(onePieceCards).values(mapped);
         totalImported++;

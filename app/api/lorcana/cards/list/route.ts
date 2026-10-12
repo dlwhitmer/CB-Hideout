@@ -1,5 +1,4 @@
 import { db } from "../../../../../lib/db/db";
-import { SelectLorcanaCard } from "../../../../../lib/db/schema";
 import { lorcanaCards } from "../../../../../lib/db/schema";
 
 import { and, eq, like } from "drizzle-orm";

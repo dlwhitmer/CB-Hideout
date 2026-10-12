@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../../../lib/db/db";
 import { onePieceCards } from "../../../../../lib/db/schema";
-import { mapOnePieceCardToDB } from "../../../../../lib/mappers/onepiece_cards";
+import { mapOnePieceStarterCardToDB } from "./mapper";
 export async function POST() {
   try {
     let totalImported = 0;
@@ -42,13 +42,13 @@ export async function POST() {
     // Insert cards
     for (const card of allCards) {
       try {
-        console.log("IMPORTING CARD:", card);
+        // console.log("IMPORTING CARD:", card);
 
         const category = determineCategory(card.set_name);
-        console.log("CATEGORY:", category);
+        // console.log("CATEGORY:", category);
 
-        const mapped = mapOnePieceCardToDB(card, category);
-        console.log("MAPPED:", mapped);
+        const mapped = mapOnePieceStarterCardToDB(card, category);
+        // console.log("MAPPED:", mapped);
 
         await db.insert(onePieceCards).values(mapped);
         totalImported++;

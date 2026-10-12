@@ -28,22 +28,27 @@ export async function POST(request: Request) {
 
   const user = admins[0];
 
-  // 2. Check password
   const valid = await bcrypt.compare(password, user.passwordHash);
 
   if (!valid) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
-  // 3. Create redirect response
   const response = NextResponse.json({ success: true });
 
+  // EXISTING COOKIES
   response.cookies.set("role", "admin", {
     httpOnly: true,
     path: "/",
   });
 
   response.cookies.set("userId", user.id.toString(), {
+    httpOnly: true,
+    path: "/",
+  });
+
+  // ⭐ NEW COOKIE (this is the one you need)
+  response.cookies.set("admin_username", user.username, {
     httpOnly: true,
     path: "/",
   });

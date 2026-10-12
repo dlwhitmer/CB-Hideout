@@ -11,17 +11,20 @@
   .gathering-title {
     @apply text-[20px] sm:text-[20px] md:text-[25px] lg:text-[35px];
   }
-  .pokemon-title {
-    @apply pt-5 h-[17.5] sm:h-[17.5] md:h-[20] lg:h-[25];
-  }
-  .yugioh-title {
-    @apply pt-5 h-17.5 sm:h-17.5 md:h-20 lg:h-25;
-  }
   .card-grid {
     @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
   }
   .card-size {
     @apply w-40 sm:w-40 md:w-56.5 lg:w-62.5;
+  }
+  .card-drop-size {
+    @apply w-61 sm:w-61 md:w-80 lg:w-94 text-[#ffffff] bg-[#03045e] mx-auto;
+  }
+  .drop-text {
+    @apply w-61 text-[12px] sm:text-[12px] sm:w-61 md:w-80 md:text-[14px] lg:w-94 lg:text-[16px] bg-[#03045e] border-2 p-2 border-white rounded;
+  }
+  .disclaimer {
+    @apply text-[12px] sm:w-102 sm:text-[12px] sm:w-[102] md:w-110 md:text-[14px] lg:w-105 lg:text-[14px] text-left  text-white bg-black/40 p-3 rounded;
   }
   .filter-stack {
     @apply flex flex-col lg:flex-row gap-3;
@@ -37,24 +40,70 @@
   }
 
   .display-stats {
-    @apply w-full mx-auto rounded shadow;
+    @apply w-full mx-auto rounded shadow p-3;
   }
   .stat-cat {
-    @apply text-white bg-transparent pb-2 grid grid-cols-1 w-fit mx-auto text-center
-  };
-  .stat-h2 {
-    @apply text-lg font-semibold;
+    @apply w-61 sm:w-61 md:w-65 text-white bg-transparent text-center pb-2 grid grid-cols-1 mx-auto place-items-center;
   }
- 
+  .main-logo {
+    @apply pb-12 sm:pb-12 md:pb-12 lg:pb-6 h-[250px] sm:h-[250px] md:h-[400px] lg:h-[400px] w-auto;
+  }
+  .uni-title {
+    @apply text-xl sm:text-xl md:text-2xl lg:text-[22px] font-bold underline;
+  }
+  .select-game {
+    @apply h-7 sm:h-7 text-sm sm:text-sm md:text-base lg:text-base text-center font-bold block;
+  }
+  .select-drop {
+    @apply w-45 h-7 text-xs sm:w-45 sm:text-sm md:text-base md:w-45 md:h-7 lg:text-base text-white bg-gray-800 border-3 flex text-center mx-auto rounded-xl;
+  }
+  .import-type {
+    @apply h-7 text-base sm:h-7 sm:text-base md:text-base lg:text-base  text-black font-bold block;
+  }
+  .import-drop {
+    @apply text-sm w-45 h-7 sm:h-7  sm:w-45 md:text-base md:w-45 md:h-7 lg:text-base lg:h-7 lg:w-45 text-white text-center bg-gray-800 border-3 mx-auto rounded-xl mb-1;
+  }
+  .singles-form {
+    @apply h-7 text-sm sm:h-7 sm:text-sm md:text-base lg:text-base text-white bg-gray-800 border-2 border-black p-2 text-center rounded-xl placeholder:text-white placeholder:font-medium;
+  }
+  .set-code-input {
+    @apply h-7 text-sm sm:text-sm sm:h-7 md:text-base lg:text-base block font-bold text-black;
+  }
+  .sets-form {
+    @apply w-45 h-7 text-sm  sm:h-7 sm:text-sm md:text-base text-black  bg-white p-2 text-center rounded-xl placeholder:text-black placeholder:font-bold mx-auto
+  }
+  .one-set-form {
+    @apply w-45 text-sm sm:text-sm text-black bg-gray-800 p-2  text-center rounded placeholder:text-black placeholder:font-bold;
+  }
+  .stat-h2 {
+    @apply text-base sm:text-base font-semibold;
+  }
   .card-name {
-    @apply text-[25px] flex justify-center bg-[#fbf2c4] pl-5 pr-5 w-fit text-black font-semibold border-4 border-[#e5c185] rounded-3xl w-[250px];
+    @apply text-[15px] sm:text-[15px] flex justify-center bg-[#fbf2c4] pl-5 pr-5 text-black font-semibold border-4 border-[#e5c185] rounded-3xl w-fit mx-auto;
   }
   .stat-rows {
-    @apply w-150 mx-auto pr-2 pl-2 bg-[#1b4552b3];
+    @apply w-85 text-[12px] sm:w-85 sm:text-[12px] md:w-120 md:text-[14px] lg:w-175 lg:text-[16px] mx-auto pr-1 pl-1 bg-[#1b4552b3];
   }
-  
+  .main-page {
+    @apply relative min-h-screen bg-[url('/images/arcane-bg.webp')] bg-cover bg-center bg-no-repeat p-2 sm:p-4 md:p-6 lg:p-10;
+  }
+  .main-page-banners {
+    @apply max-w-[600px] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1920px] mx-auto;
+  }
+  .slider-banner {
+    @apply w-full h-auto object-contain;
+  }
+  .mobile-menu-text {
+    @apply text-[13px] sm:text-[13px] md:text-[18px] lg:text-[18px] flex flex-col gap-2 text-white;
+  }
   .image-top {
     @apply flex flex-col items-center max-w-full;
+  }
+  .display-page-cols {
+    @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3;
+  }
+  .display-name {
+    @apply text-[14px] sm:text-[14px] md:text-[16px] lg:text-[18px] mt-2  hover:scale-110 font-semibold text-[#fbf2c4]  underline decoration-3 decoration-yellow-400 text-center;
   }
   .stat-section {
     @apply bg-[#1b4552b3] max-w-6xl mx-auto p-4 rounded-lg;

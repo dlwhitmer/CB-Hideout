@@ -55,7 +55,6 @@ export default async function OnePieceCardsPage({ searchParams }) {
   //     return acc;
   //   }, {}),
   // );
-  console.log(sets);
 
   return (
     <div className="min-h-screen bg-[url('/images/bg-23.webp')] bg-no-repeat bg-[length:100%_100%]">
@@ -70,19 +69,30 @@ export default async function OnePieceCardsPage({ searchParams }) {
             className="h-auto"
           />
         </div>
-        <p className="max-w-130 text-left text-[16px] text-green-600 bg-black/40 p-3 rounded">
+        <p className="disclaimer">
           <span className="text-blue-600 text-[20px]">Note: </span>
           <span>
-            Some card images may display a{" "}
-            <span className="text-[#ff8531] ">SAMPLE</span> watermark due to
+            Card images may vary depending on the source or
           </span>
           <span className=" block pl-13">
             {" "}
-            Bandais image CDN. These cards are real retail cards
+             publisher’s image CDN. Some games may temporarily {" "}
+            
           </span>
           <span className="block pl-13">
             {" "}
-            and fully playable. Card data is sourced from an unofficial API.
+            display
+            <span className="text-[#ff8531] "> SAMPLE</span> {" "}
+            <span > watermarked images. All cards shown  </span>
+
+          </span>
+          <span className="block pl-13">
+            {" "}
+            on real retail cards and are fully playable. Card data is
+          </span>
+          <span className="block pl-13">
+            {" "}
+          sourced from publicly available APIs.
           </span>
         </p>
       </div>

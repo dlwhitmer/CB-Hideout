@@ -48,7 +48,7 @@ export default function HeaderClient() {
           <Link href="/login" className="hover:text-blue-300">
             Login
           </Link>
-          <Link href="/admin-login" className="hover:text-blue-300">
+          <Link href="/admin-login" className="hover:text-blue-300 pr-10">
             Admin
           </Link>
         </nav>
@@ -82,10 +82,10 @@ export default function HeaderClient() {
       {/* SECOND ROW: Horizontal Navbar */}
       {/* SECOND ROW: Horizontal Navbar */}
       <div className="hidden lg:block w-full bg-black/80 border-t  border-white/10">
-        <nav className="max-w-7xl mx-auto flex items-center gap-5 px-4 py-2 text-white text-sm font-medium overflow-visible whitespace-nowrap">
+        <nav className="max-w-7xl mx-auto flex items-center gap-5 px-4 py-2 text-white font-medium overflow-visible whitespace-nowrap">
           {/* MAGIC DROPDOWN */}
-          <div className="relative group inline-block">
-            <div className="flex items-center gap-1 hover:text-blue-300 cursor-pointer">
+          <div className="relative group inline-block ">
+            <div className="text-[15px]  flex items-center gap-1 hover:text-blue-300 cursor-pointer">
               Magic: The Gathering
               <span className="text-xs">▼</span>
             </div>
@@ -224,7 +224,7 @@ export default function HeaderClient() {
       </div>
       {mobileOpen && (
         <div className="lg:hidden bg-black border-t border-white/10 px-6 py-4">
-          <div className="flex flex-col gap-4 text-white">
+          <div className=" mobile-menu-text">
             <Link href="/" onClick={() => setMobileOpen(false)}>
               Home
             </Link>

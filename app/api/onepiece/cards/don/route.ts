@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../../../lib/db/db";
 import { onePieceCards } from "../../../../../lib/db/schema";
-import { mapOnePieceCardToDB } from "../../../../../lib/mappers/onepiece_cards";
+import { mapOnePieceDonCardToDB } from "./mapper";
 
 export async function POST() {
   try {
@@ -9,8 +9,8 @@ export async function POST() {
 
     const url = "https://www.optcgapi.com/api/allDonCards/";
 
-    console.log("Fetching ALL OnePiece Don!! cards...");
-    console.log("API URL:", url);
+    // console.log("Fetching ALL OnePiece Don!! cards...");
+    // console.log("API URL:", url);
 
     const res = await fetch(url, {
       headers: { "User-Agent": "DanTCG-App/1.0" },
@@ -23,7 +23,7 @@ export async function POST() {
 
     const allCards = await res.json();
 
-    console.log(`API returned ${allCards.length} cards`);
+    // console.log(`API returned ${allCards.length} cards`);
 
     if (!Array.isArray(allCards) || allCards.length === 0) {
       console.warn("No OnePiece Don!! cards found.");
@@ -32,13 +32,13 @@ export async function POST() {
 
     for (const card of allCards) {
       try {
-        console.log("IMPORTING DON CARD:", card);
+        // console.log("IMPORTING DON CARD:", card);
 
         // Don cards ALWAYS have category "don"
         const category = "don";
 
         // Don JSON does NOT include set_name, so we inject one
-        const mapped = mapOnePieceCardToDB(
+        const mapped = mapOnePieceDonCardToDB(
           {
             ...card,
             set_name: card.optcg_don_name ?? "Don!!"
@@ -46,7 +46,7 @@ export async function POST() {
           category
         );
 
-        console.log("MAPPED:", mapped);
+        // console.log("MAPPED:", mapped);
 
         await db.insert(onePieceCards).values(mapped);
         totalImported++;

@@ -8,6 +8,7 @@ export default function HomePage() {
   const settings = {
     dots: false,
     infinite: true,
+    arrows: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -16,17 +17,15 @@ export default function HomePage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[url('/images/arcane-bg.webp')] bg-cover bg-center bg-no-repeat p-2 sm:p-4 md:p-6">
-       <HomeHero />
-      <div className="max-w-[95%] sm:max-w-[600px] md:max-w-[900px] mx-auto space-y-8">
-       
-
+    <main className="main-page">
+      <HomeHero />
+      <div className="main-page-banners">
         <Slider {...settings}>
           <div>
             <img
               src="/images/magic_banner_5.webp"
               alt="Magic"
-              className="w-full h-auto object-contain"
+              className="slider-banner"
             />
           </div>
 
@@ -34,7 +33,7 @@ export default function HomePage() {
             <img
               src="/images/lorcana-banner4.webp"
               alt="Lorcana"
-              className="w-full h-auto object-contain"
+              className="slider-banner"
             />
           </div>
 
@@ -42,21 +41,21 @@ export default function HomePage() {
             <img
               src="/images/gundam-banner1.webp"
               alt="Gundam"
-              className="w-full h-auto object-contain"
+              className="slider-banner"
             />
           </div>
           <div>
             <img
               src="/images/one-piece-banner2.webp"
               alt="One Piece"
-              className="w-full h-auto object-contain"
+              className="slider-banner"
             />
           </div>
           <div>
             <img
               src="/images/riftbound-banner1.webp"
               alt="Rift Bound"
-              className="w-full h-auto object-contain"
+              className="slider-banner"
             />
           </div>
         </Slider>

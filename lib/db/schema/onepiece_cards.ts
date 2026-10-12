@@ -22,7 +22,8 @@ export const onePieceCards = sqliteTable("onepiece_cards", {
   attribute: text("attribute"),
   dateScraped: text("date_scraped").notNull(),
   cardImageId: text("card_image_id").notNull(),
-  cardImage: text("card_image").notNull(),
+  cardImage: text("card_image"),
+
 });
 
 export type SelectOnePieceCard = InferSelectModel<typeof onePieceCards>;

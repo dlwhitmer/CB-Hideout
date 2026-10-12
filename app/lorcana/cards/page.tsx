@@ -62,7 +62,6 @@ export default async function LorcanaCardsPage({ searchParams }) {
 
   return (
     <div className="min-h-screen bg-[url('/images/bg-23.webp')] bg-no-repeat bg-[length:100%_100%]">
-   
       <div className="flex flex-col items-center text-white pt-4 space-y-4"></div>
 
       <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-[300px] mt-5 mx-auto">
@@ -122,7 +121,7 @@ export default async function LorcanaCardsPage({ searchParams }) {
             {total} result{total !== 1 ? "s" : ""}
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div className="display-page-cols">
             {cards.map((card) => (
               <Link
                 key={card.id}
@@ -146,7 +145,7 @@ export default async function LorcanaCardsPage({ searchParams }) {
           <div className="flex justify-center items-center gap-4 mt-8 text-white">
             {page > 1 && (
               <a
-                href={`/lorcana/cards?page=${page - 1}&set_id=${SetID}`}
+                href={`/lorcana/cards?page=${page - 1}&SetID=${SetID}&Type=${Type}&Rarity=${Rarity}&Color=${Color}&CardNum=${CardNum}`}
                 className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
               >
                 Previous
@@ -159,7 +158,7 @@ export default async function LorcanaCardsPage({ searchParams }) {
 
             {page < totalPages && (
               <a
-                href={`/lorcana/cards?page=${page + 1}&Set_ID=${SetID}`}
+                href={`/lorcana/cards?page=${page + 1}&SetID=${SetID}&Type=${Type}&Rarity=${Rarity}&Color=${Color}&CardNum=${CardNum}`}
                 className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
               >
                 Next

@@ -9,7 +9,7 @@ export function mapOnePieceCardToDB(
     marketPrice: card.market_price,
     cardName: card.card_name,
     setName: card.set_name,
-    cardText: card.card_text,
+    cardText: card.card_text ?? "",
     setId: card.set_id,
     rarity: card.rarity,
     cardSetId: card.card_set_id,
@@ -24,6 +24,6 @@ export function mapOnePieceCardToDB(
     attribute: card.attribute,
     dateScraped: card.date_scraped,
     cardImageId: card.card_image_id,
-    cardImage: card.card_image,
+    cardImage: card.card_image ?? "",
   };
 }

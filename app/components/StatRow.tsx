@@ -20,7 +20,7 @@ export default function StatRow({
   };
 
   return (
-    <div className={`grid grid-cols-[1fr_3fr] gap-x-20 ${alignment[align]}`}>
+    <div className={`gap-x-10 sm:gap-x-10 md:gap-x-20 grid grid-cols-[1fr_3fr] ${alignment[align]}`}>
       <div className="text-[var(--dplbltext)] font-semibold">
         {label}
       </div>

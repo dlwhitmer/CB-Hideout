@@ -5,6 +5,20 @@
   --foreground: #171717;
 
 }
+.white-input {
+  border: 3px solid white !important;
+  -webkit-border-color: white !important;
+  outline: none !important;
+  appearance: none !important;
+}
+.black-input {
+  border: 4px solid black !important;
+  -webkit-border-color: black !important;
+  outline: none !important;
+  appearance: none !important;
+}
+
+
 .scene {
   transform-style: preserve-3d;
 }
