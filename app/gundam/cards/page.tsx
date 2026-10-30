@@ -1,12 +1,13 @@
 import Link from "next/link";
 import MagicWord from "../../components/MagicWord";
+import Image from "next/image";
 
 export default async function GundamCardsPage({ searchParams }) {
   const card = await searchParams;
 
   const setCode = card.setCode ?? "";
   const cardType = card.cardType ?? "";
-  const productID = card.productID ?? "";
+  const productId = card.productId ?? "";
   const rarity = card.rarity ?? "";
   const color = card.color ?? "";
   const imageUrl = card.imageUrl ?? "";
@@ -37,7 +38,7 @@ export default async function GundamCardsPage({ searchParams }) {
       imageUrl,
       page: page.toString(),
     });
-    console.log("PRODUCT ID:", card.productID);
+    console.log("PRODUCT Id:", card.productId);
     const cardsRes = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/gundam/cards/list?${params}`,
       { cache: "no-store" },
@@ -52,18 +53,18 @@ export default async function GundamCardsPage({ searchParams }) {
     totalPages = Math.ceil(total / 30);
   }
 
-  // ⭐ Remove duplicate cards by productID
+  // ⭐ Remove duplicate cards by productId
   cards = Object.values(
     cards.reduce((acc, card) => {
-      if (!acc[card.productID]) acc[card.productID] = card;
+      if (!acc[card.productId]) acc[card.productId] = card;
       return acc;
     }, {}),
   );
   return (
-    <div className="min-h-screen bg-[url('/images/bg-23.webp')] bg-no-repeat bg-[length:100%_100%]">
+    <div className="min-h-screen bg-[url('/images/backgrounds/bg-23.webp')] bg-no-repeat bg-size[100%_100%]">
       {/* Disclaimer + Bucket Buttons grouped together */}
       <div className="flex flex-col items-center text-white pt-4 space-y-4">
-    <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-[300px] mt-5 mx-auto">
+    <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-75 mt-5 mx-auto">
         <img
           src="/images/Gundam-Logo.webp"
           alt="Lorcana Logo"
@@ -157,12 +158,12 @@ export default async function GundamCardsPage({ searchParams }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {cards.map((card) => (
               <Link
-                key={card.productID}
-                href={`/gundam/cards/${card.productID}`}
+                key={card.productId}
+                href={`/gundam/cards/${card.productId}`}
                 className="block"
               >
                 <img
-                  src={`/api/gundam/image?code=${card.productID}`}
+                  src={`/api/gundam/image?code=${card.productId}`}
                   alt={card.name}
                   className="rounded pt-4 w-full"
                 />

@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const cardType = searchParams.get("cardType") ?? "";
     const rarity = searchParams.get("rarity") ?? "";
     const color = searchParams.get("color") ?? "";
-    const productID = searchParams.get("productID") ?? "";
+    const productId = searchParams.get("productId") ?? "";
     const page = Number(searchParams.get("page") ?? "1");
     const pageSize = 20;
 
@@ -29,8 +29,8 @@ export async function GET(req: Request) {
       conditions.push(like(gundamCards.color, `%${color}%`));
     }
 
-    if (productID) {
-      conditions.push(eq(gundamCards.productID, productID));
+    if (productId) {
+      conditions.push(eq(gundamCards.productId, productId));
     }
 
     if (rarity) {
@@ -43,11 +43,11 @@ export async function GET(req: Request) {
       .select()
       .from(gundamCards)
       .where(where)
-      .orderBy(gundamCards.productID);
+      .orderBy(gundamCards.productId);
 
     const uniqueCards = Object.values(
       allRows.reduce((acc, card) => {
-        if (!acc[card.productID]) acc[card.productID] = card;
+        if (!acc[card.productId]) acc[card.productId] = card;
         return acc;
       }, {}),
     );

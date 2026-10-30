@@ -1,9 +1,10 @@
 import { db } from "../../../../../lib/db/db";
-import { magicSingles } from "../../../../../lib/db/schema";
-import { and, eq, like } from "drizzle-orm";
+import { magicSingles, magicPrices } from "../../../../../lib/db/schema";
+import { and, eq, like, getTableColumns } from "drizzle-orm";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
+  const search = searchParams.get("search") ?? "";
 
   const type = searchParams.get("type") ?? "";
   const rarity = searchParams.get("rarity") ?? "";
@@ -32,14 +33,21 @@ export async function GET(req: Request) {
   if (set) {
     conditions.push(eq(magicSingles.setCode, set));
   }
+  if (search) {
+    conditions.push(like(magicSingles.name, `%${search}%`));
+  }
   // const test = await db.select().from(magicSingles).limit(5);
 
   // console.log("FIRST MAGIC CARDS:", test);
   const where = conditions.length ? and(...conditions) : undefined;
 
   const rows = await db
-    .select()
+    .select({
+      ...getTableColumns(magicSingles),
+      ourPrice: magicPrices.ourPrice,
+    })
     .from(magicSingles)
+    .leftJoin(magicPrices, eq(magicSingles.scryfallId, magicPrices.scryfallId))
     .where(where)
     .orderBy(magicSingles.collectorNumber)
     .limit(pageSize)

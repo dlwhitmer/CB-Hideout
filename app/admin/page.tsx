@@ -17,7 +17,7 @@ export default function AdminDashboard() {
         </div>
 
         <div
-          className=" gap-5 sm:gap-5 md:gap-20 lg:gap-30 relative flex flex-row justify-center items-start gap-5
+          className="sm:gap-5 md:gap-20 lg:gap-30 relative flex flex-row justify-center items-start gap-5
        w-full"
         >
           {/*LEFT COLUMN*/}
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
                 </Link>
 
                 <Link
-                  href="/admin/magic/singles"
+                  href="/admin/magic/singles/inventory"
                   className="block px-4 py-2 text-white hover:bg-gray-700"
                 >
                   Single Cards
@@ -100,9 +100,15 @@ export default function AdminDashboard() {
                   >
                     Cards in Sets
                   </Link>
-
                   <Link
                     href="/admin/gundam/singles"
+                    className="block px-4 py-2 text-white hover:bg-gray-700"
+                  >
+                    Search & Import
+                  </Link>
+
+                  <Link
+                    href="/admin/gundam/singles/inventory"
                     className="block px-4 py-2 text-white hover:bg-gray-700"
                   >
                     Single Cards
@@ -147,10 +153,10 @@ export default function AdminDashboard() {
                     Cards of Sets
                   </Link>
                   <Link
-                    href="/admin/riftbound/sets"
+                    href="/admin/riftbound/inventory"
                     className="block px-4 py-2 text-white hover:bg-gray-700"
                   >
-                    Sets
+                    Singles
                   </Link>
 
                   <Link
@@ -176,26 +182,25 @@ export default function AdminDashboard() {
             {/* LORCANA DROPDOWN */}
             <div className="relative group">
               <div className="text-[14px] font-bold flex justify-center items-center px-2 py-2 cursor-pointer hover:text-[#ffca3a]">
-                <span>Lorcana Cards</span>
+                <span>Lorcana</span>
                 <span className="text-xs ml-2">▶</span>
               </div>
 
               <div
                 className="
-      text-[13px]
-      hidden
-      hover:block
-      group-hover:block
-      absolute
-      left-full
-      top-0
-      ml-2
-      bg-gray-900
-      border border-gray-700
-      rounded-md
-      w-48
-      z-50
-    "
+        text-[13px]
+        invisible
+        opacity-0
+        group-hover:visible
+        group-hover:opacity-100
+        absolute
+        left-full
+        top-0
+        bg-gray-900
+        border border-gray-700
+        rounded-md
+        w-48
+        z-50"
               >
                 <Link
                   href="/admin/lorcana/cards"
@@ -204,45 +209,44 @@ export default function AdminDashboard() {
                   Cards of Sets
                 </Link>
                 <Link
-                  href="/admin/lorcana/sets"
+                  href="/admin/lorcana/products"
                   className="block px-4 py-2 text-white hover:bg-gray-700"
                 >
-                  Sets
+                  Sealed Products
                 </Link>
 
                 <Link
-                  href="/admin/lorcana/sets"
+                  href="/admin/lorcana/singles/inventory"
                   className="block px-4 py-2 text-white hover:bg-gray-700"
                 >
-                  One Set
+                  Single Cards
                 </Link>
               </div>
             </div>
 
-            {/* LORCANA DROPDOWN */}
+            {/* ONEPIECE DROPDOWN */}
             <div className="relative group">
               <div className="text-[14px] font-bold flex justify-center items-center px-2 py-2 cursor-pointer hover:text-[#ffca3a]">
-                <span>OnePiece Cards</span>
+                <span>OnePiece</span>
                 <span className="text-xs ml-2">▶</span>
               </div>
 
               <div
                 className="
-      text-[13px]
-      hidden
-      hover:block
-      group-hover:block
-      absolute
-      left-full
-      top-0
-      ml-2
-      bg-gray-900
-      border border-gray-700
-      rounded-md
-      w-48
-      z-50
-    "
-              >
+        text-[13px]
+        invisible
+        opacity-0
+        group-hover:visible
+        group-hover:opacity-100
+        absolute
+        left-full
+        top-0
+        bg-gray-900
+        border border-gray-700
+        rounded-md
+        w-48
+        z-50"
+                >
                 <Link
                   href="/admin/onepiece/cards"
                   className="block px-4 py-2 text-white hover:bg-gray-700"
@@ -250,17 +254,23 @@ export default function AdminDashboard() {
                   Cards of Sets
                 </Link>
                 <Link
-                  href="/admin/onepiece/sets"
+                  href="/admin/onepiece/singles/inventory"
                   className="block px-4 py-2 text-white hover:bg-gray-700"
                 >
-                  Sets
+                  Singles
+                </Link>
+                <Link
+                  href="/admin/onepiece/singles/"
+                  className="block px-4 py-2 text-white hover:bg-gray-700"
+                >
+                  Search & Import
                 </Link>
 
                 <Link
                   href="/admin/onepiece/sets"
                   className="block px-4 py-2 text-white hover:bg-gray-700"
                 >
-                  One Set
+                  Products
                 </Link>
               </div>
             </div>

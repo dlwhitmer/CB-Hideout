@@ -1,5 +1,7 @@
 import Link from "next/link";
 import MagicWord from "../../components/MagicWord";
+import BackButton from "../../backButton";
+import BackButtonToHome from "../../backtohomebutton";
 
 export default async function MagicCardsPage({ searchParams }) {
   const sp = await searchParams;
@@ -86,7 +88,10 @@ export default async function MagicCardsPage({ searchParams }) {
 
   return (
     <div className="min-h-screen pt-3 bg-[url('/images/bg-13.webp')] bg-no-repeat bg-[length:100%_100%]">
-       <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-[300px] mt-5 mx-auto">
+      <div className="text-center pt-5">
+        <BackButtonToHome />
+      </div>
+      <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-[300px] mx-auto">
         <img
           src="/images/Magic-Logo2.webp"
           alt="Lorcana Logo"
@@ -137,22 +142,21 @@ export default async function MagicCardsPage({ searchParams }) {
 
       <form className="mb-6 pt-5 text-center">
         <div className="card-drop-size">
-          <select
-            name="set"
-            defaultValue={set}
-            className="drop-text"
-          >
-            <option value=""
-            className="bg-[#03045e] text-[#ffffff] hover:bg-gray-700 hover:text-white"
-            >Select a Set</option>
+          <select name="set" defaultValue={set} className="drop-text">
+            <option
+              value=""
+              className="bg-[#03045e] text-[#ffffff] hover:bg-gray-700 hover:text-white"
+            >
+              Select a Set
+            </option>
             {filteredSets.map((s) => (
-              <option 
-              key={s.setCode} 
-              value={s.setCode}
-              className="bg-[#03045e] text-[#ffffff] hover:bg-gray-700 hover:text-black"
+              <option
+                key={s.setCode}
+                value={s.setCode}
+                className="bg-[#03045e] text-[#ffffff] hover:bg-gray-700 hover:text-black"
               >
                 {s.setName}
-              </option> 
+              </option>
             ))}
           </select>
         </div>

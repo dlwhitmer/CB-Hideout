@@ -2,7 +2,7 @@ import { InsertGundamCard } from "../db/schema/gundam_cards";
 
 export function mapGundamCardToDB(card: any): InsertGundamCard {
   return {
-    productID: card.product_id,
+    productId: card.product_id,
     cardNumber: card.card_number,
     name: card.name,
     setCode: card.set_code,

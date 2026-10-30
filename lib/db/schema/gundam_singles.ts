@@ -10,21 +10,22 @@ export const gundamSingles = sqliteTable("gundam_singles", {
   setName: text("set_name").notNull(),
   rarity: text("rarity").notNull(),
   cardType: text("card_type").notNull(),
-  colors: text("colors").notNull(),
+  color: text("color").notNull(),
   level: text("level").notNull(),
   cost: text("cost").notNull(),
   ap: text("ap").notNull(),
   hp: text("hp").notNull(),
   zone: text("zone").notNull(),
+  link:text("link"),
   linkRefs: text("link_refs", { mode: "json" }).notNull(),
   trait: text("trait").notNull(),
   traits: text("traits", { mode: "json" }).notNull(),
   effect: text("effect").notNull(),
-  keyboardEffects: text("keyboard_effects", { mode: "json" }).notNull(),
+  keywordEffects: text("keyword_effects", { mode: "json" }).notNull(),
   imageUrl: text("image_url").notNull(),
-  detailImageUrl: text("detail_image_url").notNull(),
-
-  price: integer("price").notNull(),
+  condition: text("condition"),
+  quantity: integer("quantity").default(0),
+  ourPrice: integer("our_price").notNull(),
 });
 
 export type SelectGundamSingle = InferSelectModel<typeof gundamSingles>;

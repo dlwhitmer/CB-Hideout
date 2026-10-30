@@ -1,9 +1,11 @@
-import { InsertonePieceSingle } from "../db/schema/onepiece_singles";
+import { InsertOnePieceSingle } from "../db/schema/onepiece_singles";
 
-export function mapOnePieceSingleToDB(single: any): InsertonePieceSingle {
+export function mapOnePieceSingleToDB(single: any): InsertOnePieceSingle {
   return {
     inventoryPrice: single.inventory_price,
     marketPrice: single.market_price,
+    ourOnePrice: Number(single.our_one_price),
+    condition:(single.condition),
     cardName: single.card_name,
     setName: single.set_name,
     cardText: single.card_text,
@@ -21,5 +23,7 @@ export function mapOnePieceSingleToDB(single: any): InsertonePieceSingle {
     dateScraped: single.date_scraped,
     cardImageId: single.caed_image_id,
     cardImage: single.card_image,
+    quantity: 1,
+    
   };
 }

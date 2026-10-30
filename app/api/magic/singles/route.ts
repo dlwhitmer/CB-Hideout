@@ -1,5 +1,6 @@
 import { db } from "../../../../lib/db/db";
-import { magicSingles } from "../../../../lib/db/schema/magic_singles";
+import { magicSingles } from "../../../../lib/db/schema";
+import { magicPrices } from "../../../../lib/db/schema";
 import { eq, and, like } from "drizzle-orm"; // ⭐ add this
 
 export async function GET(req: Request) {
@@ -39,10 +40,19 @@ export async function GET(req: Request) {
 
   const total = allRows.length;
 
-  // ⭐ apply WHERE to paginated rows
   const rows = await db
-    .select()
+    .select({
+      id: magicSingles.id,
+      scryfallId: magicSingles.scryfallId,
+      frontName: magicSingles.frontName,
+      frontImageNormal: magicSingles.frontImageNormal,
+      quantity: magicSingles.quantity,
+
+      usd: magicPrices.usd,
+      ourPrice: magicPrices.ourPrice,
+    })
     .from(magicSingles)
+    .leftJoin(magicPrices, eq(magicSingles.scryfallId, magicPrices.scryfallId))
     .where(conditions.length ? and(...conditions) : undefined)
     .limit(limit)
     .offset(offset);

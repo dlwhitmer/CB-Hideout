@@ -9,7 +9,7 @@ export function mapGundamSingleToDB(single: any): InsertGundamSingle {
     setName: single.set_name,
     rarity: single.rarity,
     cardType: single.card_type,
-    colors: single.color,
+    color: single.color,
     level: single.level,
     cost: single.cost,
     ap: single.ap,
@@ -18,11 +18,13 @@ export function mapGundamSingleToDB(single: any): InsertGundamSingle {
     trait: single.trait,
     traits: single.traits ?? [],
     effect: single.effect,
-    keyboardEffects: single.keyword_effects ?? [],
+    keywordEffects: single.keyword_effects ?? [],
     imageUrl: single.image_url,
-    detailImageUrl: single.detail_image_url,
+    link: single.link ?? "",
     linkRefs: single.link_refs ?? [],
+    quantity: 1,
     // You add price manually later
-    price: 0,
+    ourPrice: 0,
+    condition: single.condition,
   };
 }

@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 export default function HomePage() {
+  
+  
   const settings = {
     dots: false,
     infinite: true,
@@ -16,6 +18,7 @@ export default function HomePage() {
     autoplaySpeed: 5000,
   };
 
+
   return (
     <main className="main-page">
       <HomeHero />
@@ -23,7 +26,7 @@ export default function HomePage() {
         <Slider {...settings}>
           <div>
             <img
-              src="/images/magic_banner_5.webp"
+              src={"./products/magic/banners/magic_banner_5.webp"}
               alt="Magic"
               className="slider-banner"
             />
@@ -31,7 +34,7 @@ export default function HomePage() {
 
           <div>
             <img
-              src="/images/lorcana-banner4.webp"
+              src={"./products/Lorcana/banners/lorcana-banner4.webp"}
               alt="Lorcana"
               className="slider-banner"
             />
@@ -39,21 +42,21 @@ export default function HomePage() {
 
           <div>
             <img
-              src="/images/gundam-banner1.webp"
+              src={"./products/Gundam/banners/gundam-banner1.webp"}
               alt="Gundam"
               className="slider-banner"
             />
           </div>
           <div>
             <img
-              src="/images/one-piece-banner2.webp"
+              src={"./products/Onepiece/banners/onepiece-banner2.webp"}
               alt="One Piece"
               className="slider-banner"
             />
           </div>
           <div>
             <img
-              src="/images/riftbound-banner1.webp"
+              src={"./products/RiftBound/banners/riftbound-banner1.webp"}
               alt="Rift Bound"
               className="slider-banner"
             />

@@ -1,0 +1,142 @@
+"use client";
+import DeleteButton from "../../../../api/lorcana/DeleteButton";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import BackButton from "../../../../backButton";
+import { InsertLorcanaSingle } from "../../../../../lib/db/schema";
+
+export default function LorcanaSinglesPage() {
+  const [cards, setCards] = useState<InsertLorcanaSingle[]>([]);
+  const [total, setTotal] = useState(0);
+  const [setFilter, setSetFilter] = useState("");
+  const [sets, setSets] = useState([]);
+
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const totalPages = Math.ceil(total / limit);
+
+  useEffect(() => {
+    async function loadSets() {
+      const res = await fetch("/api/lorcana/sets/list");
+      const data = await res.json();
+      setSets(data);
+    }
+    loadSets();
+  }, []);
+
+  useEffect(() => {
+    async function load() {
+      const res = await fetch(
+        `/api/lorcana/singles?page=${page}&limit=${limit}&set=${setFilter}`,
+      );
+      const data = await res.json();
+
+      setCards(data.rows);
+      setTotal(data.total);
+    }
+
+    load();
+  }, [page, setFilter]);
+
+  return (
+    <section className=" bg-[#ffd380] p-6">
+      <div className=" min-h-screen mx-auto w-full text-black bg-[#ffd380] font-bold text-center ">
+        <div className="mb-4">
+          <label className="mr-2 text-[18px] font-semibold">
+            Filter by Set:
+          </label>
+
+    
+        </div>
+        <div className="flex justify-center mb-2">
+          <img
+            src="/products/Lorcana/Logo's/Lorcana-Logo.webp"
+            alt="Lorcana Logo"
+            width={220}
+            height={70}
+            className="h-auto"
+          />
+        </div>
+        <div className="flex justify-center p-3">
+          <BackButton />
+        </div>
+
+        <table className="admin-table">
+          <thead>
+            <tr className="bg-[#f8cc1b] text-black">
+              <th className="px-3 py-2 text-center">Image</th>
+              <th className="px-3 py-2 text-center">Product ID</th>
+              <th className="px-3 py-2 text-center">Name</th>
+              <th className="px-3 py-2 text-center">Our Price</th>
+              <th className="px-3 py-2 text-center">Quantity</th>
+              <th className="px-3 py-2 text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {cards.map((card) => (
+              <tr key={card.id} className="admin-tbody">
+                <td className="p-2">
+                  <img
+                    src={card.Image || "/placeholder.png"}
+                    alt={card.Name}
+                    className="w-16 h-auto rounded shadow"
+                  />
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  {card.UniqueId}
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  {card.Name}
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  ${card.ourPrice}
+                </td>
+                <td className="px-3 py-2 text-center font-bold">
+                  {card.quantity}
+                </td>
+
+                <td className="px-3 py-2 whitespace-nowrap">
+                  <div className="flex justify-center gap-1">
+                    <Link
+                      href={`/admin/lorcana/singles/${card.id}/edit`}
+                      className="bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </Link>
+
+                    <DeleteButton id={card.id} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* PAGINATION */}
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Previous
+          </button>
+
+          <span className="self-center">
+            Page {page} / {totalPages || 1}
+          </span>
+
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={page >= totalPages}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
   try {
-    const { id } = await req.json();
+    const { scryfallId: id } = await req.json();
 
     const res = await fetch(`https://api.scryfall.com/cards/${id}`, {
       headers: { "User-Agent": "hideout-app/1.0" },

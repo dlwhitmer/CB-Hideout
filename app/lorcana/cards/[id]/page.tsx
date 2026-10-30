@@ -3,7 +3,7 @@ import { DetailPageParams } from "../../../../types/route-params";
 import { db } from "../../../../lib/db/db";
 import { lorcanaCards } from "../../../../lib/db/schema";
 import { eq } from "drizzle-orm";
-import LorcanaCardDisplayPage from "../../../components/lorcana/detail/lorcanadisplaypage";
+import LorcanaCardDisplayPage from "../../../components/lorcana/cards/detail/lorcanadisplaypage";
 export const dynamic = "force-dynamic";
 
 export default async function LorcanaCardsDetailPage({ params }: DetailPageParams) {
@@ -19,7 +19,7 @@ export default async function LorcanaCardsDetailPage({ params }: DetailPageParam
 
   return (
     <main className="w-max-full mx-auto space-y-10">
-      <div className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-[length:100%_100%] p-2">
+      <div className="min-h-screen bg-[url('/images/bg-3.webp')] bg-no-repeat bg-size [100%_100%] p-2">
         <LorcanaCardDisplayPage product={product}/>
       </div>
     </main>

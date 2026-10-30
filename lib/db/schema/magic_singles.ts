@@ -23,8 +23,7 @@ export const magicSingles = sqliteTable("magic_singles", {
 
   // Raw Scryfall backup
   card_faces: text("card_faces"),
-  lang:text("lang"),
-  
+  lang: text("lang"),
 
   // Front face
   name: text("name"),
@@ -64,15 +63,22 @@ export const magicSingles = sqliteTable("magic_singles", {
   collectorNumber: text("collector_number"),
   rarity: text("rarity"),
 
-  price: real("price"),
-  foilPrice: real("foil_price"),
-
-  quantity: integer("quantity").default(0), 
+  quantity: integer("quantity").default(0),
 
   artist: text("artist").notNull(),
+  usd: real("usd"),
+  usdFoil: real("usd_foil"),
+  usdEtched: real("usd_etched"),
+  eur: real("eur"),
+  eurFoil: real("eur_foil"),
+  tix: real("tix"),
+  ourPrice: real("our_price"),
+  ourFoil: real("our_foil"),
+  ourEtched: real("our_etched"),
+  fetchedAt: integer("fetched_at").notNull(),
 
+  condition: text("condition"),
   releasedAt: text("released_at"),
- 
 });
 
 export type SelectMagicSingle = InferSelectModel<typeof magicSingles>;

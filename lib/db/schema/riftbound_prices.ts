@@ -1,18 +1,38 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
-import { InferSelectModel, InferInsertModel } from "drizzle-orm";
+import {sqliteTable, text, real, integer} from "drizzle-orm/sqlite-core";
+
+import {
+  InferSelectModel, InferInsertModel} from "drizzle-orm";
 
 export const riftBoundPrices = sqliteTable("riftbound_prices", {
   id: integer().primaryKey({ autoIncrement: true }),
-  riftboundId:text("riftbound_id"),
-  apiId: integer("api_id").notNull(),
-  name: text("name").notNull(),
-  rarity: text("rarity"),
-  expansion: text("expansion").notNull(),
-  artist: text("artist").notNull(),
-  image: text("image").notNull(),
-  tcggoUrl: text("tcggo_url").notNull(),
-  prices: text("prices"),
-  gradedPrices: text("graded_prices"),
+
+  riftboundId: text("riftbound_id").notNull().unique(),
+
+  collector: text("collector"),
+  slug: text("slug"),
+  tcgId: text("tcg_id"),
+  purchaseUri: text("purchase_uri"),
+
+  finishes: text("finishes", { mode: "json" }).$type<{
+    foil: {
+      low: number | null;
+      mid: number | null;
+      high: number | null;
+      market: number | null;
+      directLow: number | null;
+    };
+    normal: {
+      low: number | null;
+      mid: number | null;
+      high: number | null;
+      market: number | null;
+      directLow: number | null;
+    };
+  }>(),
+
+  ourFoilPrice: real("our_foil_price"),
+  ourPrice: real("our_price"),
+
   lastUpdated: text("last_updated"),
 });
 

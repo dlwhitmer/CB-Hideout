@@ -1,7 +1,200 @@
-export default function OnePieceSetsPage(){
-    return (
-      <div>
-        <h1>One Piece Sets</h1>
+// import { cardboard } from "@/lib/fonts";
+import { headers } from "next/headers";
+import MagicWord from "../../components/MagicWord";
+
+export const dynamic = "force-dynamic";
+
+type SearchParams = {
+  page?: string;
+  cardType?: string;
+  rarity?: string;
+  cardColor?: string;
+
+  setId?: string; // ⭐ add this
+};
+
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const sp = await searchParams;
+  const page = parseInt(sp.page ?? "1");
+  const type = sp.cardType ?? "";
+  const rarity = sp.rarity ?? "";
+  const setId = sp.setId ?? "";
+  const cardColor = sp.cardColor ?? "";
+
+  // FIX: absolute URL required in server components
+  const h = await headers();
+  const host = h.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+
+  const setsResponse = await fetch(
+    `${protocol}://${host}/api/magic/sets/list`,
+    {
+      cache: "no-store",
+    },
+  );
+  if (!setsResponse.ok) {
+    const text = await setsResponse.text();
+    console.log("SETS API FAILED:", setsResponse.status, text);
+    throw new Error("Failed to load magic sets");
+  }
+
+  const sets = await setsResponse.json();
+  const base = process.env.NEXT_PUBLIC_BASE_URL;
+  const response = await fetch(
+    `/api/magic/singles/list?page=${page}&type=${type}&rarity=${rarity}&setId=${setId}&cardColor=${cardColor}`,
+    { cache: "no-store" },
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to fetch magic cards: ${response.status}`);
+  }
+
+  const json = await response.json();
+
+  console.log("MAGIC PUBLIC JSON:", json);
+
+  const singles = json.data ?? [];
+  const total = json.total ?? 0;
+  const pageSize = json.pageSize ?? singles.length;
+  const totalPages = Math.ceil(total / pageSize);
+
+  return (
+    <div className="min-h-screen bg-[url('/images/bg-17.webp')] bg-no-repeat bg-[length:100%_100%]">
+      {/* FILTER BAR */}
+      <form className="filter-stack text-white text-center">
+        <select name="setId" defaultValue={setId} className="filter-center">
+          <option value="">All Sets</option>
+          {sets.map((s: any) => (
+            <option key={s.set_code} value={s.set_code}>
+              {s.set_name}
+            </option>
+          ))}
+        </select>
+
+        <select name="cardType" defaultValue={type} className="filter-center">
+          <option value="">All Types</option>
+          <option value="Creature">Creature</option>
+         
+        </select>
+
+        <select name="rarity" defaultValue={rarity} className="filter-center">
+          <option value="">All Rarities</option>
+          <option value="common">Common</option>
+          <option value="uncommon">Uncommon</option>
+          <option value="rare">Rare</option>
+          <option value="mythic rare">Mythic Rare</option>
+          <option value="basic lands">Basic Lands</option>
+        </select>
+        <select name="cardColor" defaultValue={cardColor} className="filter-center">
+          <option value="">All Colors</option>
+          <option value="W">White</option>
+          <option value="U">Blue</option>
+          <option value="B">Black</option>
+          <option value="R">Red</option>
+          <option value="G">Green</option>
+        </select>
+
+        
+
+        <button type="submit" className="filter-button">
+          Filter
+        </button>
+      </form>
+
+      {/* TITLE */}
+      <h1 className="text-center leading-[1.1]">
+        <MagicWord>
+          <span
+            className="
+            magic-title 
+              block 
+              font-style: italic
+              text-transparent 
+              bg-clip-text 
+              bg-gradient-to-b 
+              from-[#cc3300] 
+              to-[#ff9900]
+            "
+          >
+            Magic
+          </span>
+        </MagicWord>
+
+        <span
+          className="
+              block 
+              gathering-title
+              text-[#f17908] 
+              [text-shadow:_2px_4px_6px_#000]
+            "
+        >
+          The Gathering
+        </span>
+      </h1>
+
+      {/* GRID */}
+      <div className="card-grid gap-6 pt-5">
+        {singles.map((p: any) => {
+          const faces = p.card_faces ? JSON.parse(p.card_faces) : null;
+
+          return (
+            <a
+              key={p.id}
+              href={`/magic/singles/${p.id}`}
+              className="card-size
+                   bg-gray-800 p-3 rounded shadow hover:scale-105 transition mx-auto"
+            >
+              <div className="bg-[url('/card-bg.png')] bg-contain bg-no-repeat bg-center rounded">
+                <img
+                  src={p.imageSmall || "/placeholder.png"}
+                  alt={p.name}
+                  className="w-full h-auto rounded shadow"
+                  loading="lazy"
+                />
+              </div>
+
+              <h2 className="text-[12px] sm:text-[12px] md:text-13px lg:text-[15px] font-semibold text-white text-center">
+                {p.name}
+              </h2>
+
+              <p className="text-white text-sm">
+                {Number(p.price).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
+            </a>
+          );
+        })}
       </div>
-    );
+
+      {/* PAGINATION */}
+      <div className="flex justify-center items-center gap-4 mt-8 text-white">
+        {page > 1 && (
+          <a
+            href={`/magic/singles?page=${page - 1}`}
+            className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+          >
+            Previous
+          </a>
+        )}
+
+        <span className="px-4 py-2 bg-gray-800 rounded">
+          Page {page} of {totalPages}
+        </span>
+
+        {page < totalPages && (
+          <a
+            href={`/magic/singles?page=${page + 1}`}
+            className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+          >
+            Next
+          </a>
+        )}
+      </div>
+    </div>
+  );
 }

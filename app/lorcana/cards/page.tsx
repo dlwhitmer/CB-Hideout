@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AliceFont from "../../components/Alice";
 import MedievalFont from "../../components/Medieval";
+import Image from "next/image";
 
 export default async function LorcanaCardsPage({ searchParams }) {
   const sp = await searchParams;
@@ -10,7 +11,7 @@ export default async function LorcanaCardsPage({ searchParams }) {
   const Type = sp.Type ?? "";
   const Rarity = sp.Rarity ?? "";
   const Color = sp.Color ?? "";
-  const Image = sp.Image ?? "";
+  const Images = sp.Image ?? "";
   const CardNum = sp.CardNum ?? "";
   const page = Number(sp.page ?? "1");
 
@@ -34,7 +35,7 @@ export default async function LorcanaCardsPage({ searchParams }) {
       Type,
       Rarity,
       Color,
-      Image,
+      Images,
       CardNum,
       page: page.toString(),
     });
@@ -61,11 +62,11 @@ export default async function LorcanaCardsPage({ searchParams }) {
   );
 
   return (
-    <div className="min-h-screen bg-[url('/images/bg-23.webp')] bg-no-repeat bg-[length:100%_100%]">
+    <div className="min-h-screen bg-[url('/images/bg-23.webp')] bg-no-repeat bg-size[100%_100%]">
       <div className="flex flex-col items-center text-white pt-4 space-y-4"></div>
 
-      <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-[300px] mt-5 mx-auto">
-        <img
+      <div className="flex justify-center bg-[#fbf2c4] border-6 border-[#e5c185] rounded-3xl w-75 mt-5 mx-auto">
+        <Image
           src="/images/Lorcana-Logo.webp"
           alt="Lorcana Logo"
           width={220}
@@ -128,9 +129,11 @@ export default async function LorcanaCardsPage({ searchParams }) {
                 href={`/lorcana/cards/${card.id}`}
                 className="block"
               >
-                <img
+                <Image
                   src={card.Image}
                   alt={card.Name}
+                  width={200}
+                  height={250}
                   className="rounded pt-4 w-full"
                 />
                 <MedievalFont>

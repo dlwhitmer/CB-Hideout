@@ -1,8 +1,8 @@
 import { InsertLorcanaSingle } from "../db/schema/lorcana_singles";
 
 export function mapLorcanaSingleToDB(single: any): InsertLorcanaSingle {
-    return {
-         Artist: single.Artist ?? "",
+  return {
+    Artist: single.Artist ?? "",
     SetName: single.Set_Name ?? "",
     Classifications: single.Classifications ?? "", // ✔ default empty
     DateAdded: single.Date_Added ?? "",
@@ -30,9 +30,10 @@ export function mapLorcanaSingleToDB(single: any): InsertLorcanaSingle {
 
     // ✔ Body_Text is present here, but default if missing
     BodyText: single.Body_Text ?? "",
-    
-
+    ourPrice: single.our_price ?? "",
+    quantity: 1,
     DateModified: single.Date_Modified ?? "",
     SetId: single.Set_ID ?? "",
+    condition: single.condition,
   };
 }

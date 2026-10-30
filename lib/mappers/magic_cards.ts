@@ -1,4 +1,4 @@
-import { InsertMagicCard} from "../db/schema/magic_cards";
+import { InsertMagicCard } from "../db/schema/magic_cards";
 function parseStat(value: any): number | null {
   if (!value) return null;
   if (typeof value !== "string") return null;

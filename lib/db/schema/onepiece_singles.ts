@@ -5,6 +5,8 @@ export const onePieceSingles = sqliteTable("onepiece_singles", {
   id: integer().primaryKey({ autoIncrement: true }),
   inventoryPrice: real("inventory_price").notNull(),
   marketPrice: real("market_price").notNull(),
+  ourOnePrice:real("our_one_price"),
+  condition:text("condition"),
   cardName: text("card_name").notNull(),
   setName: text("set_name").notNull(),
   cardText: text("card_text").notNull(),
@@ -22,7 +24,8 @@ export const onePieceSingles = sqliteTable("onepiece_singles", {
   dateScraped: text("date_scraped").notNull(),
   cardImageId: text("card_image_id").notNull(),
   cardImage: text("card_image").notNull(),
+  quantity: integer("quantity").default(0), 
 });
 
-export type SelectonePieceSingle= InferSelectModel<typeof onePieceSingles>;
-export type InsertonePieceSingle = InferInsertModel<typeof onePieceSingles>;
+export type SelectOnePieceSingle= InferSelectModel<typeof onePieceSingles>;
+export type InsertOnePieceSingle = InferInsertModel<typeof onePieceSingles>;

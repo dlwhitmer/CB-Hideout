@@ -3,7 +3,7 @@ import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
 export const gundamCards = sqliteTable("gundam_cards", {
   id: integer("id").primaryKey(),
-  productID: text("product_id").notNull(),
+  productId: text("product_id").notNull(),
   cardNumber: text("card_number").notNull(),
   name: text("name").notNull(),
   setCode: text("set_code").notNull(),

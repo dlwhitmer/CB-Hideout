@@ -9,9 +9,9 @@ export default function HeaderClient() {
   const [search, setSearch] = useState("");
 
   return (
-    <header className="relative w-full bg-black shadow-md z-[100]">
+    <header className="relative w-full bg-black shadow-md z-100">
       {/* Top Row: Logo + Search + Right Nav */}
-      <div className="max-w-7xl mx-auto flex items-start justify-between  bg-black">
+      <div className="max-w-7xl mx-auto flex items-start justify-between bg-black">
         {/* Logo */}
         <Link href="/" className="flex flex-col items-center">
           <Image
@@ -78,148 +78,72 @@ export default function HeaderClient() {
           className="w-full px-4 py-2 rounded-lg bg-white text-gray-900 shadow focus:outline-none"
         />
       </div>
-
-      {/* SECOND ROW: Horizontal Navbar */}
       {/* SECOND ROW: Horizontal Navbar */}
       <div className="hidden lg:block w-full bg-black/80 border-t  border-white/10">
         <nav className="max-w-7xl mx-auto flex items-center gap-5 px-4 py-2 text-white font-medium overflow-visible whitespace-nowrap">
-          {/* MAGIC DROPDOWN */}
           <div className="relative group inline-block ">
-            <div className="text-[15px]  flex items-center gap-1 hover:text-blue-300 cursor-pointer">
-              Magic: The Gathering
-              <span className="text-xs">▼</span>
-            </div>
-
-            {/* Dropdown */}
-            <div className="absolute left-0 hidden group-hover:block bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg z-[9999] w-48">
-              <Link
-                href="/magic/singles"
-                onClick={() => setMobileOpen(false)}
-                className="block px-4 py-2 text-center hover:bg-white/10"
-              >
-                Individual Cards
-              </Link>
-
-              <Link
-                href="/magic/cards"
-                onClick={() => setMobileOpen(false)}
-                className="block px-4 py-2 text-center hover:bg-white/10"
-              >
-                Cards by Sets
-              </Link>
-              <Link
-                href="/magic/products"
-                onClick={() => setMobileOpen(false)}
-                className="block px-4 py-2 text-center hover:bg-white/10"
-              >
-                <span className="block">Sealed Products</span>
-                <span className="block">Booster Boxes & Sets</span>
-             
-              </Link>
-            </div>
+            <Link
+              href="/about"
+              onClick={() => setMobileOpen(false)}
+              className="block px-4 py-2 text-center hover:bg-white/10"
+            >
+            About Us
+            </Link>
+          </div>
+          <div className="relative group inline-block ">
+            <Link
+              href="/magic/singles"
+              onClick={() => setMobileOpen(false)}
+              className="block px-4 py-2 text-center hover:bg-white/10"
+            >
+              Magic
+            </Link>
           </div>
 
           {/* OTHER LINKS — unchanged */}
           <div className="relative group inline-block">
             <div className="flex items-center gap-1 hover:text-blue-300 cursor-pointer">
-              Gundam
-              <span className="text-xs">▼</span>
-            </div>
-
-            {/* Dropdown */}
-            <div className="absolute left-0 hidden group-hover:block bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg z-[9999] w-48">
-              <Link
-                href="/gundam/cards"
-                className="block px-4 py-2 hover:bg-white/10"
-              >
-                Cards by Set
-              </Link>
-             
               <Link
                 href="/gundam/singles"
                 className="block px-4 py-2 hover:bg-white/10"
               >
-                Singles
+                Gundam
               </Link>
             </div>
           </div>
+          
           <div className="relative group inline-block">
             <div className="flex items-center gap-1 hover:text-blue-300 cursor-pointer">
-              Lorcana
-              <span className="text-xs">▼</span>
-            </div>
-
-            <div className="absolute left-0 hidden group-hover:block bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg z-[9999] w-48">
-              <Link
-                href="/lorcana/cards"
-                className="block px-4 py-2 hover:bg-white/10"
-              >
-               Cards of Sets
-              </Link>
-              
               <Link
                 href="/lorcana/singles"
                 className="block px-4 py-2 hover:bg-white/10"
               >
-                Singles
+                Lorcana
               </Link>
             </div>
           </div>
 
           <div className="relative group inline-block">
             <div className="flex items-center gap-1 hover:text-blue-300 cursor-pointer">
-              One Piece
-              <span className="text-xs">▼</span>
-            </div>
-
-            <div className="absolute left-0 hidden group-hover:block bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg z-[9999] w-48">
-              <Link
-                href="/onepiece/cards"
-                className="block px-4 py-2 hover:bg-white/10"
-              >
-               Cards of Sets
-              </Link>
-         
               <Link
                 href="/onepiece/singles"
                 className="block px-4 py-2 hover:bg-white/10"
               >
-                Singles
+                One Piece
               </Link>
             </div>
           </div>
 
           <div className="relative group inline-block">
             <div className="flex items-center gap-1 hover:text-blue-300 cursor-pointer">
-              RiftBound
-              <span className="text-xs">▼</span>
-            </div>
-
-            <div className="absolute left-0 hidden group-hover:block bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg z-[9999] w-48">
-              <Link
-                href="/riftbound/cards"
-                className="block px-4 py-2 hover:bg-white/10"
-              >
-               Cards of Sets
-              </Link>
-              
               <Link
                 href="/riftbound/singles"
                 className="block px-4 py-2 hover:bg-white/10"
               >
-                Singles
+                Riftbound
               </Link>
             </div>
           </div>
-          <Link href="/flesh-and-blood" className="hover:text-blue-300">
-            Flesh and Blood
-          </Link>
-          <Link href="/star-wars" className="hover:text-blue-300">
-            Star Wars Unlimited
-          </Link>
-          <Link href="/deals" className="hover:text-blue-300">
-            Deals
-          </Link>
         </nav>
       </div>
       {mobileOpen && (
@@ -235,122 +159,45 @@ export default function HeaderClient() {
 
             {/* Magic */}
             <div>
-              <div className="font-medium mb-2">Magic: The Gathering</div>
-
-              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
-                <Link href="/magic/cards" onClick={() => setMobileOpen(false)}>
-                  Cards
-                </Link>
-                <Link href="/magic/packs" onClick={() => setMobileOpen(false)}>
-                  Packs
-                </Link>
-                <Link href="/magic/sets" onClick={() => setMobileOpen(false)}>
-                  Sets
-                </Link>
-              </div>
+              <Link href="/magic/singles" onClick={() => setMobileOpen(false)}>
+                Magic
+              </Link>
             </div>
 
             {/* Gundam */}
             <div>
-              <div className="font-medium mb-2">Gundam</div>
-
-              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
-                <Link href="/gundam/cards" onClick={() => setMobileOpen(false)}>
-                  Cards
-                </Link>
-                <Link href="/gundam/packs" onClick={() => setMobileOpen(false)}>
-                  Packs
-                </Link>
-                <Link href="/gundam/sets" onClick={() => setMobileOpen(false)}>
-                  Sets
-                </Link>
-              </div>
+              <Link href="/gundam/singles" onClick={() => setMobileOpen(false)}>
+                Gundam
+              </Link>
             </div>
+
             {/* Lorcana */}
             <div>
-              <div className="font-medium mb-2">Lorcana</div>
-
-              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
-                <Link href="/lorcana/cards" onClick={() => setMobileOpen(false)}>
-                  Cards
-                </Link>
-                <Link href="/lorcana/packs" onClick={() => setMobileOpen(false)}>
-                  Packs
-                </Link>
-                <Link href="/lorcana/sets" onClick={() => setMobileOpen(false)}>
-                  Sets
-                </Link>
-              </div>
+              <Link
+                href="/lorcana/singles"
+                onClick={() => setMobileOpen(false)}
+              >
+                Lorcana
+              </Link>
             </div>
             {/* One Piece */}
             <div>
-              <div className="font-medium mb-2">One Piece</div>
-
-              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
-                <Link href="/onepiece/cards" onClick={() => setMobileOpen(false)}>
-                  Cards
-                </Link>
-                <Link href="/onepiece/packs" onClick={() => setMobileOpen(false)}>
-                  Packs
-                </Link>
-                <Link href="/onepiece/sets" onClick={() => setMobileOpen(false)}>
-                  Sets
-                </Link>
-              </div>
+              <Link
+                href="/onepiece/singles"
+                onClick={() => setMobileOpen(false)}
+              >
+                OnePiece
+              </Link>
             </div>
             {/* RiftBound */}
             <div>
-              <div className="font-medium mb-2">Rift Bound</div>
-
-              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
-                <Link href="/riftbound/cards" onClick={() => setMobileOpen(false)}>
-                  Cards
-                </Link>
-                <Link href="/riftbound/packs" onClick={() => setMobileOpen(false)}>
-                  Packs
-                </Link>
-                <Link href="/riftbound/sets" onClick={() => setMobileOpen(false)}>
-                  Sets
-                </Link>
-              </div>
+              <Link
+                href="/riftbound/singles"
+                onClick={() => setMobileOpen(false)}
+              >
+                RiftBound
+              </Link>
             </div>
-
-            {/* Pokémon */}
-            {/* <div>
-              <div className="font-medium mb-2">Pokémon</div>
-
-              <div className="ml-4 flex flex-col gap-2 text-sm text-gray-300">
-                <Link
-                  href="/pokemon/singles"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Cards
-                </Link>
-                <Link
-                  href="/pokemon/packs"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Packs
-                </Link>
-                <Link href="/pokemon/sets" onClick={() => setMobileOpen(false)}>
-                  Sets
-                </Link>
-              </div>
-            </div> */}
-
-          
-
-            {/* <Link href="/flesh-and-blood" onClick={() => setMobileOpen(false)}>
-              Flesh and Blood
-            </Link>
-
-            <Link href="/star-wars" onClick={() => setMobileOpen(false)}>
-              Star Wars Unlimited
-            </Link>
-
-            <Link href="/deals" onClick={() => setMobileOpen(false)}>
-              Deals
-            </Link> */}
 
             <Link href="/login" onClick={() => setMobileOpen(false)}>
               Login

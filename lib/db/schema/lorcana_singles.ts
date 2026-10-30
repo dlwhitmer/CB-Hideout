@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, real, integer } from "drizzle-orm/sqlite-core";
 import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
 export const lorcanaSingles = sqliteTable("lorcana_singles", {
@@ -15,13 +15,13 @@ export const lorcanaSingles = sqliteTable("lorcana_singles", {
   Abilities: text("Abilities"),
   Image: text("Image").notNull(),
   Cost: integer("Cost").notNull(),
-  Inkable: integer("Inkable").notNull(),
+  Inkable: integer("Inkable", { mode: "boolean" }),
   Name: text("Name").notNull(),
   Type: text("Type").notNull(),
   Lore: integer("Lore").notNull(),
   Rarity: text("Rarity").notNull(),
   FlavorText: text("Flavor_text"),
-  UniqueId: text("Unique_id").notNull(),
+  UniqueId: text("Unique_Id").notNull(),
   CardNum: integer("Card_Num").notNull(),
   BodyText: text("Body_text"),
   Willpower: integer("Willpower").notNull(),
@@ -29,6 +29,9 @@ export const lorcanaSingles = sqliteTable("lorcana_singles", {
   DateModified: text("Date_Modified").notNull(),
   Strength: integer("Strength").notNull(),
   SetId: text("Set_id").notNull(),
+  ourPrice: real("our_price"),
+  quantity: integer("quantity").default(0),
+  condition:text("condition"),
 });
 
 export type SelectLorcanaSingle = InferSelectModel<typeof lorcanaSingles>;

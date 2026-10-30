@@ -38,7 +38,10 @@ export function mapRiftboundSingleToDB(single: any): InsertRiftBoundSingle {
 
     alt: single.alt ? 1 : 0,
     sig: single.sig ? 1 : 0,
-    over: single.over ? 1 : 0
+    over: single.over ? 1 : 0,
+    quantity: 1,
+    condition:single.condition,
+
   };
 }
 

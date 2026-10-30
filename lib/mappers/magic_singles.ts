@@ -1,65 +1,64 @@
-import {InsertMagicSingle} from "../db/schema/magic_singles";
+import { InsertMagicSingle } from "../db/schema/magic_singles";
 
-
-function getFace(card: any, index: number) {
-  return card.card_faces?.[index] ?? null;
+function getFace(single: any, index: number) {
+  return single.card_faces?.[index] ?? null;
 }
 
-export function mapMagicSingleToDB(card: any): InsertMagicSingle {
-  const front = getFace(card, 0);
-  const back = getFace(card, 1);
+export function mapMagicSingleToDB(single: any): InsertMagicSingle {
+  const front = getFace(single, 0);
+  const back = getFace(single, 1);
 
   const frontImageSmall =
-    front?.image_uris?.small ?? card.image_uris?.small ?? null;
+    front?.image_uris?.small ?? single.image_uris?.small ?? null;
 
   const frontImageNormal =
-    front?.image_uris?.normal ?? card.image_uris?.normal ?? null;
+    front?.image_uris?.normal ?? single.image_uris?.normal ?? null;
 
   const backImageSmall = back?.image_uris?.small ?? null;
 
   const backImageNormal = back?.image_uris?.normal ?? null;
 
   return {
-    scryfallId: card.id,
-    oracleId: card.oracle_id ?? null,
+    scryfallId: single.id,
+    oracleId: single.oracle_id ?? null,
 
-    setCode: card.set,
-    setName: card.set_name,
-    setType: card.set_type,
+    setCode: single.set,
+    setName: single.set_name,
+    setType: single.set_type,
 
-    finishes: JSON.stringify(card.finishes ?? []),
-    digital: card.digital ?? false,
+    finishes: JSON.stringify(single.finishes ?? []),
+    digital: single.digital ?? false,
 
-    cmc: card.cmc,
+    cmc: single.cmc,
 
-    colorIdentity: JSON.stringify(card.color_identity ?? []),
+    colorIdentity: JSON.stringify(single.color_identity ?? []),
 
-    keywords: JSON.stringify(card.keywords ?? []),
+    keywords: JSON.stringify(single.keywords ?? []),
 
-    layout: card.layout,
-    name: card.name,
+    layout: single.layout,
+    name: single.name,
 
-    card_faces: card.card_faces ? JSON.stringify(card.card_faces) : null,
+    card_faces: single.card_faces ? JSON.stringify(single.card_faces) : null,
 
     // FRONT
 
-    frontName: front?.name ?? card.name ?? null,
+    frontName: front?.name ?? single.name ?? null,
 
-    frontManaCost: front?.mana_cost ?? card.mana_cost ?? null,
+    frontManaCost: front?.mana_cost ?? single.mana_cost ?? null,
 
-    frontTypeLine: front?.type_line ?? card.type_line ?? null,
+    frontTypeLine: front?.type_line ?? single.type_line ?? null,
 
-    frontOracleText: front?.oracle_text ?? card.oracle_text ?? null,
+    frontOracleText: front?.oracle_text ?? single.oracle_text ?? null,
 
-    frontColors: JSON.stringify(front?.colors ?? card.colors ?? []),
+    frontColors: JSON.stringify(front?.colors ?? single.colors ?? []),
 
-    frontPower: front?.power ?? card.power ?? null,
+    frontPower: front?.power ?? single.power ?? null,
 
-    frontToughness: front?.toughness ?? card.toughness ?? null,
+    frontToughness: front?.toughness ?? single.toughness ?? null,
 
-    frontLoyalty: front?.loyalty ?? card.loyalty ?? null,
+    frontLoyalty: front?.loyalty ?? single.loyalty ?? null,
 
-    frontDefense: front?.defense ?? card.defense ?? null,
+    frontDefense: front?.defense ?? single.defense ?? null,
 
     // BACK
 
@@ -94,20 +93,26 @@ export function mapMagicSingleToDB(card: any): InsertMagicSingle {
     imageSmall: frontImageSmall,
     imageNormal: frontImageNormal,
 
-    collectorNumber: card.collector_number ?? null,
+    collectorNumber: single.collector_number ?? null,
 
-    rarity: card.rarity,
-    lang: card.lang,
-
-    price: Number(card.prices?.usd ?? 0),
-
-    foilPrice: Number(card.prices?.usd_foil ?? 0),
+    rarity: single.rarity,
+    lang: single.lang,
 
     quantity: 1,
+    usd: single.usd ? Number(single.usd) : null,
+    usdFoil: single.usd_foil ? Number(single.usd_foil) : null,
+    usdEtched: single.usd_etched ? Number(single.usd_etched) : null,
+    eur: single.eur ? Number(single.eur) : null,
+    eurFoil: single.eur_foil ? Number(single.eur_foil) : null,
+    tix: single.tix ? Number(single.tix) : null,
+    ourPrice: Number(single.our_price),
+    ourFoil: Number(single.our_foil),
+    ourEtched: Number(single.our_etched),
 
-    artist: card.artist ?? null,
+    fetchedAt: Date.now(),
 
-    releasedAt: card.released_at ?? null,
-
+    artist: single.artist ?? null,
+    condition:single.condition,
+    releasedAt: single.released_at ?? null,
   };
 }

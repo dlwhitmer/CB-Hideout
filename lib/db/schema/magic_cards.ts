@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, real, integer } from "drizzle-orm/sqlite-core";
 import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
 export const magicCards = sqliteTable("magic_cards", {
@@ -67,6 +67,7 @@ export const magicCards = sqliteTable("magic_cards", {
 
   totalCards: integer("total_cards"),
   artist: text("artist").notNull(),
+
 
   releasedAt: text("released_at"),
   createdAt: text("created_at").notNull().default(`CURRENT_TIMESTAMP`),
